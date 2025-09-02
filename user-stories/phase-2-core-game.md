@@ -1,51 +1,81 @@
 # Phase 2: Core Game Logic (Multiplication Only)
 
 ## Overview
+
 Build the core math problem generation and answer validation functionality, starting with multiplication tables only.
 
 ## User Stories
 
 ### Story 2.1: Build Problem Generator
+
 **As a** student  
 **I want** the game to generate multiplication problems  
-**So that** I can practice my math skills  
+**So that** I can practice my math skills
 
 **Acceptance Criteria:**
+
 - [ ] Python function generates multiplication problems (1-12 tables)
 - [ ] Problems are in format "X × Y = ?"
 - [ ] Function returns both the problem string and correct answer
 - [ ] Problems use random numbers within the specified range
 
 **Definition of Done:**
+
 - Problem generator works consistently
 - Problems are appropriately challenging for the target age group
 
 ---
 
-### Story 2.2: Create Basic Game Screen
+### Story 2.2: Create Basic Game Screen Layout
+
 **As a** student  
 **I want** to see math problems displayed clearly  
-**So that** I can read and solve them easily  
+**So that** I can read and understand what to solve
 
 **Acceptance Criteria:**
-- [ ] Game screen displays one problem at a time
-- [ ] On-screen number pad with digits 0-9
-- [ ] Enter/Submit button to submit answers
-- [ ] Input field shows the number being typed
-- [ ] Clean, readable layout
+
+- [ ] Game screen displays one problem at a time in large, readable font
+- [ ] Problem appears in a prominent, centered location
+- [ ] Clean, uncluttered layout with proper spacing
+- [ ] Child-friendly colors and visual design
+- [ ] Clear visual hierarchy focusing attention on the problem
 
 **Definition of Done:**
-- Game screen is intuitive and easy to use
-- Number pad is touch-friendly and responsive
+
+- Game screen layout is intuitive and visually appealing
+- Problem display is optimized for 8-year-old readability
 
 ---
 
-### Story 2.3: Implement Answer Validation
+### Story 2.3: Add Interactive Number Pad
+
 **As a** student  
-**I want** immediate feedback when I answer a problem  
-**So that** I know if I got it right or wrong  
+**I want** to input answers using an on-screen number pad  
+**So that** I can easily enter numbers without using a keyboard
 
 **Acceptance Criteria:**
+
+- [ ] On-screen number pad with large, touch-friendly buttons (digits 0-9)
+- [ ] Enter/Submit button clearly labeled and prominent
+- [ ] Clear/Backspace button to fix mistakes
+- [ ] Input field shows the number being typed in large text
+- [ ] Number pad buttons provide visual feedback when pressed
+
+**Definition of Done:**
+
+- Number pad is fully functional and child-friendly
+- Input system works reliably for target age group
+
+---
+
+### Story 2.4: Implement Answer Validation
+
+**As a** student  
+**I want** immediate feedback when I answer a problem  
+**So that** I know if I got it right or wrong
+
+**Acceptance Criteria:**
+
 - [ ] System checks if submitted answer matches correct answer
 - [ ] Shows "Correct!" message for right answers
 - [ ] Shows "Try Again!" message for wrong answers
@@ -53,17 +83,20 @@ Build the core math problem generation and answer validation functionality, star
 - [ ] Keeps same problem after incorrect answer until solved
 
 **Definition of Done:**
+
 - Answer validation works accurately
 - Feedback is clear and immediate
 
 ---
 
-### Story 2.4: Test Basic Math Gameplay
+### Story 2.5: Test Basic Math Gameplay
+
 **As a** developer  
 **I want** to verify the core game mechanics work  
-**So that** users can successfully practice math problems  
+**So that** users can successfully practice math problems
 
 **Acceptance Criteria:**
+
 - [ ] Can complete a series of multiplication problems
 - [ ] Correct answers advance to next problem
 - [ ] Wrong answers require retry of same problem
@@ -71,6 +104,7 @@ Build the core math problem generation and answer validation functionality, star
 - [ ] Problems are sufficiently random
 
 **Definition of Done:**
+
 - Core gameplay loop is solid and bug-free
 - Ready to add progress tracking and game flow
 
