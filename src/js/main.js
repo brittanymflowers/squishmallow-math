@@ -10,6 +10,9 @@ class SquishCollectorApp {
   init() {
     console.log("🎮 Squishmallow Collector initializing...");
 
+    // Setup mascot images with fallbacks
+    this.setupMascotImages();
+
     // Show loading screen first
     this.showScreen("loading-screen");
 
@@ -73,6 +76,31 @@ class SquishCollectorApp {
     setTimeout(() => {
       this.showScreen(screenId);
     }, delay);
+  }
+
+  // Setup mascot images with unicorn emoji fallback
+  setupMascotImages() {
+    const mascotImages = document.querySelectorAll('.mascot-image');
+    
+    mascotImages.forEach(img => {
+      // Set unicorn emoji as fallback content
+      img.textContent = '🦄';
+      img.style.color = 'white';
+      
+      // Handle successful image load
+      img.onload = () => {
+        img.textContent = '';
+        img.style.background = 'none';
+      };
+      
+      // Handle image load error
+      img.onerror = () => {
+        console.log('🦄 Using unicorn emoji fallback for mascot image');
+        img.style.background = 'linear-gradient(135deg, #9B59B6, #E91E63)';
+        img.textContent = '🦄';
+        img.style.color = 'white';
+      };
+    });
   }
 }
 
