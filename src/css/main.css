@@ -177,6 +177,110 @@ body {
   font-size: 0;
 }
 
+/* Dashboard Button Styles */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.dashboard-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 30px;
+  border: none;
+  border-radius: 20px;
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+  justify-content: center;
+}
+
+.dashboard-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-button:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Button variants */
+.dashboard-button.primary {
+  background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+  color: white;
+}
+
+.dashboard-button.secondary {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-lavender));
+  color: white;
+}
+
+.dashboard-button.tertiary {
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-yellow));
+  color: var(--text-primary);
+}
+
+/* Button content */
+.button-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.button-text {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.button-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 400;
+  display: block;
+  text-align: center;
+}
+
+/* Button accessibility and interaction states */
+.dashboard-button:focus {
+  outline: 3px solid var(--accent-yellow);
+  outline-offset: 3px;
+}
+
+.dashboard-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Button loading state (for future use) */
+.dashboard-button.loading {
+  pointer-events: none;
+}
+
+.dashboard-button.loading .button-text::after {
+  content: '...';
+  animation: loading-dots 1.5s infinite;
+}
+
+@keyframes loading-dots {
+  0%, 20% { opacity: 0; }
+  40% { opacity: 0.5; }
+  60%, 100% { opacity: 1; }
+}
+
+/* Responsive Design */
+
 /* Dashboard Content */
 .dashboard-content {
   text-align: center;
@@ -198,6 +302,28 @@ body {
   }
   .dashboard-content {
     padding: 20px;
+  }
+  
+  .button-container {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  .dashboard-button {
+    min-height: 100px;
+    padding: 16px 20px;
+  }
+  
+  .button-icon {
+    font-size: 28px;
+  }
+  
+  .button-text {
+    font-size: 16px;
+  }
+  
+  .button-subtitle {
+    font-size: 13px;
   }
 }
 

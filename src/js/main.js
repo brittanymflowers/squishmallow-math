@@ -13,6 +13,9 @@ class SquishCollectorApp {
     // Setup mascot images with fallbacks
     this.setupMascotImages();
 
+    // Setup dashboard button listeners
+    this.setupDashboardButtons();
+
     // Show loading screen first
     this.showScreen("loading-screen");
 
@@ -101,6 +104,112 @@ class SquishCollectorApp {
         img.style.color = "white";
       };
     });
+  }
+
+  // Setup dashboard button event listeners
+  setupDashboardButtons() {
+    console.log("🎮 Setting up dashboard buttons...");
+
+    // Start New Game button
+    const startGameBtn = document.getElementById('start-game-btn');
+    if (startGameBtn) {
+      startGameBtn.addEventListener('click', () => this.handleStartGame());
+      startGameBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.handleStartGame();
+        }
+      });
+    }
+
+    // View Collection button  
+    const viewCollectionBtn = document.getElementById('view-collection-btn');
+    if (viewCollectionBtn) {
+      viewCollectionBtn.addEventListener('click', () => this.handleViewCollection());
+      viewCollectionBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.handleViewCollection();
+        }
+      });
+    }
+
+    // Settings button
+    const settingsBtn = document.getElementById('settings-btn');
+    if (settingsBtn) {
+      settingsBtn.addEventListener('click', () => this.handleSettings());
+      settingsBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.handleSettings();
+        }
+      });
+    }
+
+    console.log("✅ Dashboard buttons setup complete!");
+  }
+
+  // Dashboard button handlers (placeholders for future implementation)
+  handleStartGame() {
+    console.log("🎮 Start New Game clicked!");
+    // TODO: Implement in Phase 2 - Core Game mechanics
+    this.showFeedback("Starting new game... (Coming in Phase 2!)", "info");
+  }
+
+  handleViewCollection() {
+    console.log("📚 View Collection clicked!");  
+    // TODO: Implement in Phase 4 - Collection system
+    this.showFeedback("Opening collection... (Coming in Phase 4!)", "info");
+  }
+
+  handleSettings() {
+    console.log("⚙️ Settings clicked!");
+    // TODO: Implement in Phase 5 - Settings system  
+    this.showFeedback("Opening settings... (Coming in Phase 5!)", "info");
+  }
+
+  // User feedback system for button interactions
+  showFeedback(message, type = "info") {
+    // Create feedback element
+    const feedback = document.createElement('div');
+    feedback.className = `feedback-message ${type}`;
+    feedback.textContent = message;
+    feedback.style.cssText = `
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: ${type === 'info' ? 'var(--accent-blue)' : 'var(--accent-green)'};
+      color: white;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-family: var(--font-primary);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s ease;
+    `;
+
+    document.body.appendChild(feedback);
+
+    // Animate in
+    setTimeout(() => {
+      feedback.style.opacity = '1';
+      feedback.style.transform = 'translateX(-50%) translateY(10px)';
+    }, 10);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+      feedback.style.opacity = '0';
+      feedback.style.transform = 'translateX(-50%) translateY(-10px)';
+      setTimeout(() => {
+        if (feedback.parentNode) {
+          feedback.parentNode.removeChild(feedback);
+        }
+      }, 300);
+    }, 3000);
   }
 }
 
