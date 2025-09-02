@@ -70,6 +70,64 @@
           </div>
         </div>
       </div>
+
+      <!-- Game screen (Story 2.2: Basic Game Screen Layout) -->
+      <div id="game-screen" class="screen">
+        <div class="game-content">
+          <!-- Game Header -->
+          <div class="game-header">
+            <button id="back-to-dashboard-btn" class="back-button">
+              <span class="button-icon">🏠</span>
+              <span class="button-text">Dashboard</span>
+            </button>
+            <div class="game-progress">
+              <span class="progress-text">Problem <span id="problem-number">1</span></span>
+            </div>
+          </div>
+
+          <!-- Math Problem Display Area -->
+          <div class="problem-container">
+            <div class="problem-display">
+              <div class="problem-text" id="current-problem">
+                3 × 4 = ?
+              </div>
+            </div>
+          </div>
+
+          <!-- Answer Input Area -->
+          <div class="answer-container">
+            <div class="answer-display">
+              <label for="answer-input" class="answer-label">Your Answer:</label>
+              <input 
+                type="text" 
+                id="answer-input" 
+                class="answer-input" 
+                placeholder="Type your answer..."
+                readonly
+              />
+            </div>
+          </div>
+
+          <!-- Number Pad (will be implemented in Story 2.3) -->
+          <div class="number-pad-container">
+            <div class="number-pad-placeholder">
+              <p class="placeholder-text">📱 Number pad coming in Story 2.3!</p>
+            </div>
+          </div>
+
+          <!-- Game Controls -->
+          <div class="game-controls">
+            <button id="submit-answer-btn" class="game-button primary disabled" disabled>
+              <span class="button-icon">✅</span>
+              <span class="button-text">Submit Answer</span>
+            </button>
+            <button id="skip-problem-btn" class="game-button secondary">
+              <span class="button-icon">⏭️</span>
+              <span class="button-text">Skip Problem</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- JavaScript Files -->

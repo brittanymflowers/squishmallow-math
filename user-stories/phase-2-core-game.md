@@ -14,15 +14,15 @@ Build the core math problem generation and answer validation functionality, star
 
 **Acceptance Criteria:**
 
-- [ ] Python function generates multiplication problems (1-12 tables)
-- [ ] Problems are in format "X × Y = ?"
-- [ ] Function returns both the problem string and correct answer
-- [ ] Problems use random numbers within the specified range
+- [x] Function generates multiplication problems (1-12 tables)
+- [x] Problems are in format "X × Y = ?"
+- [x] Function returns both the problem string and correct answer
+- [x] Problems use random numbers within the specified range
 
 **Definition of Done:**
 
-- Problem generator works consistently
-- Problems are appropriately challenging for the target age group
+- Problem generator works consistently ✅
+- Problems are appropriately challenging for the target age group ✅
 
 ---
 
@@ -34,16 +34,16 @@ Build the core math problem generation and answer validation functionality, star
 
 **Acceptance Criteria:**
 
-- [ ] Game screen displays one problem at a time in large, readable font
-- [ ] Problem appears in a prominent, centered location
-- [ ] Clean, uncluttered layout with proper spacing
-- [ ] Child-friendly colors and visual design
-- [ ] Clear visual hierarchy focusing attention on the problem
+- [x] Game screen displays one problem at a time in large, readable font
+- [x] Problem appears in a prominent, centered location
+- [x] Clean, uncluttered layout with proper spacing
+- [x] Child-friendly colors and visual design
+- [x] Clear visual hierarchy focusing attention on the problem
 
 **Definition of Done:**
 
-- Game screen layout is intuitive and visually appealing
-- Problem display is optimized for 8-year-old readability
+- Game screen layout is intuitive and visually appealing ✅
+- Problem display is optimized for 8-year-old readability ✅
 
 ---
 

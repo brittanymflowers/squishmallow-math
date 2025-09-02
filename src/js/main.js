@@ -20,6 +20,9 @@ class SquishCollectorApp {
     // Setup dashboard button listeners
     this.setupDashboardButtons();
 
+    // Setup game screen controls (Story 2.2)
+    this.setupGameScreenControls();
+
     // Show loading screen first
     this.showScreen("loading-screen");
 
@@ -157,14 +160,10 @@ class SquishCollectorApp {
   handleStartGame() {
     console.log("🎮 Start New Game clicked!");
     
-    // Story 2.1: Generate first math problem
+    // Story 2.1 & 2.2: Generate problem and show game screen
     const problem = this.mathEngine.generateNewProblem();
-    
-    // For now, show the problem in a feedback message (Story 2.2 will create proper game screen)
-    this.showFeedback(`Math Problem: ${problem.displayText}`, "info");
-    
-    // Log problem details for testing
-    console.log("Generated Problem:", problem);
+    this.displayProblem(problem);
+    this.showScreen("game-screen");
   }
 
   handleViewCollection() {
@@ -242,6 +241,59 @@ class SquishCollectorApp {
     
     console.log("Correct answer test:", correctResult);
     console.log("Incorrect answer test:", incorrectResult);
+  }
+
+  // Game screen methods for Story 2.2
+  displayProblem(problem) {
+    const problemElement = document.getElementById('current-problem');
+    if (problemElement) {
+      problemElement.textContent = problem.displayText;
+      console.log(`📝 Displaying problem: ${problem.displayText}`);
+    }
+    
+    // Clear any previous answer
+    const answerInput = document.getElementById('answer-input');
+    if (answerInput) {
+      answerInput.value = '';
+    }
+  }
+
+  setupGameScreenControls() {
+    // Back to dashboard button
+    const backBtn = document.getElementById('back-to-dashboard-btn');
+    if (backBtn) {
+      backBtn.addEventListener('click', () => {
+        this.showScreen('dashboard-screen');
+        console.log("🏠 Returned to dashboard");
+      });
+      
+      backBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.showScreen('dashboard-screen');
+        }
+      });
+    }
+
+    // Submit answer button (placeholder for Story 2.4)
+    const submitBtn = document.getElementById('submit-answer-btn');
+    if (submitBtn) {
+      submitBtn.addEventListener('click', () => {
+        this.showFeedback("Answer submission coming in Story 2.4!", "info");
+      });
+    }
+
+    // Skip problem button
+    const skipBtn = document.getElementById('skip-problem-btn');
+    if (skipBtn) {
+      skipBtn.addEventListener('click', () => {
+        const newProblem = this.mathEngine.generateNewProblem();
+        this.displayProblem(newProblem);
+        this.showFeedback("New problem generated!", "info");
+      });
+    }
+
+    console.log("✅ Game screen controls setup complete!");
   }
 }
 
