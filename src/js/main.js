@@ -4,6 +4,10 @@
 class SquishCollectorApp {
   constructor() {
     this.currentScreen = "loading-screen";
+    
+    // Initialize Math Engine for Story 2.1
+    this.mathEngine = new MathEngine();
+    
     this.init();
   }
 
@@ -149,11 +153,18 @@ class SquishCollectorApp {
     console.log("✅ Dashboard buttons setup complete!");
   }
 
-  // Dashboard button handlers (placeholders for future implementation)
+  // Dashboard button handlers
   handleStartGame() {
     console.log("🎮 Start New Game clicked!");
-    // TODO: Implement in Phase 2 - Core Game mechanics
-    this.showFeedback("Starting new game... (Coming in Phase 2!)", "info");
+    
+    // Story 2.1: Generate first math problem
+    const problem = this.mathEngine.generateNewProblem();
+    
+    // For now, show the problem in a feedback message (Story 2.2 will create proper game screen)
+    this.showFeedback(`Math Problem: ${problem.displayText}`, "info");
+    
+    // Log problem details for testing
+    console.log("Generated Problem:", problem);
   }
 
   handleViewCollection() {
@@ -210,6 +221,27 @@ class SquishCollectorApp {
         }
       }, 300);
     }, 3000);
+  }
+
+  // Math system methods for Story 2.1
+  testMathEngine() {
+    console.log("🧪 Testing Math Engine...");
+    
+    // Test different difficulty levels
+    const difficulties = ['easy', 'medium', 'hard'];
+    difficulties.forEach(level => {
+      this.mathEngine.setDifficulty(level);
+      const problem = this.mathEngine.generateNewProblem();
+      console.log(`${level.toUpperCase()}: ${problem.displayText} = ${problem.answer}`);
+    });
+    
+    // Test answer validation
+    const testProblem = this.mathEngine.generateNewProblem();
+    const correctResult = this.mathEngine.validateAnswer(testProblem.answer);
+    const incorrectResult = this.mathEngine.validateAnswer(999);
+    
+    console.log("Correct answer test:", correctResult);
+    console.log("Incorrect answer test:", incorrectResult);
   }
 }
 
