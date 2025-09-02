@@ -1,0 +1,28 @@
+{
+  "name": "squishmallow-collector",
+  "version": "1.0.0",
+  "description": "Math learning game for kids featuring Squishmallow collection",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "test": "echo 'Testing framework to be added in later phases'"
+  },
+  "keywords": [
+    "electron",
+    "education",
+    "math",
+    "kids",
+    "squishmallow",
+    "collection",
+    "multiplication"
+  ],
+  "author": "Squishmallow Math Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

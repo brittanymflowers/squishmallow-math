@@ -1,0 +1,188 @@
+/* Squishmallow Collector - Main Stylesheet */
+/* Implementing design from Story 1.1 */
+
+/* CSS Custom Properties (Design System) */
+:root {
+  /* Primary Colors */
+  --primary-pink: #ffb6c1;
+  --primary-blue: #87ceeb;
+  --primary-mint: #98fb98;
+
+  /* Accent Colors */
+  --accent-yellow: #ffd700;
+  --accent-coral: #ff7f7f;
+  --accent-lavender: #e6e6fa;
+
+  /* Supporting Colors */
+  --background: #fffdd0;
+  --text-primary: #4a4a4a;
+  --button-hover: #ffe55c;
+
+  /* Typography */
+  --font-primary: "Quicksand", sans-serif;
+  --font-title: "Fredoka One", cursive;
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: linear-gradient(
+    135deg,
+    var(--background) 0%,
+    var(--primary-mint) 100%
+  );
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden; /* Prevent scrolling in desktop app */
+}
+
+/* App Container */
+#app {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* Screen Management */
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s ease;
+}
+
+.screen.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Typography Styles */
+.game-title {
+  font-family: var(--font-title);
+  font-size: 36px;
+  color: var(--accent-coral);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.subtitle {
+  font-family: var(--font-primary);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.welcome-message {
+  font-family: var(--font-primary);
+  font-size: 18px;
+  color: var(--text-primary);
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  border: 2px solid var(--accent-yellow);
+}
+
+/* Loading Screen Styles */
+.loading-content {
+  text-align: center;
+}
+
+.loading-spinner {
+  margin-top: 30px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--accent-lavender);
+  border-top: 4px solid var(--accent-yellow);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dashboard Content */
+.dashboard-content {
+  text-align: center;
+  max-width: 800px;
+  padding: 40px;
+}
+
+.button-container {
+  margin-top: 40px;
+}
+
+/* Responsive Design */
+@media (max-height: 600px) {
+  .game-title {
+    font-size: 28px;
+  }
+  .subtitle {
+    font-size: 16px;
+  }
+  .dashboard-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 800px) {
+  .game-title {
+    font-size: 30px;
+  }
+  .dashboard-content {
+    padding: 20px;
+    max-width: 90%;
+  }
+}
+
+/* Accessibility */
+*:focus {
+  outline: 3px solid var(--accent-yellow);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --background: #ffffff;
+    --text-primary: #000000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+
+  .screen {
+    transition: none;
+  }
+}
