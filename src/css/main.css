@@ -154,7 +154,11 @@ body {
 
 /* Fallback for missing image - shows unicorn emoji */
 .mascot-image {
-  background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+  background: linear-gradient(
+    135deg,
+    var(--primary-purple),
+    var(--accent-pink)
+  );
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
