@@ -97,6 +97,9 @@ class SquishCollectorApp {
       targetScreen.classList.add("active");
       this.currentScreen = screenId;
       console.log(`📺 Switched to screen: ${screenId}`);
+
+      // Reinitialize icons after screen change
+      setTimeout(() => this.updateIcons(), 50);
     } else {
       console.error(`❌ Screen not found: ${screenId}`);
     }
@@ -241,14 +244,27 @@ class SquishCollectorApp {
 
   // Story 3.1: Progress tracking methods
   updateProgressBar() {
-    const progressFill = document.getElementById("progress-fill");
+    const squishmallowFill = document.getElementById("squishmallow-fill");
     const progressText = document.getElementById("progress-text");
 
-    if (progressFill && progressText) {
+    if (squishmallowFill && progressText) {
       const percentage =
         (this.gameState.correctAnswers / this.gameState.targetScore) * 100;
-      progressFill.style.width = `${Math.min(percentage, 100)}%`;
+
+      // Update Squishmallow fill height
+      squishmallowFill.style.height = `${Math.min(percentage, 100)}%`;
+
+      // Add animation class for smooth filling
+      squishmallowFill.classList.add("animate");
+
       progressText.textContent = `${this.gameState.correctAnswers} / ${this.gameState.targetScore} correct`;
+    }
+  }
+
+  // Reinitialize Lucide icons after DOM updates
+  updateIcons() {
+    if (typeof lucide !== "undefined" && lucide.createIcons) {
+      lucide.createIcons();
     }
   }
 
@@ -273,11 +289,13 @@ class SquishCollectorApp {
       const lifeIcon = document.getElementById(`life-${i}`);
       if (lifeIcon) {
         if (i <= this.gameState.lives) {
-          lifeIcon.textContent = "💚";
+          // Life is active - show filled heart
           lifeIcon.classList.remove("lost");
+          lifeIcon.classList.add("filled");
         } else {
-          lifeIcon.textContent = "💔";
+          // Life is lost - show empty heart
           lifeIcon.classList.add("lost");
+          lifeIcon.classList.remove("filled");
         }
       }
     }
@@ -697,22 +715,73 @@ class SquishCollectorApp {
   }
 
   // Story 4.2: Show and populate collection screen
-  showCollectionScreen() {
+  async showCollectionScreen() {
+    // Wait for collection manager to be ready
+    if (
+      !this.collectionManager.squishmallows ||
+      this.collectionManager.squishmallows.length === 0
+    ) {
+      console.log("⏳ Waiting for collection data to load...");
+
+      // Wait up to 5 seconds for data to load
+      let attempts = 0;
+      while (
+        (!this.collectionManager.squishmallows ||
+          this.collectionManager.squishmallows.length === 0) &&
+        attempts < 50
+      ) {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        attempts++;
+      }
+
+      if (attempts >= 50) {
+        console.error("❌ Collection data failed to load");
+        // Show error or fallback
+        this.showCollectionError();
+        return;
+      }
+    }
+
     this.populateCollectionGrid();
     this.updateCollectionStats();
     this.showScreen("collection-screen");
   }
 
+  showCollectionError() {
+    const collectionGrid = document.getElementById("collection-grid");
+    if (collectionGrid) {
+      collectionGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+          <h3 style="color: var(--accent-coral); margin-bottom: 10px;">Oops! Collection data is loading...</h3>
+          <p>Please try again in a moment!</p>
+          <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: var(--accent-yellow); border: none; border-radius: 10px; cursor: pointer;">
+            Refresh Game
+          </button>
+        </div>
+      `;
+    }
+    this.showScreen("collection-screen");
+  }
+
   populateCollectionGrid() {
     const collectionGrid = document.getElementById("collection-grid");
-    if (!collectionGrid || !this.collectionManager.squishmallows) {
+    if (!collectionGrid) {
+      console.error("❌ Collection grid element not found");
+      return;
+    }
+
+    if (!this.collectionManager.squishmallows) {
       console.log("⏳ Collection data not ready yet");
       return;
     }
 
+    console.log(
+      `📊 Populating collection with ${this.collectionManager.squishmallows.length} squishmallows`
+    );
+
     collectionGrid.innerHTML = "";
 
-    this.collectionManager.squishmallows.forEach((squishmallow) => {
+    this.collectionManager.squishmallows.forEach((squishmallow, index) => {
       const isCollected = this.collectionManager.isCollected(squishmallow.id);
 
       const card = document.createElement("div");
@@ -736,6 +805,10 @@ class SquishCollectorApp {
 
       collectionGrid.appendChild(card);
     });
+
+    console.log(
+      `✅ Added ${collectionGrid.children.length} cards to collection grid`
+    );
   }
 
   updateCollectionStats() {

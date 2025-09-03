@@ -13,6 +13,9 @@
 
     <!-- Main stylesheet -->
     <link rel="stylesheet" href="css/main.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   </head>
   <body>
     <!-- Main application container -->
@@ -77,8 +80,8 @@
           <!-- Game Header -->
           <div class="game-header">
             <button id="back-to-dashboard-btn" class="back-button">
-              <span class="button-icon">🏠</span>
-              <span class="button-text">Dashboard</span>
+              <i data-lucide="home"></i>
+              <span class="button-text">Back to Dashboard</span>
             </button>
             <div class="game-progress">
               <span class="progress-text"
@@ -87,40 +90,44 @@
             </div>
           </div>
 
-          <!-- Math Problem Display Area -->
-          <div class="problem-container">
-            <div class="problem-display">
-              <div class="problem-text" id="current-problem">3 × 4 = ?</div>
+          <!-- Squishmallow Progress Indicator -->
+          <div class="squishmallow-progress">
+            <div class="squishmallow-outline">
+              <div class="squishmallow-fill" id="squishmallow-fill"></div>
+              <div class="squishmallow-ears">
+                <div class="ear left"></div>
+                <div class="ear right"></div>
+              </div>
             </div>
-
-            <!-- Progress Tracking (Story 3.1) -->
-            <div class="progress-container">
-              <div class="progress-bar-container">
-                <div class="progress-bar" id="progress-bar">
-                  <div class="progress-fill" id="progress-fill"></div>
-                </div>
-                <div class="progress-text" id="progress-text">
-                  0 / 10 correct
-                </div>
-              </div>
-
-              <!-- Lives/Strikes System (Story 3.2) -->
+            <div class="progress-stats">
+              <div class="progress-text" id="progress-text">0 / 10 correct</div>
               <div class="lives-container" id="lives-container">
-                <div class="lives-label">Lives:</div>
+                <span class="lives-label">Lives:</span>
                 <div class="lives-display" id="lives-display">
-                  <span class="life-icon" id="life-1">💚</span>
-                  <span class="life-icon" id="life-2">💚</span>
-                  <span class="life-icon" id="life-3">💚</span>
+                  <i
+                    data-lucide="heart"
+                    class="life-icon filled"
+                    id="life-1"
+                  ></i>
+                  <i
+                    data-lucide="heart"
+                    class="life-icon filled"
+                    id="life-2"
+                  ></i>
+                  <i
+                    data-lucide="heart"
+                    class="life-icon filled"
+                    id="life-3"
+                  ></i>
                 </div>
               </div>
-
               <!-- Timer Display (Story 5.4) -->
               <div
                 class="timer-container"
                 id="timer-container"
                 style="display: none"
               >
-                <div class="timer-label">Time:</div>
+                <span class="timer-label">Time:</span>
                 <div class="timer-display" id="timer-display">
                   <span class="timer-minutes">5</span>:<span
                     class="timer-seconds"
@@ -128,6 +135,13 @@
                   >
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Centered Math Problem Display Area -->
+          <div class="problem-container">
+            <div class="problem-display">
+              <div class="problem-text" id="current-problem">3 × 4 = ?</div>
             </div>
           </div>
 
@@ -141,7 +155,7 @@
                 type="text"
                 id="answer-input"
                 class="answer-input"
-                placeholder="Type your answer..."
+                placeholder="Enter answer..."
                 readonly
               />
             </div>
@@ -165,12 +179,12 @@
                 <button class="number-btn" data-number="3">3</button>
 
                 <button class="action-btn clear" id="clear-btn">
-                  <span class="button-icon">🗑️</span>
+                  <i data-lucide="x"></i>
                   <span class="button-text">Clear</span>
                 </button>
                 <button class="number-btn zero" data-number="0">0</button>
                 <button class="action-btn enter" id="enter-btn">
-                  <span class="button-icon">✅</span>
+                  <i data-lucide="check"></i>
                   <span class="button-text">Enter</span>
                 </button>
               </div>
@@ -289,7 +303,7 @@
               <span class="stat-label">Collected</span>
             </div>
             <div class="stat-badge">
-              <span class="stat-number" id="total-count">15</span>
+              <span class="stat-number" id="total-count">19</span>
               <span class="stat-label">Total</span>
             </div>
             <div class="stat-badge">
@@ -491,5 +505,10 @@
     <script src="js/collection-manager.js"></script>
     <!-- Main Application -->
     <script src="js/main.js"></script>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      lucide.createIcons();
+    </script>
   </body>
 </html>
