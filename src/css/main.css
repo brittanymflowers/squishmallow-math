@@ -1088,6 +1088,19 @@ body {
   margin: 0;
 }
 
+.success-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.success-buttons .dashboard-button {
+  min-width: 200px;
+  flex: 0 0 auto;
+}
+
 .success-stats,
 .failure-stats {
   background: rgba(255, 255, 255, 0.8);

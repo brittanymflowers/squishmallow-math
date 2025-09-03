@@ -98,6 +98,14 @@ class SquishCollectorApp {
       this.currentScreen = screenId;
       console.log(`📺 Switched to screen: ${screenId}`);
 
+      // Scroll to top when showing dashboard
+      if (screenId === "dashboard-screen") {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        console.log("📜 Dashboard scroll attempted");
+      }
+
       // Reinitialize icons after screen change
       setTimeout(() => this.updateIcons(), 50);
     } else {
