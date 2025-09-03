@@ -54,19 +54,19 @@
           <!-- Dashboard Navigation Buttons -->
           <div class="button-container">
             <button id="start-game-btn" class="dashboard-button primary">
-              <span class="button-icon">🎮</span>
+              <span class="button-icon"><i data-lucide="gamepad-2"></i></span>
               <span class="button-text">Start New Game</span>
               <span class="button-subtitle">Begin your math adventure!</span>
             </button>
 
             <button id="view-collection-btn" class="dashboard-button secondary">
-              <span class="button-icon">📚</span>
+              <span class="button-icon"><i data-lucide="book-open"></i></span>
               <span class="button-text">View Collection</span>
               <span class="button-subtitle">See your Squishmallows</span>
             </button>
 
             <button id="settings-btn" class="dashboard-button tertiary">
-              <span class="button-icon">⚙️</span>
+              <span class="button-icon"><i data-lucide="settings"></i></span>
               <span class="button-text">Settings</span>
               <span class="button-subtitle">Adjust game options</span>
             </button>
@@ -201,7 +201,10 @@
       <div class="screen-container">
         <div class="success-content">
           <div class="success-header">
-            <h1 class="success-title">🎉 Congratulations! 🎉</h1>
+            <h1 class="success-title">
+              <i data-lucide="party-popper"></i> Congratulations!
+              <i data-lucide="party-popper"></i>
+            </h1>
             <p class="success-subtitle">You earned a new Squishmallow!</p>
           </div>
 
@@ -219,15 +222,17 @@
 
           <div class="success-stats">
             <p class="stat-text">
-              ✨ Problems Solved: <span id="final-correct-count">10</span>
+              <i data-lucide="sparkles"></i> Problems Solved:
+              <span id="final-correct-count">10</span>
             </p>
             <p class="stat-text">
-              ⭐ Accuracy: <span id="final-accuracy">85%</span>
+              <i data-lucide="star"></i> Accuracy:
+              <span id="final-accuracy">85%</span>
             </p>
           </div>
 
           <button class="dashboard-button primary" id="success-dashboard-btn">
-            <span class="button-icon">🏠</span>
+            <span class="button-icon"><i data-lucide="home"></i></span>
             <span class="button-text">Return to Dashboard</span>
           </button>
         </div>
@@ -252,33 +257,36 @@
               />
               <p class="encouragement-text">
                 "You're doing great! Math takes practice, and you're getting
-                better every time! 💪"
+                better every time! <i data-lucide="sparkles"></i>"
               </p>
             </div>
           </div>
 
           <div class="failure-stats">
             <p class="stat-text">
-              📚 Problems Attempted: <span id="failure-problem-count">7</span>
+              <i data-lucide="book-open"></i> Problems Attempted:
+              <span id="failure-problem-count">7</span>
             </p>
             <p class="stat-text">
-              ✅ Correct Answers: <span id="failure-correct-count">4</span>
+              <i data-lucide="check"></i> Correct Answers:
+              <span id="failure-correct-count">4</span>
             </p>
             <p class="stat-text">
-              🎯 Keep practicing to earn your Squishmallow!
+              <i data-lucide="target"></i> Keep practicing to earn your
+              Squishmallow!
             </p>
           </div>
 
           <div class="failure-actions">
             <button class="dashboard-button primary" id="try-again-btn">
-              <span class="button-icon">🔄</span>
+              <span class="button-icon"><i data-lucide="refresh-cw"></i></span>
               <span class="button-text">Try Again</span>
             </button>
             <button
               class="dashboard-button secondary"
               id="failure-dashboard-btn"
             >
-              <span class="button-icon">🏠</span>
+              <span class="button-icon"><i data-lucide="home"></i></span>
               <span class="button-text">Dashboard</span>
             </button>
           </div>
@@ -291,7 +299,9 @@
       <div class="screen-container">
         <div class="collection-content">
           <div class="collection-header">
-            <h1 class="collection-title">📚 My Squishmallow Collection</h1>
+            <h1 class="collection-title">
+              <i data-lucide="book-open"></i> My Squishmallow Collection
+            </h1>
             <p class="collection-subtitle">
               Keep practicing to collect them all!
             </p>
@@ -320,7 +330,7 @@
             class="dashboard-button primary"
             id="collection-dashboard-btn"
           >
-            <span class="button-icon">🏠</span>
+            <span class="button-icon"><i data-lucide="home"></i></span>
             <span class="button-text">Return to Dashboard</span>
           </button>
         </div>
@@ -332,7 +342,9 @@
       <div class="screen-container">
         <div class="settings-content">
           <div class="settings-header">
-            <h1 class="settings-title">⚙️ Game Settings</h1>
+            <h1 class="settings-title">
+              <i data-lucide="settings"></i> Game Settings
+            </h1>
             <p class="settings-subtitle">
               Customize the game for your child's learning level
             </p>
@@ -340,7 +352,7 @@
 
           <div class="settings-form">
             <div class="setting-section">
-              <h3>🎯 Difficulty Level</h3>
+              <h3><i data-lucide="target"></i> Difficulty Level</h3>
               <div class="setting-group">
                 <label class="setting-label">
                   <input type="radio" name="difficulty" value="easy" checked />
@@ -358,7 +370,7 @@
             </div>
 
             <div class="setting-section">
-              <h3>🧮 Math Operations</h3>
+              <h3><i data-lucide="calculator"></i> Math Operations</h3>
               <div class="setting-group">
                 <label class="setting-label">
                   <input
@@ -400,7 +412,7 @@
             </div>
 
             <div class="setting-section">
-              <h3>🔢 Number Ranges</h3>
+              <h3><i data-lucide="hash"></i> Number Ranges</h3>
               <div class="setting-group">
                 <div class="range-control">
                   <label class="setting-label">
@@ -436,7 +448,7 @@
             </div>
 
             <div class="setting-section">
-              <h3>🕒 Game Length</h3>
+              <h3><i data-lucide="clock"></i> Game Length</h3>
               <div class="setting-group">
                 <label class="setting-label">
                   Problems to complete:
@@ -451,7 +463,7 @@
             </div>
 
             <div class="setting-section">
-              <h3>❤️ Lives System</h3>
+              <h3><i data-lucide="heart"></i> Lives System</h3>
               <div class="setting-group">
                 <label class="setting-label">
                   <input type="checkbox" id="lives-enabled" checked />
@@ -464,7 +476,7 @@
             </div>
 
             <div class="setting-section">
-              <h3>⏰ Timer Settings</h3>
+              <h3><i data-lucide="timer"></i> Timer Settings</h3>
               <div class="setting-group">
                 <label class="setting-label">
                   Time limit per game:
@@ -486,11 +498,11 @@
 
           <div class="settings-buttons">
             <button class="dashboard-button secondary" id="settings-cancel-btn">
-              <span class="button-icon">❌</span>
+              <span class="button-icon"><i data-lucide="x"></i></span>
               <span class="button-text">Cancel</span>
             </button>
             <button class="dashboard-button primary" id="settings-save-btn">
-              <span class="button-icon">💾</span>
+              <span class="button-icon"><i data-lucide="save"></i></span>
               <span class="button-text">Save Settings</span>
             </button>
           </div>

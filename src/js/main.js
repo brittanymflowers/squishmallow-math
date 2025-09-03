@@ -143,22 +143,22 @@ class SquishCollectorApp {
     const mascotImages = document.querySelectorAll(".mascot-image");
 
     mascotImages.forEach((img) => {
-      // Set unicorn emoji as fallback content
-      img.textContent = "🦄";
-      img.style.color = "white";
+      // Set a generic fallback content using a simple icon
+      img.innerHTML =
+        '<i data-lucide="heart" style="color: white; font-size: 60px;"></i>';
 
       // Handle successful image load
       img.onload = () => {
-        img.textContent = "";
+        img.innerHTML = "";
         img.style.background = "none";
       };
 
       // Handle image load error
       img.onerror = () => {
-        console.log("🦄 Using unicorn emoji fallback for mascot image");
+        console.log("💜 Using heart icon fallback for mascot image");
         img.style.background = "linear-gradient(135deg, #9B59B6, #E91E63)";
-        img.textContent = "🦄";
-        img.style.color = "white";
+        img.innerHTML =
+          '<i data-lucide="heart" style="color: white; font-size: 60px;"></i>';
       };
     });
   }
@@ -797,7 +797,7 @@ class SquishCollectorApp {
         `;
       } else {
         card.innerHTML = `
-          <div class="locked-icon">🔒</div>
+          <div class="locked-icon"><i data-lucide="lock"></i></div>
           <h4 class="squishmallow-name">???</h4>
           <p class="squishmallow-squad">Keep playing to unlock!</p>
         `;
@@ -805,6 +805,9 @@ class SquishCollectorApp {
 
       collectionGrid.appendChild(card);
     });
+
+    // Update icons after adding content
+    this.updateIcons();
 
     console.log(
       `✅ Added ${collectionGrid.children.length} cards to collection grid`
