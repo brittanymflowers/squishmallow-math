@@ -149,22 +149,24 @@ class SquishCollectorApp {
   // Handle font loading to prevent FOUC
   handleFontLoading() {
     // Check if Font Loading API is available
-    if ('fonts' in document) {
+    if ("fonts" in document) {
       // Wait for all fonts to load
       document.fonts.ready.then(() => {
-        document.documentElement.classList.add('fonts-loaded');
-        console.log('✅ Fonts loaded successfully');
+        document.documentElement.classList.add("fonts-loaded");
+        console.log("✅ Fonts loaded successfully");
       });
-      
+
       // Fallback: Add class after timeout even if fonts haven't loaded
       setTimeout(() => {
-        document.documentElement.classList.add('fonts-loaded');
-        console.log('⏰ Font loading timeout - showing content anyway');
+        document.documentElement.classList.add("fonts-loaded");
+        console.log("⏰ Font loading timeout - showing content anyway");
       }, 3000);
     } else {
       // Fallback for older browsers - just add the class immediately
-      document.documentElement.classList.add('fonts-loaded');
-      console.log('📝 Font Loading API not supported - showing content immediately');
+      document.documentElement.classList.add("fonts-loaded");
+      console.log(
+        "📝 Font Loading API not supported - showing content immediately"
+      );
     }
   }
 
@@ -276,7 +278,9 @@ class SquishCollectorApp {
   updateProgressBar() {
     const squishmallowFill = document.getElementById("squishmallow-fill");
     const progressText = document.getElementById("progress-text");
-    const progressEncouragement = document.getElementById("progress-encouragement");
+    const progressEncouragement = document.getElementById(
+      "progress-encouragement"
+    );
 
     if (squishmallowFill && progressText) {
       const percentage =
@@ -415,28 +419,40 @@ class SquishCollectorApp {
       console.log("🎁 Updating success screen with:", awardedSquishmallow);
 
       if (squishImage) {
+        // Hide image initially to prevent showing old/fallback content
+        squishImage.style.opacity = "0";
+        squishImage.innerHTML = "";
+        squishImage.style.background = "transparent";
+        
         squishImage.src = awardedSquishmallow.image_url;
         squishImage.alt = awardedSquishmallow.name;
         console.log("🖼️ Updated image src to:", awardedSquishmallow.image_url);
-        
+
         // Add error handling for broken images
         squishImage.onerror = () => {
           console.warn("⚠️ Failed to load image, using fallback");
-          squishImage.style.background = "linear-gradient(135deg, #9B59B6, #E91E63)";
-          squishImage.innerHTML = '<i data-lucide="heart" style="color: white; font-size: 60px;"></i>';
+          squishImage.style.background =
+            "linear-gradient(135deg, #9B59B6, #E91E63)";
+          squishImage.innerHTML =
+            '<i data-lucide="heart" style="color: white; font-size: 60px;"></i>';
+          squishImage.style.opacity = "1";
           this.updateIcons();
         };
-        
-        // Clear any fallback content when image loads successfully
+
+        // Clear any fallback content when image loads successfully and show it
         squishImage.onload = () => {
           squishImage.innerHTML = "";
           squishImage.style.background = "rgba(255, 255, 255, 0.5)";
+          squishImage.style.opacity = "1";
         };
       }
 
       if (squishName) {
         squishName.textContent = `${awardedSquishmallow.name} the ${awardedSquishmallow.species}`;
-        console.log("📛 Updated name to:", `${awardedSquishmallow.name} the ${awardedSquishmallow.species}`);
+        console.log(
+          "📛 Updated name to:",
+          `${awardedSquishmallow.name} the ${awardedSquishmallow.species}`
+        );
       }
 
       if (squishSquad) {
@@ -445,8 +461,13 @@ class SquishCollectorApp {
       }
 
       if (squishDescription) {
-        squishDescription.textContent = awardedSquishmallow.description || "A wonderful new friend to add to your collection!";
-        console.log("📝 Updated description to:", awardedSquishmallow.description);
+        squishDescription.textContent =
+          awardedSquishmallow.description ||
+          "A wonderful new friend to add to your collection!";
+        console.log(
+          "📝 Updated description to:",
+          awardedSquishmallow.description
+        );
       }
     }
   }
@@ -542,7 +563,7 @@ class SquishCollectorApp {
     const ranges = [
       { multiplication: 5, addition: "ones" },
       { multiplication: 8, addition: "tens" },
-      { multiplication: 12, addition: "hundreds" }
+      { multiplication: 12, addition: "hundreds" },
     ];
     ranges.forEach((range) => {
       this.mathEngine.setNumberRanges(range);
@@ -995,18 +1016,18 @@ class SquishCollectorApp {
       const validation = this.mathEngine.validateAnswer(userAnswer);
 
       const problemDisplay = document.querySelector(".problem-display");
-      
+
       // Disable input immediately after submission
       if (answerInput) {
         answerInput.disabled = true;
       }
-      
+
       if (validation.isCorrect) {
         // Add green success background
         if (problemDisplay) {
           problemDisplay.classList.add("correct");
         }
-        
+
         // Story 3.1: Update progress tracking
         this.gameState.correctAnswers++;
         this.updateProgressBar();
@@ -1040,7 +1061,7 @@ class SquishCollectorApp {
             problemDisplay.classList.remove("incorrect");
           }, 600);
         }
-        
+
         // Story 3.2: Wrong answer - lose a life
         this.loseLife();
 
@@ -1072,7 +1093,7 @@ class SquishCollectorApp {
       this.mathEngine.setOperations(this.settings.operations);
       this.mathEngine.setNumberRanges({
         multiplication: this.settings.multRange,
-        addition: this.settings.addRange
+        addition: this.settings.addRange,
       });
     }
   }
@@ -1088,7 +1109,7 @@ class SquishCollectorApp {
       this.mathEngine.setOperations(this.settings.operations);
       this.mathEngine.setNumberRanges({
         multiplication: this.settings.multRange,
-        addition: this.settings.addRange
+        addition: this.settings.addRange,
       });
     }
   }
@@ -1289,7 +1310,7 @@ class SquishCollectorApp {
     }
 
     this.saveSettings();
-    this.showFeedback("Settings saved! 💾", "success");
+    this.showFeedback("Settings saved!", "success");
     setTimeout(() => {
       this.showScreen("dashboard-screen");
     }, 1000);

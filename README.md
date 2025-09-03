@@ -2,6 +2,8 @@
 
 A child-friendly educational math game built with Electron.
 
+🌐 **Live Demo**: [squishmallow-collector.netlify.app](https://squishmallow-collector.netlify.app)
+
 ## Current Status: Phase 1 - Story 1.2 Complete ✅
 
 ### Story 1.2: Initialize Electron Project - COMPLETED
