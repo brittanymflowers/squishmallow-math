@@ -50,6 +50,9 @@ class SquishCollectorApp {
   init() {
     console.log("🎮 Squishmallow Collector initializing...");
 
+    // Handle font loading to prevent FOUC
+    this.handleFontLoading();
+
     // Setup mascot images with fallbacks
     this.setupMascotImages();
 
@@ -141,6 +144,28 @@ class SquishCollectorApp {
     setTimeout(() => {
       this.showScreen(screenId);
     }, delay);
+  }
+
+  // Handle font loading to prevent FOUC
+  handleFontLoading() {
+    // Check if Font Loading API is available
+    if ('fonts' in document) {
+      // Wait for all fonts to load
+      document.fonts.ready.then(() => {
+        document.documentElement.classList.add('fonts-loaded');
+        console.log('✅ Fonts loaded successfully');
+      });
+      
+      // Fallback: Add class after timeout even if fonts haven't loaded
+      setTimeout(() => {
+        document.documentElement.classList.add('fonts-loaded');
+        console.log('⏰ Font loading timeout - showing content anyway');
+      }, 3000);
+    } else {
+      // Fallback for older browsers - just add the class immediately
+      document.documentElement.classList.add('fonts-loaded');
+      console.log('📝 Font Loading API not supported - showing content immediately');
+    }
   }
 
   // Setup mascot images with unicorn emoji fallback
@@ -400,8 +425,8 @@ class SquishCollectorApp {
       }
 
       if (squishName) {
-        squishName.textContent = awardedSquishmallow.name;
-        console.log("📛 Updated name to:", awardedSquishmallow.name);
+        squishName.textContent = `${awardedSquishmallow.name} the ${awardedSquishmallow.species}`;
+        console.log("📛 Updated name to:", `${awardedSquishmallow.name} the ${awardedSquishmallow.species}`);
       }
 
       if (squishSquad) {
@@ -460,40 +485,43 @@ class SquishCollectorApp {
 
     feedback.style.cssText = `
       position: fixed;
-      top: 20px;
+      top: 20%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       background: ${colors[type] || colors.info};
       color: white;
-      padding: 12px 20px;
-      border-radius: 25px;
-      font-family: var(--font-primary);
-      font-size: 16px;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      padding: 20px 30px;
+      border-radius: 20px;
+      font-family: var(--font-title);
+      font-size: 24px;
+      font-weight: 400;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      border: 3px solid white;
       z-index: 1000;
       opacity: 0;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-align: center;
+      min-width: 200px;
     `;
 
     document.body.appendChild(feedback);
 
-    // Animate in
+    // Animate in with bounce effect
     setTimeout(() => {
       feedback.style.opacity = "1";
-      feedback.style.transform = "translateX(-50%) translateY(10px)";
+      feedback.style.transform = "translate(-50%, -50%) scale(1)";
     }, 10);
 
-    // Remove after 3 seconds
+    // Remove after 2 seconds (shorter for game flow)
     setTimeout(() => {
       feedback.style.opacity = "0";
-      feedback.style.transform = "translateX(-50%) translateY(-10px)";
+      feedback.style.transform = "translate(-50%, -50%) scale(0.8)";
       setTimeout(() => {
         if (feedback.parentNode) {
           feedback.parentNode.removeChild(feedback);
         }
-      }, 300);
-    }, 3000);
+      }, 400);
+    }, 2000);
   }
 
   // Math system methods for Story 2.1
@@ -949,7 +977,14 @@ class SquishCollectorApp {
       // Story 2.4: Validate answer using MathEngine
       const validation = this.mathEngine.validateAnswer(userAnswer);
 
+      const problemDisplay = document.querySelector(".problem-display");
+      
       if (validation.isCorrect) {
+        // Add green success background
+        if (problemDisplay) {
+          problemDisplay.classList.add("correct");
+        }
+        
         // Story 3.1: Update progress tracking
         this.gameState.correctAnswers++;
         this.updateProgressBar();
@@ -965,12 +1000,25 @@ class SquishCollectorApp {
         } else {
           // Continue with new problem
           setTimeout(() => {
+            // Remove success state before showing new problem
+            if (problemDisplay) {
+              problemDisplay.classList.remove("correct");
+            }
             const newProblem = this.mathEngine.generateNewProblem();
             this.displayProblem(newProblem);
             this.clearInput();
           }, 1500);
         }
       } else {
+        // Add red error background and shake animation
+        if (problemDisplay) {
+          problemDisplay.classList.add("incorrect");
+          // Remove the animation class after it completes so it can be triggered again
+          setTimeout(() => {
+            problemDisplay.classList.remove("incorrect");
+          }, 600);
+        }
+        
         // Story 3.2: Wrong answer - lose a life
         this.loseLife();
 

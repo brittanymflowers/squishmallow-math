@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npx http-server . -p 8080 -o /src/index.html",
     "dev": "npx http-server . -p 8080 -o /src/index.html",
+    "build": "echo 'No build needed - static files ready for deployment'",
     "test": "echo 'Testing framework to be added in later phases'"
   },
   "keywords": [

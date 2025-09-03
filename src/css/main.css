@@ -13,7 +13,7 @@
   --accent-yellow: #ffd700;
   --accent-coral: #ff7f7f;
   --accent-lavender: #e6e6fa;
-  --accent-green: #1f7a1f;
+  --accent-green: #90ee90;
   --accent-blue: #87ceeb;
 
   /* Supporting Colors */
@@ -23,9 +23,9 @@
   --text-muted: #8a8a8a;
   --button-hover: #ffe55c;
 
-  /* Typography */
-  --font-primary: "Quicksand", sans-serif;
-  --font-title: "Fredoka One", cursive;
+  /* Typography with better fallbacks */
+  --font-primary: "Quicksand", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-title: "Fredoka One", "Comic Sans MS", "Marker Felt", fantasy, cursive;
 }
 
 /* Reset and Base Styles */
@@ -109,6 +109,13 @@ body {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
   text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Show title when fonts are loaded */
+.fonts-loaded .game-title {
+  opacity: 1;
 }
 
 .subtitle {
@@ -468,14 +475,24 @@ body {
 .squishmallow-outline {
   position: relative;
   width: 100px;
-  height: 85px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 4px solid var(--primary-purple);
-  border-radius: 60px 60px 50px 50px;
+  height: 100px;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   flex-shrink: 0;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
+.squishmallow-outline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/silhouette.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(60%) contrast(90%);
 }
 
 .squishmallow-fill {
@@ -484,49 +501,14 @@ body {
   left: 0;
   width: 100%;
   height: 0%;
-  background: linear-gradient(
-    0deg,
-    #ffeaa7 0%,
-    #fab1a0 20%,
-    #fd79a8 40%,
-    #a29bfe 60%,
-    #74b9ff 80%,
-    #81ecec 100%
-  );
-  border-radius: 0 0 46px 46px;
+  background-image: url('../assets/silhouette.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
   transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(0) saturate(100%) invert(84%) sepia(81%) saturate(2274%) hue-rotate(293deg) brightness(101%) contrast(101%);
 }
 
-.squishmallow-ears {
-  position: absolute;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 40px;
-}
-
-.ear {
-  position: absolute;
-  width: 30px;
-  height: 35px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 3px solid var(--primary-purple);
-  border-radius: 50% 50% 40% 40%;
-  backdrop-filter: blur(10px);
-}
-
-.ear.left {
-  left: -5px;
-  top: 0;
-  transform: rotate(-25deg);
-}
-
-.ear.right {
-  right: -5px;
-  top: 0;
-  transform: rotate(25deg);
-}
 
 .progress-stats {
   flex: 1;
@@ -631,6 +613,25 @@ body {
   100% {
     transform: scale(1.02);
   }
+}
+
+/* Success and Error states for problem display */
+.problem-display.correct {
+  background: rgba(144, 238, 144, 0.95) !important;
+  border-color: #7dd87d !important;
+  animation: none !important;
+}
+
+.problem-display.incorrect {
+  background: rgba(255, 107, 107, 0.9) !important;
+  border-color: var(--accent-coral) !important;
+  animation: shake 0.6s ease-in-out !important;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+  20%, 40%, 60%, 80% { transform: translateX(8px); }
 }
 
 /* Answer Input Area */
@@ -1063,6 +1064,10 @@ body {
   color: var(--accent-green);
   margin-bottom: 10px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
 .success-subtitle {
