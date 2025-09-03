@@ -167,6 +167,96 @@
       </div>
     </div>
 
+    <!-- Story 3.3: Success Screen -->
+    <div class="screen" id="success-screen">
+      <div class="screen-container">
+        <div class="success-content">
+          <div class="success-header">
+            <h1 class="success-title">🎉 Congratulations! 🎉</h1>
+            <p class="success-subtitle">You earned a new Squishmallow!</p>
+          </div>
+
+          <div class="reward-display">
+            <div class="squishmallow-preview">
+              <img
+                src="assets/aurora_the_unicorn.png"
+                alt="Aurora the Unicorn"
+                class="mascot-image earned-squishmallow"
+              />
+              <h3 class="squishmallow-name">Aurora the Unicorn</h3>
+              <p class="squishmallow-squad">Magical Squad</p>
+            </div>
+          </div>
+
+          <div class="success-stats">
+            <p class="stat-text">
+              ✨ Problems Solved: <span id="final-correct-count">10</span>
+            </p>
+            <p class="stat-text">
+              ⭐ Accuracy: <span id="final-accuracy">85%</span>
+            </p>
+          </div>
+
+          <button class="dashboard-button primary" id="success-dashboard-btn">
+            <span class="button-icon">🏠</span>
+            <span class="button-text">Return to Dashboard</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Story 3.3: Failure Screen -->
+    <div class="screen" id="failure-screen">
+      <div class="screen-container">
+        <div class="failure-content">
+          <div class="failure-header">
+            <h1 class="failure-title">😊 Good Try!</h1>
+            <p class="failure-subtitle">Let's practice more to get stronger!</p>
+          </div>
+
+          <div class="encouragement-display">
+            <div class="mascot-encouragement">
+              <img
+                src="assets/aurora_the_unicorn.png"
+                alt="Aurora the Unicorn"
+                class="mascot-image encouraging"
+              />
+              <p class="encouragement-text">
+                "You're doing great! Math takes practice, and you're getting
+                better every time! 💪"
+              </p>
+            </div>
+          </div>
+
+          <div class="failure-stats">
+            <p class="stat-text">
+              📚 Problems Attempted: <span id="failure-problem-count">7</span>
+            </p>
+            <p class="stat-text">
+              ✅ Correct Answers: <span id="failure-correct-count">4</span>
+            </p>
+            <p class="stat-text">
+              🎯 Keep practicing to earn your Squishmallow!
+            </p>
+          </div>
+
+          <div class="failure-actions">
+            <button class="dashboard-button primary" id="try-again-btn">
+              <span class="button-icon">🔄</span>
+              <span class="button-text">Try Again</span>
+            </button>
+            <button
+              class="dashboard-button secondary"
+              id="failure-dashboard-btn"
+            >
+              <span class="button-icon">🏠</span>
+              <span class="button-text">Dashboard</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- JavaScript Files -->
     <!-- Load MathEngine first (Story 2.1) -->
     <script src="js/math-engine.js"></script>

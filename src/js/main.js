@@ -43,6 +43,9 @@ class SquishCollectorApp {
     // Setup number pad (Story 2.3)
     this.setupNumberPad();
 
+    // Setup success/failure screen buttons (Story 3.3)
+    this.setupEndGameScreens();
+
     // Show loading screen first
     this.showScreen("loading-screen");
 
@@ -259,20 +262,53 @@ class SquishCollectorApp {
     this.gameState.isGameActive = false;
 
     if (result === "success") {
-      this.showFeedback(
-        `🎉 Amazing! You earned a new Squishmallow! 🎉`,
-        "success"
-      );
-      // TODO: Implement actual Squishmallow reward in Phase 4
+      // Story 3.3: Show success screen with stats
+      this.updateSuccessScreenStats();
+      this.showScreen("success-screen");
     } else {
-      this.showFeedback(`😊 Good try! Let's practice more!`, "retry");
+      // Story 3.3: Show failure screen with encouraging message
+      this.updateFailureScreenStats();
+      this.showScreen("failure-screen");
+    }
+  }
+
+  // Story 3.3: Update success screen with final stats
+  updateSuccessScreenStats() {
+    const correctCountElement = document.getElementById("final-correct-count");
+    const accuracyElement = document.getElementById("final-accuracy");
+
+    if (correctCountElement) {
+      correctCountElement.textContent = this.gameState.correctAnswers;
     }
 
-    // Return to dashboard after a delay
-    setTimeout(() => {
-      this.showDashboard();
-      this.resetGameState();
-    }, 3000);
+    if (accuracyElement) {
+      const accuracy =
+        this.gameState.problemCount > 0
+          ? Math.round(
+              (this.gameState.correctAnswers / this.gameState.problemCount) *
+                100
+            )
+          : 100;
+      accuracyElement.textContent = `${accuracy}%`;
+    }
+  }
+
+  // Story 3.3: Update failure screen with encouraging stats
+  updateFailureScreenStats() {
+    const problemCountElement = document.getElementById(
+      "failure-problem-count"
+    );
+    const correctCountElement = document.getElementById(
+      "failure-correct-count"
+    );
+
+    if (problemCountElement) {
+      problemCountElement.textContent = this.gameState.problemCount;
+    }
+
+    if (correctCountElement) {
+      correctCountElement.textContent = this.gameState.correctAnswers;
+    }
   }
 
   resetGameState() {
@@ -526,6 +562,42 @@ class SquishCollectorApp {
     });
 
     console.log("✅ Number pad setup complete!");
+  }
+
+  // Story 3.3: Setup success and failure screen button listeners
+  setupEndGameScreens() {
+    // Success screen - return to dashboard button
+    const successDashboardBtn = document.getElementById(
+      "success-dashboard-btn"
+    );
+    if (successDashboardBtn) {
+      successDashboardBtn.addEventListener("click", () => {
+        this.showDashboard();
+        this.resetGameState();
+      });
+    }
+
+    // Failure screen - try again button
+    const tryAgainBtn = document.getElementById("try-again-btn");
+    if (tryAgainBtn) {
+      tryAgainBtn.addEventListener("click", () => {
+        this.resetGameState();
+        this.handleStartGame();
+      });
+    }
+
+    // Failure screen - return to dashboard button
+    const failureDashboardBtn = document.getElementById(
+      "failure-dashboard-btn"
+    );
+    if (failureDashboardBtn) {
+      failureDashboardBtn.addEventListener("click", () => {
+        this.showDashboard();
+        this.resetGameState();
+      });
+    }
+
+    console.log("✅ End game screens setup complete!");
   }
 
   addNumberToInput(number) {
