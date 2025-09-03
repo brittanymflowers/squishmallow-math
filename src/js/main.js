@@ -22,6 +22,10 @@ class SquishCollectorApp {
       // Story 3.2: Lives system
       lives: 3,
       maxLives: 3,
+      // Story 5.4: Timer system
+      timeRemaining: null,
+      timerInterval: null,
+      isTimerActive: false,
     };
 
     // Story 5.1: Settings system
@@ -30,6 +34,7 @@ class SquishCollectorApp {
       gameLength: 10,
       livesEnabled: true,
       operations: ["multiplication"], // Story 5.2: Default to multiplication only
+      timerSeconds: null, // Story 5.4: Timer setting (null = no timer)
     };
 
     this.loadSettings();
@@ -209,6 +214,9 @@ class SquishCollectorApp {
     this.gameState.startTime = new Date();
     this.gameState.isGameActive = true;
 
+    // Story 5.4: Initialize timer if enabled
+    this.initializeTimer();
+
     // Update progress displays
     this.updateProgressBar();
     this.updateLivesDisplay();
@@ -299,6 +307,10 @@ class SquishCollectorApp {
 
   endGame(result) {
     this.gameState.isGameActive = false;
+
+    // Story 5.4: Stop timer when game ends
+    this.stopTimer();
+    this.hideTimer();
 
     if (result === "success") {
       // Story 4.3: Award a new Squishmallow
@@ -907,6 +919,87 @@ class SquishCollectorApp {
     }
   }
 
+  // Story 5.4: Timer functionality methods
+  initializeTimer() {
+    const timerSeconds = this.settings.timerSeconds;
+
+    if (timerSeconds && timerSeconds > 0) {
+      this.gameState.timeRemaining = timerSeconds;
+      this.gameState.timerInterval = null;
+      this.showTimer();
+      this.updateTimerDisplay();
+      this.startTimer();
+    } else {
+      this.hideTimer();
+    }
+  }
+
+  startTimer() {
+    if (this.gameState.timeRemaining > 0 && !this.gameState.timerInterval) {
+      this.gameState.timerInterval = setInterval(() => {
+        this.updateTimer();
+      }, 1000);
+    }
+  }
+
+  updateTimer() {
+    if (this.gameState.timeRemaining > 0) {
+      this.gameState.timeRemaining--;
+      this.updateTimerDisplay();
+
+      // Check if time is running low (30 seconds or less)
+      const timerDisplay = document.getElementById("timer-display");
+      if (this.gameState.timeRemaining <= 30) {
+        timerDisplay.classList.add("timer-warning");
+      } else {
+        timerDisplay.classList.remove("timer-warning");
+      }
+
+      if (this.gameState.timeRemaining === 0) {
+        this.handleTimeUp();
+      }
+    }
+  }
+
+  updateTimerDisplay() {
+    const timerContainer = document.getElementById("timer-container");
+    const timerDisplay = document.getElementById("timer-display");
+    const minutes = Math.floor(this.gameState.timeRemaining / 60);
+    const seconds = this.gameState.timeRemaining % 60;
+    const formattedTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+
+    if (timerDisplay) {
+      timerDisplay.textContent = formattedTime;
+    }
+  }
+
+  showTimer() {
+    const timerContainer = document.getElementById("timer-container");
+    if (timerContainer) {
+      timerContainer.style.display = "block";
+    }
+  }
+
+  hideTimer() {
+    const timerContainer = document.getElementById("timer-container");
+    if (timerContainer) {
+      timerContainer.style.display = "none";
+    }
+  }
+
+  stopTimer() {
+    if (this.gameState.timerInterval) {
+      clearInterval(this.gameState.timerInterval);
+      this.gameState.timerInterval = null;
+    }
+  }
+
+  handleTimeUp() {
+    console.log("⏰ Time's up!");
+    this.stopTimer();
+    this.endGame("failure");
+  }
+
   populateSettingsForm() {
     // Set difficulty radio button
     const difficultyRadio = document.querySelector(
@@ -941,6 +1034,13 @@ class SquishCollectorApp {
         checkbox.checked = this.settings.operations.includes(op);
       }
     });
+
+    // Set timer dropdown (Story 5.4)
+    const timerSelect = document.getElementById("timer-select");
+    if (timerSelect) {
+      const timerValue = this.settings.timerSeconds || 0;
+      timerSelect.value = timerValue.toString();
+    }
   }
 
   saveSettingsAndReturn() {
@@ -983,6 +1083,12 @@ class SquishCollectorApp {
     }
 
     this.settings.operations = operations;
+
+    // Get timer setting (Story 5.4)
+    const timerSelect = document.getElementById("timer-select");
+    if (timerSelect) {
+      this.settings.timerSeconds = parseInt(timerSelect.value) || 0;
+    }
 
     this.saveSettings();
     this.showFeedback("Settings saved! 💾", "success");
