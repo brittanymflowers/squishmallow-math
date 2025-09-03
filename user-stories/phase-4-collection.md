@@ -14,15 +14,15 @@ Implement the Squishmallow collection feature with data persistence, reward syst
 
 **Acceptance Criteria:**
 
-- [ ] JSON file contains sample Squishmallows with id, name, squad, and image_url
-- [ ] At least 10-15 different Squishmallows from various squads
-- [ ] Each Squishmallow has a unique identifier
-- [ ] Image file structure is organized and consistent
+- [x] JSON file contains sample Squishmallows with id, name, squad, and image_url
+- [x] At least 10-15 different Squishmallows from various squads
+- [x] Each Squishmallow has a unique identifier
+- [x] Image file structure is organized and consistent
 
 **Definition of Done:**
 
-- Squishmallow data is well-organized and expandable
-- Sample images are included or placeholder paths are defined
+- Squishmallow data is well-organized and expandable ✅
+- Sample images are included or placeholder paths are defined ✅
 
 ---
 
@@ -34,10 +34,16 @@ Implement the Squishmallow collection feature with data persistence, reward syst
 
 **Acceptance Criteria:**
 
-- [ ] Grid layout displays collected Squishmallows
-- [ ] Each item shows image, name, and squad
-- [ ] Empty slots show locked/uncollected state
-- [ ] Navigation back to dashboard works
+- [x] Grid layout displays collected Squishmallows
+- [x] Each item shows image, name, and squad
+- [x] Empty slots show locked/uncollected state
+- [x] Navigation back to dashboard works
+- [x] Responsive layout that looks good
+
+**Definition of Done:**
+
+- Collection screen is visually appealing and informative ✅
+- Clear distinction between collected and uncollected items ✅
 - [ ] Responsive layout that looks good
 
 **Definition of Done:**
@@ -55,16 +61,16 @@ Implement the Squishmallow collection feature with data persistence, reward syst
 
 **Acceptance Criteria:**
 
-- [ ] Random Squishmallow is awarded upon game completion
-- [ ] Only uncollected Squishmallows can be earned
-- [ ] Success screen shows the specific Squishmallow earned
-- [ ] Duplicate prevention works correctly
-- [ ] Award ceremony feels rewarding
+- [x] Random Squishmallow is awarded upon game completion
+- [x] Only uncollected Squishmallows can be earned
+- [x] Success screen shows the specific Squishmallow earned
+- [x] Duplicate prevention works correctly
+- [x] Award ceremony feels rewarding
 
 **Definition of Done:**
 
-- Reward system creates excitement and motivation
-- No bugs with duplicate or invalid awards
+- Reward system creates excitement and motivation ✅
+- No bugs with duplicate or invalid awards ✅
 
 ---
 
@@ -76,16 +82,16 @@ Implement the Squishmallow collection feature with data persistence, reward syst
 
 **Acceptance Criteria:**
 
-- [ ] User progress saved to local JSON file
-- [ ] Collection loads correctly when app starts
-- [ ] New collections are saved immediately after earning
-- [ ] File handles missing or corrupted data gracefully
-- [ ] No data loss during normal app usage
+- [x] User progress saved to local JSON file
+- [x] Collection loads correctly when app starts
+- [x] New collections are saved immediately after earning
+- [x] File handles missing or corrupted data gracefully
+- [x] No data loss during normal app usage
 
 **Definition of Done:**
 
-- Data persistence is reliable and robust
-- Collection survives app restarts and updates
+- Data persistence is reliable and robust ✅
+- Collection survives app restarts and updates ✅
 
 ---
 

@@ -8,6 +8,9 @@ class SquishCollectorApp {
     // Initialize Math Engine for Story 2.1
     this.mathEngine = new MathEngine();
 
+    // Initialize Collection Manager for Story 4.1
+    this.collectionManager = new CollectionManager();
+
     // Story 2.5: Game state tracking
     this.gameState = {
       problemCount: 0,
@@ -45,6 +48,9 @@ class SquishCollectorApp {
 
     // Setup success/failure screen buttons (Story 3.3)
     this.setupEndGameScreens();
+
+    // Setup collection screen buttons (Story 4.2)
+    this.setupCollectionScreen();
 
     // Show loading screen first
     this.showScreen("loading-screen");
@@ -202,8 +208,8 @@ class SquishCollectorApp {
 
   handleViewCollection() {
     console.log("📚 View Collection clicked!");
-    // TODO: Implement in Phase 4 - Collection system
-    this.showFeedback("Opening collection... (Coming in Phase 4!)", "info");
+    // Story 4.2: Show collection screen
+    this.showCollectionScreen();
   }
 
   handleSettings() {
@@ -262,8 +268,11 @@ class SquishCollectorApp {
     this.gameState.isGameActive = false;
 
     if (result === "success") {
-      // Story 3.3: Show success screen with stats
-      this.updateSuccessScreenStats();
+      // Story 4.3: Award a new Squishmallow
+      const awardedSquishmallow = this.collectionManager.awardRandomSquishmallow();
+      
+      // Update success screen with the earned Squishmallow
+      this.updateSuccessScreenStats(awardedSquishmallow);
       this.showScreen("success-screen");
     } else {
       // Story 3.3: Show failure screen with encouraging message
@@ -272,8 +281,8 @@ class SquishCollectorApp {
     }
   }
 
-  // Story 3.3: Update success screen with final stats
-  updateSuccessScreenStats() {
+  // Story 3.3 & 4.3: Update success screen with final stats and earned Squishmallow
+  updateSuccessScreenStats(awardedSquishmallow = null) {
     const correctCountElement = document.getElementById("final-correct-count");
     const accuracyElement = document.getElementById("final-accuracy");
 
@@ -290,6 +299,26 @@ class SquishCollectorApp {
             )
           : 100;
       accuracyElement.textContent = `${accuracy}%`;
+    }
+
+    // Story 4.3: Update success screen with earned Squishmallow
+    if (awardedSquishmallow) {
+      const squishImage = document.querySelector('#success-screen .earned-squishmallow');
+      const squishName = document.querySelector('#success-screen .squishmallow-name');
+      const squishSquad = document.querySelector('#success-screen .squishmallow-squad');
+      
+      if (squishImage) {
+        squishImage.src = awardedSquishmallow.image_url;
+        squishImage.alt = awardedSquishmallow.name;
+      }
+      
+      if (squishName) {
+        squishName.textContent = awardedSquishmallow.name;
+      }
+      
+      if (squishSquad) {
+        squishSquad.textContent = awardedSquishmallow.squad;
+      }
     }
   }
 
@@ -598,6 +627,71 @@ class SquishCollectorApp {
     }
 
     console.log("✅ End game screens setup complete!");
+  }
+
+  // Story 4.2: Setup collection screen
+  setupCollectionScreen() {
+    // Collection screen - return to dashboard button
+    const collectionDashboardBtn = document.getElementById('collection-dashboard-btn');
+    if (collectionDashboardBtn) {
+      collectionDashboardBtn.addEventListener('click', () => {
+        this.showDashboard();
+      });
+    }
+
+    console.log("✅ Collection screen setup complete!");
+  }
+
+  // Story 4.2: Show and populate collection screen
+  showCollectionScreen() {
+    this.populateCollectionGrid();
+    this.updateCollectionStats();
+    this.showScreen('collection-screen');
+  }
+
+  populateCollectionGrid() {
+    const collectionGrid = document.getElementById('collection-grid');
+    if (!collectionGrid || !this.collectionManager.squishmallows) {
+      console.log("⏳ Collection data not ready yet");
+      return;
+    }
+
+    collectionGrid.innerHTML = '';
+
+    this.collectionManager.squishmallows.forEach(squishmallow => {
+      const isCollected = this.collectionManager.isCollected(squishmallow.id);
+      
+      const card = document.createElement('div');
+      card.className = `squishmallow-card ${isCollected ? 'collected' : 'locked'}`;
+      
+      if (isCollected) {
+        card.innerHTML = `
+          <img src="${squishmallow.image_url}" alt="${squishmallow.name}" class="squishmallow-image" />
+          <h4 class="squishmallow-name">${squishmallow.name}</h4>
+          <p class="squishmallow-squad">${squishmallow.squad}</p>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="locked-icon">🔒</div>
+          <h4 class="squishmallow-name">???</h4>
+          <p class="squishmallow-squad">Keep playing to unlock!</p>
+        `;
+      }
+      
+      collectionGrid.appendChild(card);
+    });
+  }
+
+  updateCollectionStats() {
+    const stats = this.collectionManager.getCollectionStats();
+    
+    const collectedElement = document.getElementById('collected-count');
+    const totalElement = document.getElementById('total-count');
+    const percentageElement = document.getElementById('completion-percentage');
+    
+    if (collectedElement) collectedElement.textContent = stats.collected;
+    if (totalElement) totalElement.textContent = stats.total;
+    if (percentageElement) percentageElement.textContent = `${stats.percentage}%`;
   }
 
   addNumberToInput(number) {

@@ -1,0 +1,238 @@
+{
+  "squishmallows": [
+    {
+      "id": "aurora_unicorn",
+      "name": "Aurora",
+      "species": "Unicorn",
+      "squad": "Magical Squad",
+      "color": "Purple",
+      "rarity": "rare",
+      "image_url": "assets/aurora_the_unicorn.png",
+      "description": "Aurora loves to practice math problems under the rainbow!"
+    },
+    {
+      "id": "dante_devil",
+      "name": "Dante",
+      "species": "Devil",
+      "squad": "Spooky Squad",
+      "color": "Red",
+      "rarity": "uncommon",
+      "image_url": "assets/dante_the_devil.png",
+      "description": "Dante makes math practice devilishly fun!"
+    },
+    {
+      "id": "esme_narwhal",
+      "name": "Esme",
+      "species": "Narwhal",
+      "squad": "Ocean Squad",
+      "color": "Blue",
+      "rarity": "epic",
+      "image_url": "assets/esme_the_narwhal.png",
+      "description": "Esme's magical horn sparkles when you solve hard problems!"
+    },
+    {
+      "id": "archie_axolotl",
+      "name": "Archie",
+      "species": "Axolotl",
+      "squad": "Aquatic Squad",
+      "color": "Pink",
+      "rarity": "common",
+      "image_url": "assets/archie_the_axolotl.png",
+      "description": "Archie loves swimming through multiplication tables!"
+    },
+    {
+      "id": "bip_axolotl",
+      "name": "Bip",
+      "species": "Axolotl",
+      "squad": "Aquatic Squad",
+      "color": "Blue",
+      "rarity": "common",
+      "image_url": "assets/bip_the_axolotl.png",
+      "description": "Bip bubbles with excitement for every math adventure!"
+    },
+    {
+      "id": "bubbles_axolotl",
+      "name": "Bubbles",
+      "species": "Axolotl",
+      "squad": "Aquatic Squad",
+      "color": "Light Blue",
+      "rarity": "common",
+      "image_url": "assets/bubbles_the_axolotl.png",
+      "description": "Bubbles makes learning math as fun as a bubble bath!"
+    },
+    {
+      "id": "midnight_axolotl",
+      "name": "Midnight",
+      "species": "Axolotl",
+      "squad": "Aquatic Squad",
+      "color": "Dark Blue",
+      "rarity": "uncommon",
+      "image_url": "assets/midnight_the_axolotl.png",
+      "description": "Midnight helps you practice math under the stars!"
+    },
+    {
+      "id": "rainbow_axolotl",
+      "name": "Rainbow",
+      "species": "Axolotl",
+      "squad": "Aquatic Squad",
+      "color": "Rainbow",
+      "rarity": "rare",
+      "image_url": "assets/rainbow_the_axolotl.png",
+      "description": "Rainbow brings colorful joy to every correct answer!"
+    },
+    {
+      "id": "luna_cat",
+      "name": "Luna",
+      "species": "Cat",
+      "squad": "Cozy Squad",
+      "color": "Gray",
+      "rarity": "common",
+      "image_url": "assets/luna_the_cat.png",
+      "description": "Luna purrs with pride when you get answers right!"
+    },
+    {
+      "id": "cali_cat",
+      "name": "Cali",
+      "species": "Cat",
+      "squad": "Cozy Squad",
+      "color": "Orange",
+      "rarity": "common",
+      "image_url": "assets/cali_the_cat.png",
+      "description": "Cali loves to curl up while you practice multiplication!"
+    },
+    {
+      "id": "mouser_cat",
+      "name": "Mouser",
+      "species": "Cat",
+      "squad": "Cozy Squad",
+      "color": "Brown",
+      "rarity": "common",
+      "image_url": "assets/mouser_the_cat.png",
+      "description": "Mouser is always ready to pounce on the right answer!"
+    },
+    {
+      "id": "nebula_cat",
+      "name": "Nebula",
+      "species": "Cat",
+      "squad": "Space Squad",
+      "color": "Purple",
+      "rarity": "rare",
+      "image_url": "assets/nebula_the_cat.png",
+      "description": "Nebula travels through space to help with math problems!"
+    },
+    {
+      "id": "stella_cat",
+      "name": "Stella",
+      "species": "Cat",
+      "squad": "Cozy Squad",
+      "color": "White",
+      "rarity": "uncommon",
+      "image_url": "assets/stella_the_cat.png",
+      "description": "Stella shines bright when you solve problems correctly!"
+    },
+    {
+      "id": "tabitha_cat",
+      "name": "Tabitha",
+      "species": "Cat",
+      "squad": "Cozy Squad",
+      "color": "Tabby",
+      "rarity": "common",
+      "image_url": "assets/tabitha_the_cat.png",
+      "description": "Tabitha loves to help you practice your math skills!"
+    },
+    {
+      "id": "balto_dog",
+      "name": "Balto",
+      "species": "Dog",
+      "squad": "Adventure Squad",
+      "color": "Brown",
+      "rarity": "uncommon",
+      "image_url": "assets/balto_the_dog.png",
+      "description": "Balto is brave and loyal, just like your math practice!"
+    },
+    {
+      "id": "goldie_dog",
+      "name": "Goldie",
+      "species": "Dog",
+      "squad": "Adventure Squad",
+      "color": "Golden",
+      "rarity": "common",
+      "image_url": "assets/goldie_the_dog.png",
+      "description": "Goldie retrieves the right answers with you!"
+    },
+    {
+      "id": "pongo_dog",
+      "name": "Pongo",
+      "species": "Dog",
+      "squad": "Adventure Squad",
+      "color": "Spotted",
+      "rarity": "uncommon",
+      "image_url": "assets/pongo_the_dog.png",
+      "description": "Pongo spots the correct answers every time!"
+    },
+    {
+      "id": "purdy_dog",
+      "name": "Purdy",
+      "species": "Dog",
+      "squad": "Adventure Squad",
+      "color": "White",
+      "rarity": "common",
+      "image_url": "assets/purdy_the_dog.png",
+      "description": "Purdy is pure joy when you master multiplication!"
+    },
+    {
+      "id": "spectrum_dog",
+      "name": "Spectrum",
+      "species": "Dog",
+      "squad": "Rainbow Squad",
+      "color": "Rainbow",
+      "rarity": "rare",
+      "image_url": "assets/spectrum_the_dog.png",
+      "description": "Spectrum brings all the colors of success to your math!"
+    },
+    {
+      "id": "wicket_dog",
+      "name": "Wicket",
+      "species": "Dog",
+      "squad": "Adventure Squad",
+      "color": "Brown",
+      "rarity": "common",
+      "image_url": "assets/wicket_the_dog.png",
+      "description": "Wicket is wickedly good at helping with math problems!"
+    }
+  ],
+  "squads": {
+    "Magical Squad": {
+      "theme": "Fantasy and magic",
+      "color": "#9B59B6"
+    },
+    "Spooky Squad": {
+      "theme": "Halloween fun",
+      "color": "#E74C3C"
+    },
+    "Aquatic Squad": {
+      "theme": "Water-loving friends",
+      "color": "#48C9B0"
+    },
+    "Ocean Squad": {
+      "theme": "Deep sea creatures",
+      "color": "#3498DB"
+    },
+    "Cozy Squad": {
+      "theme": "Cuddly house pets",
+      "color": "#F8C471"
+    },
+    "Space Squad": {
+      "theme": "Cosmic adventures",
+      "color": "#8E44AD"
+    },
+    "Adventure Squad": {
+      "theme": "Brave explorers",
+      "color": "#E67E22"
+    },
+    "Rainbow Squad": {
+      "theme": "Colorful magic",
+      "color": "#FF6B9D"
+    }
+  }
+}
