@@ -90,108 +90,111 @@
             </div>
           </div>
 
-          <!-- Squishmallow Progress Indicator -->
-          <div class="squishmallow-progress">
-            <div class="squishmallow-outline">
-              <div class="squishmallow-fill" id="squishmallow-fill"></div>
-              <div class="squishmallow-ears">
-                <div class="ear left"></div>
-                <div class="ear right"></div>
-              </div>
-            </div>
-            <div class="progress-stats">
-              <div class="progress-text" id="progress-text">0 / 10 correct</div>
-              <div class="lives-container" id="lives-container">
-                <span class="lives-label">Lives:</span>
-                <div class="lives-display" id="lives-display">
-                  <i
-                    data-lucide="heart"
-                    class="life-icon filled"
-                    id="life-1"
-                  ></i>
-                  <i
-                    data-lucide="heart"
-                    class="life-icon filled"
-                    id="life-2"
-                  ></i>
-                  <i
-                    data-lucide="heart"
-                    class="life-icon filled"
-                    id="life-3"
-                  ></i>
+          <!-- Left Column: Problem and Progress -->
+          <div class="game-left-column">
+            <!-- Squishmallow Progress Indicator -->
+            <div class="squishmallow-progress">
+              <div class="squishmallow-outline">
+                <div class="squishmallow-fill" id="squishmallow-fill"></div>
+                <div class="squishmallow-ears">
+                  <div class="ear left"></div>
+                  <div class="ear right"></div>
                 </div>
               </div>
-              <!-- Timer Display (Story 5.4) -->
-              <div
-                class="timer-container"
-                id="timer-container"
-                style="display: none"
-              >
-                <span class="timer-label">Time:</span>
-                <div class="timer-display" id="timer-display">
-                  <span class="timer-minutes">5</span>:<span
-                    class="timer-seconds"
-                    >00</span
-                  >
+              <div class="progress-stats">
+                <div class="progress-text" id="progress-text">0 / 10 correct</div>
+                <div class="lives-container" id="lives-container">
+                  <span class="lives-label">Lives:</span>
+                  <div class="lives-display" id="lives-display">
+                    <i
+                      data-lucide="heart"
+                      class="life-icon filled"
+                      id="life-1"
+                    ></i>
+                    <i
+                      data-lucide="heart"
+                      class="life-icon filled"
+                      id="life-2"
+                    ></i>
+                    <i
+                      data-lucide="heart"
+                      class="life-icon filled"
+                      id="life-3"
+                    ></i>
+                  </div>
+                </div>
+                <!-- Timer Display (Story 5.4) -->
+                <div
+                  class="timer-container"
+                  id="timer-container"
+                  style="display: none"
+                >
+                  <span class="timer-label">Time:</span>
+                  <div class="timer-display" id="timer-display">
+                    <span class="timer-minutes">5</span>:<span
+                      class="timer-seconds"
+                      >00</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Math Problem Display Area -->
+            <div class="problem-container">
+              <div class="problem-display">
+                <div class="problem-text" id="current-problem">3 × 4 = ?</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Answer Input and Number Pad -->
+          <div class="game-right-column">
+            <!-- Answer Input Area -->
+            <div class="answer-container">
+              <div class="answer-display">
+                <label for="answer-input" class="answer-label"
+                  >Your Answer:</label
+                >
+                <input
+                  type="text"
+                  id="answer-input"
+                  class="answer-input"
+                  placeholder="Enter answer..."
+                  readonly
+                />
+              </div>
+            </div>
+
+            <!-- Number Pad -->
+            <div class="number-pad-container">
+              <div class="number-pad">
+                <div class="number-grid">
+                  <button class="number-btn" data-number="7">7</button>
+                  <button class="number-btn" data-number="8">8</button>
+                  <button class="number-btn" data-number="9">9</button>
+
+                  <button class="number-btn" data-number="4">4</button>
+                  <button class="number-btn" data-number="5">5</button>
+                  <button class="number-btn" data-number="6">6</button>
+
+                  <button class="number-btn" data-number="1">1</button>
+                  <button class="number-btn" data-number="2">2</button>
+                  <button class="number-btn" data-number="3">3</button>
+
+                  <button class="action-btn clear" id="clear-btn">
+                    <i data-lucide="x"></i>
+                    <span class="button-text">Clear</span>
+                  </button>
+                  <button class="number-btn zero" data-number="0">0</button>
+                  <button class="action-btn enter" id="enter-btn">
+                    <i data-lucide="check"></i>
+                    <span class="button-text">Enter</span>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Centered Math Problem Display Area -->
-          <div class="problem-container">
-            <div class="problem-display">
-              <div class="problem-text" id="current-problem">3 × 4 = ?</div>
-            </div>
-          </div>
-
-          <!-- Answer Input Area -->
-          <div class="answer-container">
-            <div class="answer-display">
-              <label for="answer-input" class="answer-label"
-                >Your Answer:</label
-              >
-              <input
-                type="text"
-                id="answer-input"
-                class="answer-input"
-                placeholder="Enter answer..."
-                readonly
-              />
-            </div>
-          </div>
-
-          <!-- Number Pad (Story 2.3: Interactive Number Pad) -->
-          <div class="number-pad-container">
-            <div class="number-pad">
-              <!-- Number buttons (0-9) with integrated enter -->
-              <div class="number-grid">
-                <button class="number-btn" data-number="7">7</button>
-                <button class="number-btn" data-number="8">8</button>
-                <button class="number-btn" data-number="9">9</button>
-
-                <button class="number-btn" data-number="4">4</button>
-                <button class="number-btn" data-number="5">5</button>
-                <button class="number-btn" data-number="6">6</button>
-
-                <button class="number-btn" data-number="1">1</button>
-                <button class="number-btn" data-number="2">2</button>
-                <button class="number-btn" data-number="3">3</button>
-
-                <button class="action-btn clear" id="clear-btn">
-                  <i data-lucide="x"></i>
-                  <span class="button-text">Clear</span>
-                </button>
-                <button class="number-btn zero" data-number="0">0</button>
-                <button class="action-btn enter" id="enter-btn">
-                  <i data-lucide="check"></i>
-                  <span class="button-text">Enter</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Removed separate game controls - Enter is now in number pad -->
         </div>
       </div>
     </div>
