@@ -1,16 +1,6 @@
 {
   "squishmallows": [
     {
-      "id": "aurora_unicorn",
-      "name": "Aurora",
-      "species": "Unicorn",
-      "squad": "Magical Squad",
-      "color": "Purple",
-      "rarity": "rare",
-      "image_url": "assets/aurora_the_unicorn.png",
-      "description": "Aurora loves to practice math problems under the rainbow!"
-    },
-    {
       "id": "dante_devil",
       "name": "Dante",
       "species": "Devil",

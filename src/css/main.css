@@ -3,20 +3,25 @@
 
 /* CSS Custom Properties (Design System) */
 :root {
-  /* Primary Colors */
-  --primary-pink: #ffb6c1;
-  --primary-blue: #87ceeb;
-  --primary-mint: #98fb98;
+  /* Primary Colors - Enhanced Squishmallow Theme */
+  --primary-pink: #FFB6E1;
+  --primary-blue: #87CEEB;
+  --primary-mint: #98FB98;
+  --primary-purple: #DDA0DD;
 
-  /* Accent Colors */
-  --accent-yellow: #ffd700;
-  --accent-coral: #ff7f7f;
-  --accent-lavender: #e6e6fa;
+  /* Accent Colors - Brighter and More Vibrant */
+  --accent-yellow: #FFD700;
+  --accent-coral: #FF7F7F;
+  --accent-lavender: #E6E6FA;
+  --accent-green: #98FB98;
+  --accent-blue: #87CEEB;
 
   /* Supporting Colors */
-  --background: #fffdd0;
+  --background: #FFFDD0;
   --text-primary: #4a4a4a;
-  --button-hover: #ffe55c;
+  --text-secondary: #6a6a6a;
+  --text-muted: #8a8a8a;
+  --button-hover: #FFE55C;
 
   /* Typography */
   --font-primary: "Quicksand", sans-serif;
@@ -30,24 +35,39 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-primary);
   background: linear-gradient(
     135deg,
-    var(--background) 0%,
-    var(--primary-mint) 100%
+    #ffeaa7 0%,
+    #fab1a0 15%,
+    #fd79a8 30%,
+    #e17055 45%,
+    #a29bfe 60%,
+    #6c5ce7 75%,
+    #74b9ff 90%,
+    #81ecec 100%
   );
+  background-attachment: fixed;
+  background-size: 100% 100%;
   color: var(--text-primary);
   min-height: 100vh;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  overflow-y: auto; /* Allow vertical scrolling when needed */
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
 }
 
 /* App Container */
 #app {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
+  background: transparent;
 }
 
 /* Screen Management */
@@ -56,7 +76,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -64,6 +84,8 @@ body {
   opacity: 0;
   visibility: hidden;
   transition: all 0.5s ease;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .screen.active {
@@ -75,7 +97,7 @@ body {
 .game-title {
   font-family: var(--font-title);
   font-size: 36px;
-  color: var(--accent-coral);
+  color: var(--primary-purple);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
   text-align: center;
@@ -155,12 +177,6 @@ body {
 
 /* Fallback for missing image - shows unicorn emoji */
 .mascot-image {
-  background: linear-gradient(
-    135deg,
-    var(--primary-purple),
-    var(--accent-pink)
-  );
-  border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -205,8 +221,8 @@ body {
 }
 
 .dashboard-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 .dashboard-button:active {
@@ -219,9 +235,10 @@ body {
   background: linear-gradient(
     135deg,
     var(--primary-purple),
-    var(--accent-pink)
+    var(--primary-pink)
   );
   color: white;
+  border: 3px solid var(--accent-yellow);
 }
 
 .dashboard-button.secondary {
@@ -231,15 +248,17 @@ body {
     var(--accent-lavender)
   );
   color: white;
+  border: 3px solid var(--primary-purple);
 }
 
 .dashboard-button.tertiary {
   background: linear-gradient(
     135deg,
-    var(--accent-green),
-    var(--accent-yellow)
+    var(--primary-pink),
+    var(--accent-lavender)
   );
-  color: var(--text-primary);
+  color: white;
+  border: 3px solid var(--primary-purple);
 }
 
 /* Button content */
@@ -298,6 +317,29 @@ body {
   100% {
     opacity: 1;
   }
+}
+
+/* Success Animation */
+@keyframes celebration {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  50% { transform: scale(1.15) rotate(0deg); }
+  75% { transform: scale(1.1) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.celebration {
+  animation: celebration 0.6s ease-in-out;
+}
+
+/* Progress Animation */
+@keyframes progress-fill {
+  from { width: 0%; }
+  to { width: var(--progress-percent); }
+}
+
+.progress-fill {
+  animation: progress-fill 0.8s ease-out;
 }
 
 /* ===================================
@@ -386,11 +428,12 @@ body {
 
 .problem-text {
   font-family: var(--font-title);
-  font-size: 56px;
-  color: var(--accent-coral);
+  font-size: 72px;
+  color: var(--primary-purple);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  letter-spacing: 3px;
-  line-height: 1.1;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
 }
 
 @keyframes problemPulse {
@@ -424,15 +467,15 @@ body {
 
 .answer-input {
   font-family: var(--font-title);
-  font-size: 36px;
+  font-size: 40px;
   text-align: center;
-  padding: 15px 25px;
-  border: 4px solid var(--primary-blue);
+  padding: 20px 30px;
+  border: 4px solid var(--primary-purple);
   border-radius: 25px;
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
   color: var(--text-primary);
-  width: 250px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   outline: none;
   transition: all 0.3s ease;
 }
@@ -544,23 +587,23 @@ body {
 .number-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  max-width: 160px;
+  gap: 12px;
+  max-width: 280px;
 }
 
 /* Number Buttons */
 .number-btn {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border: 2px solid var(--primary-blue);
-  border-radius: 10px;
+  border-radius: 16px;
   background: linear-gradient(
     135deg,
     var(--primary-mint),
     var(--accent-yellow)
   );
   font-family: var(--font-title);
-  font-size: 20px;
+  font-size: 32px;
   font-weight: 400;
   color: var(--text-primary);
   cursor: pointer;
@@ -596,10 +639,10 @@ body {
 
 /* Action Buttons (Clear, Enter) */
 .action-btn {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border: 2px solid var(--accent-coral);
-  border-radius: 10px;
+  border-radius: 16px;
   color: white;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -611,7 +654,7 @@ body {
   text-align: center;
   user-select: none;
   touch-action: manipulation;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .action-btn.clear {
@@ -646,13 +689,13 @@ body {
 }
 
 .action-btn .button-icon {
-  font-size: 20px;
-  margin-bottom: 2px;
+  font-size: 32px;
+  margin-bottom: 4px;
 }
 
 .action-btn .button-text {
   font-family: var(--font-primary);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -660,13 +703,13 @@ body {
 @media (max-width: 900px) {
   .number-grid {
     gap: 10px;
-    max-width: 210px;
+    max-width: 250px;
   }
 
   .number-btn,
   .action-btn {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     font-size: 24px;
   }
 
@@ -686,8 +729,8 @@ body {
 
   .number-btn,
   .action-btn {
-    width: 55px;
-    height: 55px;
+    width: 65px;
+    height: 65px;
     font-size: 20px;
   }
 }
