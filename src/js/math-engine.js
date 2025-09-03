@@ -4,9 +4,9 @@
 class MathEngine {
   constructor() {
     this.currentProblem = null;
-    this.difficulty = 'easy'; // easy (1-5), medium (1-8), hard (1-12)
-    this.problemTypes = ['multiplication']; // Start with multiplication only
-    
+    this.difficulty = "easy"; // easy (1-5), medium (1-8), hard (1-12)
+    this.problemTypes = ["multiplication"]; // Start with multiplication only
+
     console.log("🧮 Math Engine initialized!");
   }
 
@@ -17,8 +17,8 @@ class MathEngine {
   generateMultiplicationProblem() {
     const ranges = {
       easy: { min: 1, max: 5 },
-      medium: { min: 1, max: 8 }, 
-      hard: { min: 1, max: 12 }
+      medium: { min: 1, max: 8 },
+      hard: { min: 1, max: 12 },
     };
 
     const range = ranges[this.difficulty];
@@ -28,18 +28,20 @@ class MathEngine {
 
     const problem = {
       id: this.generateProblemId(),
-      type: 'multiplication',
+      type: "multiplication",
       question: `${factor1} × ${factor2}`,
       displayText: `${factor1} × ${factor2} = ?`,
       answer: answer,
       factors: [factor1, factor2],
       difficulty: this.difficulty,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
     this.currentProblem = problem;
-    console.log(`🎲 Generated problem: ${problem.displayText} (Answer: ${problem.answer})`);
-    
+    console.log(
+      `🎲 Generated problem: ${problem.displayText} (Answer: ${problem.answer})`
+    );
+
     return problem;
   }
 
@@ -71,22 +73,26 @@ class MathEngine {
       return {
         isCorrect: false,
         feedback: "No problem available to check!",
-        type: 'error'
+        type: "error",
       };
     }
 
     const isCorrect = userAnswer === this.currentProblem.answer;
-    
+
     const result = {
       isCorrect: isCorrect,
       feedback: isCorrect ? "Excellent! 🎉" : "Try again! You've got this! 💪",
-      type: isCorrect ? 'success' : 'retry',
+      type: isCorrect ? "success" : "retry",
       correctAnswer: this.currentProblem.answer,
-      problemId: this.currentProblem.id
+      problemId: this.currentProblem.id,
     };
 
-    console.log(`✅ Answer validation: ${userAnswer} ${isCorrect ? '==' : '!='} ${this.currentProblem.answer}`);
-    
+    console.log(
+      `✅ Answer validation: ${userAnswer} ${isCorrect ? "==" : "!="} ${
+        this.currentProblem.answer
+      }`
+    );
+
     return result;
   }
 
@@ -95,13 +101,15 @@ class MathEngine {
    * @param {string} level - 'easy', 'medium', or 'hard'
    */
   setDifficulty(level) {
-    const validLevels = ['easy', 'medium', 'hard'];
+    const validLevels = ["easy", "medium", "hard"];
     if (validLevels.includes(level)) {
       this.difficulty = level;
       console.log(`🎯 Difficulty set to: ${level}`);
     } else {
-      console.warn(`⚠️ Invalid difficulty level: ${level}. Using 'easy' instead.`);
-      this.difficulty = 'easy';
+      console.warn(
+        `⚠️ Invalid difficulty level: ${level}. Using 'easy' instead.`
+      );
+      this.difficulty = "easy";
     }
   }
 
@@ -130,18 +138,18 @@ class MathEngine {
     const ranges = {
       easy: { min: 1, max: 5, description: "Learning basic facts (1-5)" },
       medium: { min: 1, max: 8, description: "Building confidence (1-8)" },
-      hard: { min: 1, max: 12, description: "Mastering all tables (1-12)" }
+      hard: { min: 1, max: 12, description: "Mastering all tables (1-12)" },
     };
 
     return {
       currentDifficulty: this.difficulty,
       range: ranges[this.difficulty],
-      problemTypes: this.problemTypes
+      problemTypes: this.problemTypes,
     };
   }
 }
 
 // Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = MathEngine;
 }

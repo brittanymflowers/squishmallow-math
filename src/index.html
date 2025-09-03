@@ -81,15 +81,37 @@
               <span class="button-text">Dashboard</span>
             </button>
             <div class="game-progress">
-              <span class="progress-text">Problem <span id="problem-number">1</span></span>
+              <span class="progress-text"
+                >Problem <span id="problem-number">1</span></span
+              >
             </div>
           </div>
 
           <!-- Math Problem Display Area -->
           <div class="problem-container">
             <div class="problem-display">
-              <div class="problem-text" id="current-problem">
-                3 × 4 = ?
+              <div class="problem-text" id="current-problem">3 × 4 = ?</div>
+            </div>
+
+            <!-- Progress Tracking (Story 3.1) -->
+            <div class="progress-container">
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar">
+                  <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text" id="progress-text">
+                  0 / 10 correct
+                </div>
+              </div>
+
+              <!-- Lives/Strikes System (Story 3.2) -->
+              <div class="lives-container">
+                <div class="lives-label">Lives:</div>
+                <div class="lives-display" id="lives-display">
+                  <span class="life-icon" id="life-1">💚</span>
+                  <span class="life-icon" id="life-2">💚</span>
+                  <span class="life-icon" id="life-3">💚</span>
+                </div>
               </div>
             </div>
           </div>
@@ -97,35 +119,50 @@
           <!-- Answer Input Area -->
           <div class="answer-container">
             <div class="answer-display">
-              <label for="answer-input" class="answer-label">Your Answer:</label>
-              <input 
-                type="text" 
-                id="answer-input" 
-                class="answer-input" 
+              <label for="answer-input" class="answer-label"
+                >Your Answer:</label
+              >
+              <input
+                type="text"
+                id="answer-input"
+                class="answer-input"
                 placeholder="Type your answer..."
                 readonly
               />
             </div>
           </div>
 
-          <!-- Number Pad (will be implemented in Story 2.3) -->
+          <!-- Number Pad (Story 2.3: Interactive Number Pad) -->
           <div class="number-pad-container">
-            <div class="number-pad-placeholder">
-              <p class="placeholder-text">📱 Number pad coming in Story 2.3!</p>
+            <div class="number-pad">
+              <!-- Number buttons (0-9) with integrated enter -->
+              <div class="number-grid">
+                <button class="number-btn" data-number="7">7</button>
+                <button class="number-btn" data-number="8">8</button>
+                <button class="number-btn" data-number="9">9</button>
+
+                <button class="number-btn" data-number="4">4</button>
+                <button class="number-btn" data-number="5">5</button>
+                <button class="number-btn" data-number="6">6</button>
+
+                <button class="number-btn" data-number="1">1</button>
+                <button class="number-btn" data-number="2">2</button>
+                <button class="number-btn" data-number="3">3</button>
+
+                <button class="action-btn clear" id="clear-btn">
+                  <span class="button-icon">🗑️</span>
+                  <span class="button-text">Clear</span>
+                </button>
+                <button class="number-btn zero" data-number="0">0</button>
+                <button class="action-btn enter" id="enter-btn">
+                  <span class="button-icon">✅</span>
+                  <span class="button-text">Enter</span>
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- Game Controls -->
-          <div class="game-controls">
-            <button id="submit-answer-btn" class="game-button primary disabled" disabled>
-              <span class="button-icon">✅</span>
-              <span class="button-text">Submit Answer</span>
-            </button>
-            <button id="skip-problem-btn" class="game-button secondary">
-              <span class="button-icon">⏭️</span>
-              <span class="button-text">Skip Problem</span>
-            </button>
-          </div>
+          <!-- Removed separate game controls - Enter is now in number pad -->
         </div>
       </div>
     </div>

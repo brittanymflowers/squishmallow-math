@@ -2,7 +2,7 @@
 // Test the math problem generator functionality
 
 // Import the MathEngine (using Node.js for testing)
-const MathEngine = require('./src/js/math-engine.js');
+const MathEngine = require("./src/js/math-engine.js");
 
 console.log("🧪 Testing Math Engine for Story 2.1...\n");
 
@@ -13,16 +13,22 @@ const mathEngine = new MathEngine();
 console.log("=== Test 1: Basic Problem Generation ===");
 for (let i = 0; i < 5; i++) {
   const problem = mathEngine.generateNewProblem();
-  console.log(`Problem ${i + 1}: ${problem.displayText} (Answer: ${problem.answer})`);
+  console.log(
+    `Problem ${i + 1}: ${problem.displayText} (Answer: ${problem.answer})`
+  );
 }
 
 // Test 2: Different difficulty levels
 console.log("\n=== Test 2: Difficulty Levels ===");
-const difficulties = ['easy', 'medium', 'hard'];
-difficulties.forEach(level => {
-  console.log(`\n${level.toUpperCase()} (1-${level === 'easy' ? 5 : level === 'medium' ? 8 : 12}):`);
+const difficulties = ["easy", "medium", "hard"];
+difficulties.forEach((level) => {
+  console.log(
+    `\n${level.toUpperCase()} (1-${
+      level === "easy" ? 5 : level === "medium" ? 8 : 12
+    }):`
+  );
   mathEngine.setDifficulty(level);
-  
+
   for (let i = 0; i < 3; i++) {
     const problem = mathEngine.generateNewProblem();
     console.log(`  ${problem.displayText} = ${problem.answer}`);
@@ -47,6 +53,11 @@ for (let i = 0; i < 10; i++) {
   problems.push(mathEngine.generateNewProblem().displayText);
 }
 console.log("Generated problems:", problems);
-console.log("Unique problems:", new Set(problems).size, "out of", problems.length);
+console.log(
+  "Unique problems:",
+  new Set(problems).size,
+  "out of",
+  problems.length
+);
 
 console.log("\n✅ Math Engine testing complete!");

@@ -39,7 +39,8 @@ body {
   );
   color: var(--text-primary);
   min-height: 100vh;
-  overflow: hidden; /* Prevent scrolling in desktop app */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-y: auto; /* Allow vertical scrolling when needed */
 }
 
 /* App Container */
@@ -215,17 +216,29 @@ body {
 
 /* Button variants */
 .dashboard-button.primary {
-  background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+  background: linear-gradient(
+    135deg,
+    var(--primary-purple),
+    var(--accent-pink)
+  );
   color: white;
 }
 
 .dashboard-button.secondary {
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-lavender));
+  background: linear-gradient(
+    135deg,
+    var(--accent-blue),
+    var(--accent-lavender)
+  );
   color: white;
 }
 
 .dashboard-button.tertiary {
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-yellow));
+  background: linear-gradient(
+    135deg,
+    var(--accent-green),
+    var(--accent-yellow)
+  );
   color: var(--text-primary);
 }
 
@@ -269,14 +282,22 @@ body {
 }
 
 .dashboard-button.loading .button-text::after {
-  content: '...';
+  content: "...";
   animation: loading-dots 1.5s infinite;
 }
 
 @keyframes loading-dots {
-  0%, 20% { opacity: 0; }
-  40% { opacity: 0.5; }
-  60%, 100% { opacity: 1; }
+  0%,
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.5;
+  }
+  60%,
+  100% {
+    opacity: 1;
+  }
 }
 
 /* ===================================
@@ -285,13 +306,14 @@ body {
 
 /* Game Screen Layout */
 .game-content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
   height: 100vh;
   max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
-  gap: 20px;
+  padding: 15px;
+  gap: 15px;
+  overflow: hidden; /* No scrolling needed */
 }
 
 /* Game Header */
@@ -341,44 +363,50 @@ body {
 
 /* Problem Display Area */
 .problem-container {
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
+  padding: 15px;
 }
 
 .problem-display {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 182, 193, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 182, 193, 0.1)
+  );
   border: 4px solid var(--accent-yellow);
   border-radius: 30px;
-  padding: 60px 40px;
+  padding: 30px 25px;
   text-align: center;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  min-width: 400px;
+  min-width: 350px;
   animation: problemPulse 2s ease-in-out infinite alternate;
 }
 
 .problem-text {
   font-family: var(--font-title);
-  font-size: 72px;
+  font-size: 56px;
   color: var(--accent-coral);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  letter-spacing: 4px;
-  line-height: 1.2;
+  letter-spacing: 3px;
+  line-height: 1.1;
 }
 
 @keyframes problemPulse {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.02); }
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.02);
+  }
 }
 
 /* Answer Input Area */
 .answer-container {
   display: flex;
   justify-content: center;
-  padding: 20px;
-  flex-shrink: 0;
+  padding: 10px;
 }
 
 .answer-display {
@@ -388,22 +416,22 @@ body {
 .answer-label {
   display: block;
   font-family: var(--font-primary);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .answer-input {
   font-family: var(--font-title);
-  font-size: 48px;
+  font-size: 36px;
   text-align: center;
-  padding: 20px 30px;
+  padding: 15px 25px;
   border: 4px solid var(--primary-blue);
   border-radius: 25px;
   background: white;
   color: var(--text-primary);
-  width: 300px;
+  width: 250px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   outline: none;
   transition: all 0.3s ease;
@@ -419,28 +447,249 @@ body {
   font-size: 24px;
 }
 
-/* Number Pad Placeholder */
+/* Progress Tracking (Story 3.1) & Lives System (Story 3.2) */
+.progress-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  border: 2px solid var(--accent-lavender);
+}
+
+.progress-bar-container {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background: rgba(200, 200, 200, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--primary-blue);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-green), var(--primary-mint));
+  width: 0%;
+  transition: width 0.5s ease;
+  border-radius: 10px;
+}
+
+.progress-text {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.lives-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.lives-label {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.lives-display {
+  display: flex;
+  gap: 3px;
+}
+
+.life-icon {
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.life-icon.lost {
+  opacity: 0.3;
+  filter: grayscale(100%);
+}
+
+/* Number Pad (Story 2.3) */
 .number-pad-container {
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding: 15px;
   flex-shrink: 0;
 }
 
-.number-pad-placeholder {
-  background: rgba(255, 255, 255, 0.8);
-  border: 2px dashed var(--accent-lavender);
-  border-radius: 20px;
-  padding: 40px;
-  text-align: center;
-  min-width: 300px;
+/* Number Pad (Story 2.3) */
+.number-pad-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
 }
 
-.placeholder-text {
-  font-family: var(--font-primary);
-  font-size: 18px;
+.number-pad {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--accent-lavender);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  max-width: 160px;
+}
+
+/* Number Buttons */
+.number-btn {
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--primary-blue);
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-mint),
+    var(--accent-yellow)
+  );
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 400;
   color: var(--text-primary);
-  opacity: 0.7;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.number-btn:hover {
+  background: linear-gradient(
+    135deg,
+    var(--accent-yellow),
+    var(--primary-mint)
+  );
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  border-color: var(--accent-coral);
+}
+
+.number-btn:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.number-btn:focus {
+  outline: 3px solid var(--accent-yellow);
+  outline-offset: 2px;
+}
+
+/* Action Buttons (Clear, Enter) */
+.action-btn {
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--accent-coral);
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  user-select: none;
+  touch-action: manipulation;
+  font-size: 10px;
+}
+
+.action-btn.clear {
+  background: linear-gradient(135deg, var(--accent-coral), var(--primary-pink));
+}
+
+.action-btn.enter {
+  background: linear-gradient(135deg, var(--accent-green), var(--primary-mint));
+  border-color: var(--accent-green);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.action-btn.clear:hover {
+  background: linear-gradient(135deg, var(--primary-pink), var(--accent-coral));
+}
+
+.action-btn.enter:hover {
+  background: linear-gradient(135deg, var(--primary-mint), var(--accent-green));
+}
+
+.action-btn:active {
+  transform: translateY(0px);
+}
+
+.action-btn:focus {
+  outline: 3px solid var(--accent-yellow);
+  outline-offset: 2px;
+}
+
+.action-btn .button-icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.action-btn .button-text {
+  font-family: var(--font-primary);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* Number Pad Responsive Design */
+@media (max-width: 900px) {
+  .number-grid {
+    gap: 10px;
+    max-width: 210px;
+  }
+
+  .number-btn,
+  .action-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+
+  .action-btn .button-icon {
+    font-size: 18px;
+  }
+
+  .action-btn .button-text {
+    font-size: 9px;
+  }
+}
+
+@media (max-height: 700px) {
+  .number-pad {
+    padding: 15px;
+  }
+
+  .number-btn,
+  .action-btn {
+    width: 55px;
+    height: 55px;
+    font-size: 20px;
+  }
 }
 
 /* Game Controls */
@@ -448,72 +697,8 @@ body {
   display: flex;
   justify-content: center;
   gap: 20px;
-  padding: 20px;
+  padding: 15px;
   flex-shrink: 0;
-}
-
-.game-button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 24px;
-  border: 3px solid transparent;
-  border-radius: 25px;
-  font-family: var(--font-primary);
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 180px;
-  justify-content: center;
-}
-
-.game-button.primary {
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-yellow));
-  color: var(--text-primary);
-  border-color: var(--accent-green);
-}
-
-.game-button.primary:hover:not(.disabled) {
-  background: linear-gradient(135deg, var(--accent-yellow), var(--accent-green));
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
-
-.game-button.secondary {
-  background: linear-gradient(135deg, var(--accent-lavender), var(--primary-blue));
-  color: white;
-  border-color: var(--primary-blue);
-}
-
-.game-button.secondary:hover {
-  background: linear-gradient(135deg, var(--primary-blue), var(--accent-lavender));
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
-
-.game-button:active:not(.disabled) {
-  transform: translateY(0px);
-}
-
-.game-button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-.game-button:focus {
-  outline: 3px solid var(--accent-yellow);
-  outline-offset: 2px;
-}
-
-/* Game Button Icons and Text */
-.game-button .button-icon {
-  font-size: 20px;
-}
-
-.game-button .button-text {
-  font-size: 16px;
 }
 
 /* Responsive Design for Game Screen */
@@ -521,14 +706,19 @@ body {
   .problem-text {
     font-size: 56px;
   }
-  
+
   .answer-input {
     font-size: 36px;
     padding: 15px 25px;
   }
-  
+
   .problem-display {
-    padding: 40px 30px;
+    padding: 30px 20px;
+  }
+
+  .game-content {
+    padding: 10px;
+    gap: 10px;
   }
 }
 
@@ -537,19 +727,42 @@ body {
     padding: 15px;
     gap: 15px;
   }
-  
+
   .problem-display {
     min-width: 300px;
     padding: 40px 20px;
   }
-  
+
   .answer-input {
     width: 250px;
   }
-  
+
   .game-controls {
     flex-direction: column;
     align-items: center;
+  }
+}
+
+/* Extra small screens */
+@media (max-height: 600px) {
+  .problem-text {
+    font-size: 48px;
+  }
+
+  .problem-display {
+    padding: 20px 15px;
+    min-width: 250px;
+  }
+
+  .answer-input {
+    font-size: 28px;
+    width: 200px;
+    padding: 10px 15px;
+  }
+
+  .game-content {
+    padding: 5px;
+    gap: 8px;
   }
 }
 
