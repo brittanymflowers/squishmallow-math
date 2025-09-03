@@ -40,7 +40,7 @@ class MathEngine {
       answer: answer,
       factors: [factor1, factor2],
       difficulty: this.difficulty,
-      customRange: maxNumber,
+      customRange: maxTable,
       timestamp: new Date().toISOString(),
     };
 
@@ -140,11 +140,18 @@ class MathEngine {
    * @returns {Object} Problem object with question, answer, and metadata
    */
   generateDivisionProblem() {
-    // Use custom range for division (same as multiplication)
-    const maxNumber = this.numberRanges.multiplication;
-    const divisor = this.getRandomNumber(1, maxNumber);
-    const quotient = this.getRandomNumber(1, maxNumber);
-    const dividend = divisor * quotient; // Ensure clean division
+    // Use times table logic for division (reverse of multiplication)
+    const maxTable = this.numberRanges.multiplication;
+    const tableNumber = this.getRandomNumber(1, 12); // Divide by 1 through 12 (avoid 0)
+    const factor = this.getRandomNumber(1, maxTable); // Up to the highest times table
+    
+    // Create division problem: (factor × tableNumber) ÷ factor = tableNumber
+    // or (factor × tableNumber) ÷ tableNumber = factor
+    const dividend = factor * tableNumber;
+    
+    // Randomly decide which factor to divide by (both are safe since neither is 0)
+    const divisor = Math.random() < 0.5 ? factor : tableNumber;
+    const quotient = dividend / divisor;
 
     const problem = {
       id: this.generateProblemId(),
@@ -154,7 +161,7 @@ class MathEngine {
       answer: quotient,
       factors: [dividend, divisor],
       difficulty: this.difficulty,
-      customRange: maxNumber,
+      customRange: maxTable,
       timestamp: new Date().toISOString(),
     };
 
