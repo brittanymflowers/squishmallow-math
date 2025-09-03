@@ -1188,3 +1188,70 @@ body {
   gap: 20px;
   margin-top: 30px;
 }
+
+.range-control {
+  margin: 10px 0;
+}
+
+.range-control input[type="number"] {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: 2px solid var(--accent-lavender);
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  width: 80px;
+}
+
+.range-control select {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: 2px solid var(--accent-lavender);
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  min-width: 150px;
+}
+
+/* Timer Display Styles (Story 5.4) */
+.timer-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+.timer-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--primary-purple);
+}
+
+.timer-display {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-purple);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 2px solid var(--accent-lavender);
+  min-width: 70px;
+  text-align: center;
+}
+
+.timer-warning {
+  color: #ff6b6b !important;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}

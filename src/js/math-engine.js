@@ -8,6 +8,12 @@ class MathEngine {
     this.problemTypes = ["multiplication"]; // Story 5.2: Support multiple operations
     this.operations = ["multiplication"]; // Story 5.2: Available operations
 
+    // Story 5.3: Number range settings
+    this.numberRanges = {
+      multiplication: 12, // Highest number for multiplication/division
+      addition: "tens", // Number size for addition/subtraction
+    };
+
     console.log("🧮 Math Engine initialized!");
   }
 
@@ -16,15 +22,10 @@ class MathEngine {
    * @returns {Object} Problem object with question, answer, and metadata
    */
   generateMultiplicationProblem() {
-    const ranges = {
-      easy: { min: 1, max: 5 },
-      medium: { min: 1, max: 8 },
-      hard: { min: 1, max: 12 },
-    };
-
-    const range = ranges[this.difficulty];
-    const factor1 = this.getRandomNumber(range.min, range.max);
-    const factor2 = this.getRandomNumber(range.min, range.max);
+    // Use custom range if available, otherwise fall back to difficulty-based ranges
+    const maxNumber = this.numberRanges.multiplication;
+    const factor1 = this.getRandomNumber(1, maxNumber);
+    const factor2 = this.getRandomNumber(1, maxNumber);
     const answer = factor1 * factor2;
 
     const problem = {
@@ -35,6 +36,7 @@ class MathEngine {
       answer: answer,
       factors: [factor1, factor2],
       difficulty: this.difficulty,
+      customRange: maxNumber,
       timestamp: new Date().toISOString(),
     };
 
@@ -51,13 +53,15 @@ class MathEngine {
    * @returns {Object} Problem object with question, answer, and metadata
    */
   generateAdditionProblem() {
-    const ranges = {
-      easy: { min: 1, max: 20 },
-      medium: { min: 1, max: 50 },
-      hard: { min: 1, max: 100 },
+    // Use custom range setting for addition
+    const rangeSettings = {
+      ones: { min: 1, max: 9 },
+      tens: { min: 1, max: 99 },
+      hundreds: { min: 1, max: 999 },
     };
 
-    const range = ranges[this.difficulty];
+    const range =
+      rangeSettings[this.numberRanges.addition] || rangeSettings["tens"];
     const addend1 = this.getRandomNumber(range.min, range.max);
     const addend2 = this.getRandomNumber(range.min, range.max);
     const answer = addend1 + addend2;
@@ -70,11 +74,14 @@ class MathEngine {
       answer: answer,
       factors: [addend1, addend2],
       difficulty: this.difficulty,
+      customRange: this.numberRanges.addition,
       timestamp: new Date().toISOString(),
     };
 
     this.currentProblem = problem;
-    console.log(`🎲 Generated addition: ${problem.displayText} (Answer: ${problem.answer})`);
+    console.log(
+      `🎲 Generated addition: ${problem.displayText} (Answer: ${problem.answer})`
+    );
     return problem;
   }
 
@@ -83,21 +90,26 @@ class MathEngine {
    * @returns {Object} Problem object with question, answer, and metadata
    */
   generateSubtractionProblem() {
-    const ranges = {
-      easy: { min: 1, max: 20 },
-      medium: { min: 1, max: 50 },
-      hard: { min: 1, max: 100 },
+    // Use custom range setting for subtraction
+    const rangeSettings = {
+      ones: { min: 1, max: 9 },
+      tens: { min: 1, max: 99 },
+      hundreds: { min: 1, max: 999 },
     };
 
-    const range = ranges[this.difficulty];
+    const range =
+      rangeSettings[this.numberRanges.addition] || rangeSettings["tens"];
     let minuend = this.getRandomNumber(range.min, range.max);
-    let subtrahend = this.getRandomNumber(range.min, Math.min(minuend, range.max));
-    
+    let subtrahend = this.getRandomNumber(
+      range.min,
+      Math.min(minuend, range.max)
+    );
+
     // Ensure positive result
     if (subtrahend > minuend) {
       [minuend, subtrahend] = [subtrahend, minuend];
     }
-    
+
     const answer = minuend - subtrahend;
 
     const problem = {
@@ -108,11 +120,14 @@ class MathEngine {
       answer: answer,
       factors: [minuend, subtrahend],
       difficulty: this.difficulty,
+      customRange: this.numberRanges.addition,
       timestamp: new Date().toISOString(),
     };
 
     this.currentProblem = problem;
-    console.log(`🎲 Generated subtraction: ${problem.displayText} (Answer: ${problem.answer})`);
+    console.log(
+      `🎲 Generated subtraction: ${problem.displayText} (Answer: ${problem.answer})`
+    );
     return problem;
   }
 
@@ -121,15 +136,10 @@ class MathEngine {
    * @returns {Object} Problem object with question, answer, and metadata
    */
   generateDivisionProblem() {
-    const ranges = {
-      easy: { min: 1, max: 5 },
-      medium: { min: 1, max: 8 },
-      hard: { min: 1, max: 12 },
-    };
-
-    const range = ranges[this.difficulty];
-    const divisor = this.getRandomNumber(range.min, range.max);
-    const quotient = this.getRandomNumber(range.min, range.max);
+    // Use custom range for division (same as multiplication)
+    const maxNumber = this.numberRanges.multiplication;
+    const divisor = this.getRandomNumber(1, maxNumber);
+    const quotient = this.getRandomNumber(1, maxNumber);
     const dividend = divisor * quotient; // Ensure clean division
 
     const problem = {
@@ -140,11 +150,14 @@ class MathEngine {
       answer: quotient,
       factors: [dividend, divisor],
       difficulty: this.difficulty,
+      customRange: maxNumber,
       timestamp: new Date().toISOString(),
     };
 
     this.currentProblem = problem;
-    console.log(`🎲 Generated division: ${problem.displayText} (Answer: ${problem.answer})`);
+    console.log(
+      `🎲 Generated division: ${problem.displayText} (Answer: ${problem.answer})`
+    );
     return problem;
   }
 
@@ -232,18 +245,20 @@ class MathEngine {
     // Randomly select from available operations
     const randomIndex = Math.floor(Math.random() * this.operations.length);
     const selectedOperation = this.operations[randomIndex];
-    
+
     switch (selectedOperation) {
-      case 'addition':
+      case "addition":
         return this.generateAdditionProblem();
-      case 'subtraction':
+      case "subtraction":
         return this.generateSubtractionProblem();
-      case 'multiplication':
+      case "multiplication":
         return this.generateMultiplicationProblem();
-      case 'division':
+      case "division":
         return this.generateDivisionProblem();
       default:
-        console.warn(`Unknown operation: ${selectedOperation}, defaulting to multiplication`);
+        console.warn(
+          `Unknown operation: ${selectedOperation}, defaulting to multiplication`
+        );
         return this.generateMultiplicationProblem();
     }
   }
@@ -253,12 +268,14 @@ class MathEngine {
    * @param {string} difficulty - Difficulty level: 'easy', 'medium', or 'hard'
    */
   setDifficulty(difficulty) {
-    const validDifficulties = ['easy', 'medium', 'hard'];
+    const validDifficulties = ["easy", "medium", "hard"];
     if (validDifficulties.includes(difficulty)) {
       this.difficulty = difficulty;
       console.log(`🎯 Math Engine difficulty set to: ${difficulty}`);
     } else {
-      console.warn(`⚠️ Invalid difficulty "${difficulty}". Using "${this.difficulty}"`);
+      console.warn(
+        `⚠️ Invalid difficulty "${difficulty}". Using "${this.difficulty}"`
+      );
     }
   }
 
@@ -267,15 +284,51 @@ class MathEngine {
    * @param {Array} operations - Array of operation strings: 'addition', 'subtraction', 'multiplication', 'division'
    */
   setOperations(operations) {
-    const validOperations = ['addition', 'subtraction', 'multiplication', 'division'];
-    const filteredOps = operations.filter(op => validOperations.includes(op));
-    
+    const validOperations = [
+      "addition",
+      "subtraction",
+      "multiplication",
+      "division",
+    ];
+    const filteredOps = operations.filter((op) => validOperations.includes(op));
+
     if (filteredOps.length > 0) {
       this.operations = filteredOps;
       this.problemTypes = filteredOps; // Update legacy problemTypes
-      console.log(`🧮 Math Engine operations set to: ${filteredOps.join(', ')}`);
+      console.log(
+        `🧮 Math Engine operations set to: ${filteredOps.join(", ")}`
+      );
     } else {
-      console.warn(`⚠️ No valid operations provided. Using: ${this.operations.join(', ')}`);
+      console.warn(
+        `⚠️ No valid operations provided. Using: ${this.operations.join(", ")}`
+      );
+    }
+  }
+
+  /**
+   * Sets custom number ranges for problem generation (Story 5.3)
+   * @param {Object} ranges - Object with multiplication and addition range settings
+   */
+  setNumberRanges(ranges) {
+    if (ranges) {
+      if (
+        ranges.multiplication &&
+        ranges.multiplication >= 5 &&
+        ranges.multiplication <= 20
+      ) {
+        this.numberRanges.multiplication = ranges.multiplication;
+      }
+
+      if (
+        ranges.addition &&
+        ["ones", "tens", "hundreds"].includes(ranges.addition)
+      ) {
+        this.numberRanges.addition = ranges.addition;
+      }
+
+      console.log(
+        `🔢 Math Engine ranges set to: mult=${this.numberRanges.multiplication}, add=${this.numberRanges.addition}`
+      );
     }
   }
 

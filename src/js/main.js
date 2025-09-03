@@ -26,10 +26,10 @@ class SquishCollectorApp {
 
     // Story 5.1: Settings system
     this.settings = {
-      difficulty: 'medium',
+      difficulty: "medium",
       gameLength: 10,
       livesEnabled: true,
-      operations: ['multiplication'], // Story 5.2: Default to multiplication only
+      operations: ["multiplication"], // Story 5.2: Default to multiplication only
     };
 
     this.loadSettings();
@@ -227,7 +227,7 @@ class SquishCollectorApp {
 
   handleSettings() {
     console.log("⚙️ Settings clicked!");
-    this.showScreen('settings-screen');
+    this.showScreen("settings-screen");
     this.populateSettingsForm();
   }
 
@@ -246,21 +246,21 @@ class SquishCollectorApp {
 
   // Story 3.2: Lives system methods
   updateLivesDisplay() {
-    const livesContainer = document.getElementById('lives-container');
-    
+    const livesContainer = document.getElementById("lives-container");
+
     // Hide lives display if lives are disabled
     if (!this.settings.livesEnabled) {
       if (livesContainer) {
-        livesContainer.style.display = 'none';
+        livesContainer.style.display = "none";
       }
       return;
     }
-    
+
     // Show lives display if lives are enabled
     if (livesContainer) {
-      livesContainer.style.display = 'flex';
+      livesContainer.style.display = "flex";
     }
-    
+
     for (let i = 1; i <= this.gameState.maxLives; i++) {
       const lifeIcon = document.getElementById(`life-${i}`);
       if (lifeIcon) {
@@ -280,7 +280,7 @@ class SquishCollectorApp {
     if (!this.settings.livesEnabled) {
       return;
     }
-    
+
     if (this.gameState.lives > 0) {
       this.gameState.lives--;
       this.updateLivesDisplay();
@@ -863,13 +863,13 @@ class SquishCollectorApp {
   }
 
   // Story 5.1: Settings System Methods
-  
+
   loadSettings() {
-    const savedSettings = localStorage.getItem('squishCollectorSettings');
+    const savedSettings = localStorage.getItem("squishCollectorSettings");
     if (savedSettings) {
       this.settings = { ...this.settings, ...JSON.parse(savedSettings) };
     }
-    
+
     // Update game state based on settings
     this.gameState.targetScore = this.settings.gameLength;
     if (this.mathEngine) {
@@ -877,9 +877,12 @@ class SquishCollectorApp {
       this.mathEngine.setOperations(this.settings.operations);
     }
   }
-  
+
   saveSettings() {
-    localStorage.setItem('squishCollectorSettings', JSON.stringify(this.settings));
+    localStorage.setItem(
+      "squishCollectorSettings",
+      JSON.stringify(this.settings)
+    );
     // Update game state
     this.gameState.targetScore = this.settings.gameLength;
     if (this.mathEngine) {
@@ -887,90 +890,104 @@ class SquishCollectorApp {
       this.mathEngine.setOperations(this.settings.operations);
     }
   }
-  
+
   setupSettingsScreen() {
     // Save settings button
-    const saveBtn = document.getElementById('settings-save-btn');
+    const saveBtn = document.getElementById("settings-save-btn");
     if (saveBtn) {
-      saveBtn.addEventListener('click', () => this.saveSettingsAndReturn());
+      saveBtn.addEventListener("click", () => this.saveSettingsAndReturn());
     }
-    
+
     // Cancel settings button
-    const cancelBtn = document.getElementById('settings-cancel-btn');
+    const cancelBtn = document.getElementById("settings-cancel-btn");
     if (cancelBtn) {
-      cancelBtn.addEventListener('click', () => this.showScreen('dashboard-screen'));
+      cancelBtn.addEventListener("click", () =>
+        this.showScreen("dashboard-screen")
+      );
     }
   }
-  
+
   populateSettingsForm() {
     // Set difficulty radio button
-    const difficultyRadio = document.querySelector(`input[name="difficulty"][value="${this.settings.difficulty}"]`);
+    const difficultyRadio = document.querySelector(
+      `input[name="difficulty"][value="${this.settings.difficulty}"]`
+    );
     if (difficultyRadio) {
       difficultyRadio.checked = true;
     }
-    
+
     // Set game length dropdown
-    const gameLengthSelect = document.getElementById('game-length-select');
+    const gameLengthSelect = document.getElementById("game-length-select");
     if (gameLengthSelect) {
       gameLengthSelect.value = this.settings.gameLength.toString();
     }
-    
+
     // Set lives checkbox
-    const livesCheckbox = document.getElementById('lives-enabled');
+    const livesCheckbox = document.getElementById("lives-enabled");
     if (livesCheckbox) {
       livesCheckbox.checked = this.settings.livesEnabled;
     }
-    
+
     // Set operation checkboxes (Story 5.2)
-    const operations = ['addition', 'subtraction', 'multiplication', 'division'];
-    operations.forEach(op => {
+    const operations = [
+      "addition",
+      "subtraction",
+      "multiplication",
+      "division",
+    ];
+    operations.forEach((op) => {
       const checkbox = document.getElementById(`operation-${op}`);
       if (checkbox) {
         checkbox.checked = this.settings.operations.includes(op);
       }
     });
   }
-  
+
   saveSettingsAndReturn() {
     // Get difficulty setting
-    const difficultyRadio = document.querySelector('input[name="difficulty"]:checked');
+    const difficultyRadio = document.querySelector(
+      'input[name="difficulty"]:checked'
+    );
     if (difficultyRadio) {
       this.settings.difficulty = difficultyRadio.value;
     }
-    
+
     // Get game length setting
-    const gameLengthSelect = document.getElementById('game-length-select');
+    const gameLengthSelect = document.getElementById("game-length-select");
     if (gameLengthSelect) {
       this.settings.gameLength = parseInt(gameLengthSelect.value);
     }
-    
+
     // Get lives setting
-    const livesCheckbox = document.getElementById('lives-enabled');
+    const livesCheckbox = document.getElementById("lives-enabled");
     if (livesCheckbox) {
       this.settings.livesEnabled = livesCheckbox.checked;
     }
-    
+
     // Get operation settings (Story 5.2)
     const operations = [];
-    ['addition', 'subtraction', 'multiplication', 'division'].forEach(op => {
+    ["addition", "subtraction", "multiplication", "division"].forEach((op) => {
       const checkbox = document.getElementById(`operation-${op}`);
       if (checkbox && checkbox.checked) {
         operations.push(op);
       }
     });
-    
+
     // Ensure at least one operation is selected
     if (operations.length === 0) {
-      this.showFeedback("Please select at least one math operation! 🧮", "error");
+      this.showFeedback(
+        "Please select at least one math operation! 🧮",
+        "error"
+      );
       return;
     }
-    
+
     this.settings.operations = operations;
-    
+
     this.saveSettings();
     this.showFeedback("Settings saved! 💾", "success");
     setTimeout(() => {
-      this.showScreen('dashboard-screen');
+      this.showScreen("dashboard-screen");
     }, 1000);
   }
 }

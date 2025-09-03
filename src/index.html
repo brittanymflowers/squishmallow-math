@@ -105,12 +105,27 @@
               </div>
 
               <!-- Lives/Strikes System (Story 3.2) -->
-              <div class="lives-container">
+              <div class="lives-container" id="lives-container">
                 <div class="lives-label">Lives:</div>
                 <div class="lives-display" id="lives-display">
                   <span class="life-icon" id="life-1">💚</span>
                   <span class="life-icon" id="life-2">💚</span>
                   <span class="life-icon" id="life-3">💚</span>
+                </div>
+              </div>
+
+              <!-- Timer Display (Story 5.4) -->
+              <div
+                class="timer-container"
+                id="timer-container"
+                style="display: none"
+              >
+                <div class="timer-label">Time:</div>
+                <div class="timer-display" id="timer-display">
+                  <span class="timer-minutes">5</span>:<span
+                    class="timer-seconds"
+                    >00</span
+                  >
                 </div>
               </div>
             </div>
@@ -304,7 +319,9 @@
         <div class="settings-content">
           <div class="settings-header">
             <h1 class="settings-title">⚙️ Game Settings</h1>
-            <p class="settings-subtitle">Customize the game for your child's learning level</p>
+            <p class="settings-subtitle">
+              Customize the game for your child's learning level
+            </p>
           </div>
 
           <div class="settings-form">
@@ -312,15 +329,15 @@
               <h3>🎯 Difficulty Level</h3>
               <div class="setting-group">
                 <label class="setting-label">
-                  <input type="radio" name="difficulty" value="easy" checked>
+                  <input type="radio" name="difficulty" value="easy" checked />
                   <span class="radio-label">Easy (1-5 tables)</span>
                 </label>
                 <label class="setting-label">
-                  <input type="radio" name="difficulty" value="medium">
+                  <input type="radio" name="difficulty" value="medium" />
                   <span class="radio-label">Medium (1-8 tables)</span>
                 </label>
                 <label class="setting-label">
-                  <input type="radio" name="difficulty" value="hard">
+                  <input type="radio" name="difficulty" value="hard" />
                   <span class="radio-label">Hard (1-12 tables)</span>
                 </label>
               </div>
@@ -330,23 +347,78 @@
               <h3>🧮 Math Operations</h3>
               <div class="setting-group">
                 <label class="setting-label">
-                  <input type="checkbox" id="operation-addition" value="addition">
+                  <input
+                    type="checkbox"
+                    id="operation-addition"
+                    value="addition"
+                  />
                   <span class="checkbox-label">Addition (+)</span>
                 </label>
                 <label class="setting-label">
-                  <input type="checkbox" id="operation-subtraction" value="subtraction">
+                  <input
+                    type="checkbox"
+                    id="operation-subtraction"
+                    value="subtraction"
+                  />
                   <span class="checkbox-label">Subtraction (−)</span>
                 </label>
                 <label class="setting-label">
-                  <input type="checkbox" id="operation-multiplication" value="multiplication" checked>
+                  <input
+                    type="checkbox"
+                    id="operation-multiplication"
+                    value="multiplication"
+                    checked
+                  />
                   <span class="checkbox-label">Multiplication (×)</span>
                 </label>
                 <label class="setting-label">
-                  <input type="checkbox" id="operation-division" value="division">
+                  <input
+                    type="checkbox"
+                    id="operation-division"
+                    value="division"
+                  />
                   <span class="checkbox-label">Division (÷)</span>
                 </label>
               </div>
-              <p class="setting-description">Select one or more operations to practice</p>
+              <p class="setting-description">
+                Select one or more operations to practice
+              </p>
+            </div>
+
+            <div class="setting-section">
+              <h3>🔢 Number Ranges</h3>
+              <div class="setting-group">
+                <div class="range-control">
+                  <label class="setting-label">
+                    Multiplication/Division - Highest number:
+                    <input
+                      type="number"
+                      id="mult-range"
+                      min="5"
+                      max="20"
+                      value="12"
+                      step="1"
+                    />
+                  </label>
+                  <p class="setting-description">
+                    Problems will use numbers from 1 to this value
+                  </p>
+                </div>
+
+                <div class="range-control">
+                  <label class="setting-label">
+                    Addition/Subtraction - Number size:
+                    <select id="add-range">
+                      <option value="ones">Ones (1-9)</option>
+                      <option value="tens" selected>Tens (1-99)</option>
+                      <option value="hundreds">Hundreds (1-999)</option>
+                    </select>
+                  </label>
+                  <p class="setting-description">
+                    Choose the size of numbers for addition and subtraction
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div class="setting-section">
@@ -368,10 +440,31 @@
               <h3>❤️ Lives System</h3>
               <div class="setting-group">
                 <label class="setting-label">
-                  <input type="checkbox" id="lives-enabled" checked>
+                  <input type="checkbox" id="lives-enabled" checked />
                   <span class="checkbox-label">Enable 3-lives system</span>
                 </label>
-                <p class="setting-description">When disabled, students can keep trying until they succeed</p>
+                <p class="setting-description">
+                  When disabled, students can keep trying until they succeed
+                </p>
+              </div>
+            </div>
+
+            <div class="setting-section">
+              <h3>⏰ Timer Settings</h3>
+              <div class="setting-group">
+                <label class="setting-label">
+                  Time limit per game:
+                  <select id="timer-select">
+                    <option value="none">No Limit</option>
+                    <option value="60">1 minute</option>
+                    <option value="300">5 minutes</option>
+                    <option value="600">10 minutes</option>
+                  </select>
+                </label>
+                <p class="setting-description">
+                  Choose a time limit or select "No Limit" for stress-free
+                  practice
+                </p>
               </div>
             </div>
           </div>
