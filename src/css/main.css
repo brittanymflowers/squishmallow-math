@@ -1116,6 +1116,16 @@ body {
   margin: 0;
 }
 
+.squishmallow-description {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 10px 0 0 0;
+  font-style: italic;
+  text-align: center;
+  max-width: 300px;
+}
+
 .success-buttons {
   display: flex;
   gap: 15px;

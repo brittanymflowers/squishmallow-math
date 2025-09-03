@@ -894,7 +894,6 @@ class SquishCollectorApp {
     if (answerInput) {
       answerInput.value = "";
       this.updateSubmitButton();
-      this.showFeedback("Input cleared! 🗑️", "info");
       console.log("🗑️ Input cleared");
     }
   }
