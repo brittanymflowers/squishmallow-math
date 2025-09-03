@@ -23,21 +23,29 @@ Add parent-facing settings to customize game difficulty, operations, and timing 
 
 ---
 
-### Story 5.2: Add Operation Selection
+### Story 5.2: Add Operation Selection ✅ COMPLETED
 **As a** parent  
 **I want** to choose which math operations to include  
 **So that** my child can practice specific skills they're learning  
 
 **Acceptance Criteria:**
-- [ ] Checkboxes for Addition, Subtraction, Multiplication, Division
-- [ ] Multiple operations can be selected simultaneously
-- [ ] Game generates problems from selected operations only
-- [ ] Settings persist between app sessions
-- [ ] Default to multiplication only for initial setup
+- ✅ Checkboxes for Addition, Subtraction, Multiplication, Division
+- ✅ Multiple operations can be selected simultaneously
+- ✅ Game generates problems from selected operations only
+- ✅ Settings persist between app sessions
+- ✅ Default to multiplication only for initial setup
 
 **Definition of Done:**
-- Operation selection works reliably
-- Problem generation respects selected operations
+- ✅ Operation selection works reliably
+- ✅ Problem generation respects selected operations
+
+**Implementation Status:** ✅ COMPLETED
+- Added operation checkboxes to settings screen with proper validation
+- Implemented problem generators for all four basic operations (addition, subtraction, multiplication, division)
+- Updated MathEngine with setOperations() method and random operation selection
+- Added appropriate difficulty ranges for each operation type
+- Settings save/load operations array properly
+- Requires at least one operation to be selected (validation)
 
 ---
 

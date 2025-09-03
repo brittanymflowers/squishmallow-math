@@ -29,6 +29,7 @@ class SquishCollectorApp {
       difficulty: 'medium',
       gameLength: 10,
       livesEnabled: true,
+      operations: ['multiplication'], // Story 5.2: Default to multiplication only
     };
 
     this.loadSettings();
@@ -873,6 +874,7 @@ class SquishCollectorApp {
     this.gameState.targetScore = this.settings.gameLength;
     if (this.mathEngine) {
       this.mathEngine.setDifficulty(this.settings.difficulty);
+      this.mathEngine.setOperations(this.settings.operations);
     }
   }
   
@@ -882,6 +884,7 @@ class SquishCollectorApp {
     this.gameState.targetScore = this.settings.gameLength;
     if (this.mathEngine) {
       this.mathEngine.setDifficulty(this.settings.difficulty);
+      this.mathEngine.setOperations(this.settings.operations);
     }
   }
   
@@ -917,6 +920,15 @@ class SquishCollectorApp {
     if (livesCheckbox) {
       livesCheckbox.checked = this.settings.livesEnabled;
     }
+    
+    // Set operation checkboxes (Story 5.2)
+    const operations = ['addition', 'subtraction', 'multiplication', 'division'];
+    operations.forEach(op => {
+      const checkbox = document.getElementById(`operation-${op}`);
+      if (checkbox) {
+        checkbox.checked = this.settings.operations.includes(op);
+      }
+    });
   }
   
   saveSettingsAndReturn() {
@@ -937,6 +949,23 @@ class SquishCollectorApp {
     if (livesCheckbox) {
       this.settings.livesEnabled = livesCheckbox.checked;
     }
+    
+    // Get operation settings (Story 5.2)
+    const operations = [];
+    ['addition', 'subtraction', 'multiplication', 'division'].forEach(op => {
+      const checkbox = document.getElementById(`operation-${op}`);
+      if (checkbox && checkbox.checked) {
+        operations.push(op);
+      }
+    });
+    
+    // Ensure at least one operation is selected
+    if (operations.length === 0) {
+      this.showFeedback("Please select at least one math operation! 🧮", "error");
+      return;
+    }
+    
+    this.settings.operations = operations;
     
     this.saveSettings();
     this.showFeedback("Settings saved! 💾", "success");
