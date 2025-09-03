@@ -269,8 +269,9 @@ class SquishCollectorApp {
 
     if (result === "success") {
       // Story 4.3: Award a new Squishmallow
-      const awardedSquishmallow = this.collectionManager.awardRandomSquishmallow();
-      
+      const awardedSquishmallow =
+        this.collectionManager.awardRandomSquishmallow();
+
       // Update success screen with the earned Squishmallow
       this.updateSuccessScreenStats(awardedSquishmallow);
       this.showScreen("success-screen");
@@ -303,19 +304,25 @@ class SquishCollectorApp {
 
     // Story 4.3: Update success screen with earned Squishmallow
     if (awardedSquishmallow) {
-      const squishImage = document.querySelector('#success-screen .earned-squishmallow');
-      const squishName = document.querySelector('#success-screen .squishmallow-name');
-      const squishSquad = document.querySelector('#success-screen .squishmallow-squad');
-      
+      const squishImage = document.querySelector(
+        "#success-screen .earned-squishmallow"
+      );
+      const squishName = document.querySelector(
+        "#success-screen .squishmallow-name"
+      );
+      const squishSquad = document.querySelector(
+        "#success-screen .squishmallow-squad"
+      );
+
       if (squishImage) {
         squishImage.src = awardedSquishmallow.image_url;
         squishImage.alt = awardedSquishmallow.name;
       }
-      
+
       if (squishName) {
         squishName.textContent = awardedSquishmallow.name;
       }
-      
+
       if (squishSquad) {
         squishSquad.textContent = awardedSquishmallow.squad;
       }
@@ -632,9 +639,11 @@ class SquishCollectorApp {
   // Story 4.2: Setup collection screen
   setupCollectionScreen() {
     // Collection screen - return to dashboard button
-    const collectionDashboardBtn = document.getElementById('collection-dashboard-btn');
+    const collectionDashboardBtn = document.getElementById(
+      "collection-dashboard-btn"
+    );
     if (collectionDashboardBtn) {
-      collectionDashboardBtn.addEventListener('click', () => {
+      collectionDashboardBtn.addEventListener("click", () => {
         this.showDashboard();
       });
     }
@@ -646,24 +655,26 @@ class SquishCollectorApp {
   showCollectionScreen() {
     this.populateCollectionGrid();
     this.updateCollectionStats();
-    this.showScreen('collection-screen');
+    this.showScreen("collection-screen");
   }
 
   populateCollectionGrid() {
-    const collectionGrid = document.getElementById('collection-grid');
+    const collectionGrid = document.getElementById("collection-grid");
     if (!collectionGrid || !this.collectionManager.squishmallows) {
       console.log("⏳ Collection data not ready yet");
       return;
     }
 
-    collectionGrid.innerHTML = '';
+    collectionGrid.innerHTML = "";
 
-    this.collectionManager.squishmallows.forEach(squishmallow => {
+    this.collectionManager.squishmallows.forEach((squishmallow) => {
       const isCollected = this.collectionManager.isCollected(squishmallow.id);
-      
-      const card = document.createElement('div');
-      card.className = `squishmallow-card ${isCollected ? 'collected' : 'locked'}`;
-      
+
+      const card = document.createElement("div");
+      card.className = `squishmallow-card ${
+        isCollected ? "collected" : "locked"
+      }`;
+
       if (isCollected) {
         card.innerHTML = `
           <img src="${squishmallow.image_url}" alt="${squishmallow.name}" class="squishmallow-image" />
@@ -677,21 +688,22 @@ class SquishCollectorApp {
           <p class="squishmallow-squad">Keep playing to unlock!</p>
         `;
       }
-      
+
       collectionGrid.appendChild(card);
     });
   }
 
   updateCollectionStats() {
     const stats = this.collectionManager.getCollectionStats();
-    
-    const collectedElement = document.getElementById('collected-count');
-    const totalElement = document.getElementById('total-count');
-    const percentageElement = document.getElementById('completion-percentage');
-    
+
+    const collectedElement = document.getElementById("collected-count");
+    const totalElement = document.getElementById("total-count");
+    const percentageElement = document.getElementById("completion-percentage");
+
     if (collectedElement) collectedElement.textContent = stats.collected;
     if (totalElement) totalElement.textContent = stats.total;
-    if (percentageElement) percentageElement.textContent = `${stats.percentage}%`;
+    if (percentageElement)
+      percentageElement.textContent = `${stats.percentage}%`;
   }
 
   addNumberToInput(number) {

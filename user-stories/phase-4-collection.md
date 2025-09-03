@@ -114,6 +114,8 @@ Implement the Squishmallow collection feature with data persistence, reward syst
 - Parent progress view provides meaningful insights
 - Data display is accurate and easy to understand
 
+**Status:** 🚫 **DEFERRED TO [PHASE 7](./phase-7-advanced-features.md)** - Focus on core collection features first
+
 ---
 
 ### Story 4.6: Test Collection Features
@@ -124,20 +126,20 @@ Implement the Squishmallow collection feature with data persistence, reward syst
 
 **Acceptance Criteria:**
 
-- [ ] Can earn Squishmallows by completing games
-- [ ] Collection screen accurately displays earned items
-- [ ] Progress persists between app sessions
-- [ ] Collection fills up appropriately over multiple games
-- [ ] No crashes or data corruption
+- [x] Can earn Squishmallows by completing games
+- [x] Collection screen accurately displays earned items
+- [x] Progress persists between app sessions
+- [x] Collection fills up appropriately over multiple games
+- [x] No crashes or data corruption
 
 **Definition of Done:**
 
-- Collection system is stable and engaging
-- Ready to add settings and customization features
+- Collection system is stable and engaging ✅
+- Ready to add settings and customization features ✅
 
 ---
 
-## Phase Status: ⏳ Not Started
+## Phase Status: ✅ COMPLETED (Stories 4.1-4.4, 4.6 Complete; 4.5 Deferred)
 
 **Previous Phase:** [Phase 3: Game Flow & Progress](./phase-3-game-flow.md)  
 **Next Phase:** [Phase 5: Settings & Customization](./phase-5-settings.md)
