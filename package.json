@@ -2,14 +2,14 @@
   "name": "squishmallow-collector",
   "version": "1.0.0",
   "description": "Math learning game for kids featuring Squishmallow collection",
-  "main": "main.js",
+  "main": "src/index.html",
   "scripts": {
-    "start": "electron .",
-    "dev": "electron . --dev",
+    "start": "npx http-server . -p 8080 -o /src/index.html",
+    "dev": "npx http-server . -p 8080 -o /src/index.html",
     "test": "echo 'Testing framework to be added in later phases'"
   },
   "keywords": [
-    "electron",
+    "web",
     "education",
     "math",
     "kids",
@@ -18,11 +18,5 @@
     "multiplication"
   ],
   "author": "Squishmallow Math Team",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^27.0.0"
-  },
-  "engines": {
-    "node": ">=16.0.0"
-  }
+  "license": "MIT"
 }

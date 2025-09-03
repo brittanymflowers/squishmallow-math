@@ -121,11 +121,7 @@ class SquishCollectorApp {
           }
           break;
         case "F12":
-          // Toggle developer tools (if in dev mode)
-          if (process.argv && process.argv.includes("--dev")) {
-            const { remote } = require("electron");
-            remote.getCurrentWindow().webContents.toggleDevTools();
-          }
+          // Developer tools handled by browser
           break;
       }
     });
@@ -367,27 +363,46 @@ class SquishCollectorApp {
 
     // Story 4.3: Update success screen with earned Squishmallow
     if (awardedSquishmallow) {
-      const squishImage = document.querySelector(
-        "#success-screen .earned-squishmallow"
-      );
-      const squishName = document.querySelector(
-        "#success-screen .squishmallow-name"
-      );
-      const squishSquad = document.querySelector(
-        "#success-screen .squishmallow-squad"
-      );
+      const squishImage = document.getElementById("earned-squishmallow-image");
+      const squishName = document.getElementById("earned-squishmallow-name");
+      const squishSquad = document.getElementById("earned-squad");
+      const squishDescription = document.getElementById("earned-description");
+
+      console.log("🎁 Updating success screen with:", awardedSquishmallow);
 
       if (squishImage) {
         squishImage.src = awardedSquishmallow.image_url;
         squishImage.alt = awardedSquishmallow.name;
+        console.log("🖼️ Updated image src to:", awardedSquishmallow.image_url);
+        
+        // Add error handling for broken images
+        squishImage.onerror = () => {
+          console.warn("⚠️ Failed to load image, using fallback");
+          squishImage.style.background = "linear-gradient(135deg, #9B59B6, #E91E63)";
+          squishImage.innerHTML = '<i data-lucide="heart" style="color: white; font-size: 60px;"></i>';
+          this.updateIcons();
+        };
+        
+        // Clear any fallback content when image loads successfully
+        squishImage.onload = () => {
+          squishImage.innerHTML = "";
+          squishImage.style.background = "rgba(255, 255, 255, 0.5)";
+        };
       }
 
       if (squishName) {
         squishName.textContent = awardedSquishmallow.name;
+        console.log("📛 Updated name to:", awardedSquishmallow.name);
       }
 
       if (squishSquad) {
         squishSquad.textContent = awardedSquishmallow.squad;
+        console.log("👥 Updated squad to:", awardedSquishmallow.squad);
+      }
+
+      if (squishDescription) {
+        squishDescription.textContent = awardedSquishmallow.description || "A wonderful new friend to add to your collection!";
+        console.log("📝 Updated description to:", awardedSquishmallow.description);
       }
     }
   }
@@ -672,6 +687,17 @@ class SquishCollectorApp {
     if (successDashboardBtn) {
       successDashboardBtn.addEventListener("click", () => {
         this.showDashboard();
+        this.resetGameState();
+      });
+    }
+
+    // Success screen - view collection button
+    const successCollectionBtn = document.getElementById(
+      "success-collection-btn"
+    );
+    if (successCollectionBtn) {
+      successCollectionBtn.addEventListener("click", () => {
+        this.showCollectionScreen();
         this.resetGameState();
       });
     }
