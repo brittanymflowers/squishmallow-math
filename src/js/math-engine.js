@@ -26,7 +26,7 @@ class MathEngine {
     const maxTable = this.numberRanges.multiplication;
     const tableNumber = this.getRandomNumber(0, 12); // Multiply by 0 through 12
     const factor = this.getRandomNumber(1, maxTable); // Up to the highest times table
-    
+
     // Randomly decide which factor comes first for variety
     const factor1 = Math.random() < 0.5 ? tableNumber : factor;
     const factor2 = factor1 === tableNumber ? factor : tableNumber;
@@ -144,11 +144,11 @@ class MathEngine {
     const maxTable = this.numberRanges.multiplication;
     const tableNumber = this.getRandomNumber(1, 12); // Divide by 1 through 12 (avoid 0)
     const factor = this.getRandomNumber(1, maxTable); // Up to the highest times table
-    
+
     // Create division problem: (factor × tableNumber) ÷ factor = tableNumber
     // or (factor × tableNumber) ÷ tableNumber = factor
     const dividend = factor * tableNumber;
-    
+
     // Randomly decide which factor to divide by (both are safe since neither is 0)
     const divisor = Math.random() < 0.5 ? factor : tableNumber;
     const quotient = dividend / divisor;
@@ -208,7 +208,7 @@ class MathEngine {
 
     const result = {
       isCorrect: isCorrect,
-      feedback: isCorrect ? "Excellent! 🎉" : "Try again! You've got this! 💪",
+      feedback: isCorrect ? "Excellent!" : "Try again! You've got this!",
       type: isCorrect ? "success" : "retry",
       correctAnswer: this.currentProblem.answer,
       problemId: this.currentProblem.id,

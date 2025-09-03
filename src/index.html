@@ -6,9 +6,9 @@
     <title>Squishmallow Collector - Math Adventure</title>
 
     <!-- Preload critical fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <!-- Google Fonts for child-friendly typography -->
     <link
       href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Quicksand:wght@300;400;500;600;700&display=swap"
@@ -83,26 +83,26 @@
         <div class="game-content">
           <!-- Game Header -->
           <div class="game-header">
-            <button id="back-to-dashboard-btn" class="back-button">
-              <i data-lucide="home"></i>
-              <span class="button-text">Back to Dashboard</span>
+            <button
+              id="back-to-dashboard-btn"
+              class="dashboard-button secondary"
+            >
+              <span class="button-icon"><i data-lucide="home"></i></span>
+              <span class="button-text">Return to Dashboard</span>
             </button>
-            <div class="game-progress">
-              <span class="progress-text"
-                >Problem <span id="problem-number">1</span></span
-              >
-            </div>
           </div>
 
           <!-- Left Column: Problem and Progress -->
           <div class="game-left-column">
             <!-- Squishmallow Progress Indicator -->
             <div class="squishmallow-progress">
-              <div class="squishmallow-outline">
-                <div class="squishmallow-fill" id="squishmallow-fill"></div>
-              </div>
               <div class="progress-stats">
-                <div class="progress-text" id="progress-text">0 / 10 correct</div>
+                <div class="progress-encouragement" id="progress-encouragement">
+                  Great job!
+                </div>
+                <div class="progress-text" id="progress-text">
+                  0 out of 10 complete!
+                </div>
                 <div class="lives-container" id="lives-container">
                   <span class="lives-label">Lives:</span>
                   <div class="lives-display" id="lives-display">
@@ -123,19 +123,22 @@
                     ></i>
                   </div>
                 </div>
-                <!-- Timer Display (Story 5.4) -->
-                <div
-                  class="timer-container"
-                  id="timer-container"
-                  style="display: none"
-                >
-                  <span class="timer-label">Time:</span>
-                  <div class="timer-display" id="timer-display">
-                    <span class="timer-minutes">5</span>:<span
-                      class="timer-seconds"
-                      >00</span
-                    >
-                  </div>
+              </div>
+              <div class="squishmallow-outline">
+                <div class="squishmallow-fill" id="squishmallow-fill"></div>
+              </div>
+              <!-- Timer Display (Story 5.4) -->
+              <div
+                class="timer-container"
+                id="timer-container"
+                style="display: none"
+              >
+                <span class="timer-label">Time:</span>
+                <div class="timer-display" id="timer-display">
+                  <span class="timer-minutes">5</span>:<span
+                    class="timer-seconds"
+                    >00</span
+                  >
                 </div>
               </div>
             </div>
@@ -219,9 +222,13 @@
                 alt="Luna the Cat"
                 class="mascot-image earned-squishmallow"
               />
-              <h3 id="earned-squishmallow-name" class="squishmallow-name">Luna the Cat</h3>
+              <h3 id="earned-squishmallow-name" class="squishmallow-name">
+                Luna the Cat
+              </h3>
               <p id="earned-squad" class="squishmallow-squad">Magical Squad</p>
-              <p id="earned-description" class="squishmallow-description">A wonderful new friend to add to your collection!</p>
+              <p id="earned-description" class="squishmallow-description">
+                A wonderful new friend to add to your collection!
+              </p>
             </div>
           </div>
 
@@ -241,7 +248,10 @@
               <span class="button-icon"><i data-lucide="home"></i></span>
               <span class="button-text">Return to Dashboard</span>
             </button>
-            <button class="dashboard-button secondary" id="success-collection-btn">
+            <button
+              class="dashboard-button secondary"
+              id="success-collection-btn"
+            >
               <span class="button-icon"><i data-lucide="book-open"></i></span>
               <span class="button-text">View Collection</span>
             </button>
@@ -309,7 +319,7 @@
     <div class="screen" id="collection-screen">
       <div class="screen-container">
         <div class="collection-content">
-          <div class="collection-header">
+          <div class="collection-title-section">
             <h1 class="collection-title">
               <i data-lucide="book-open"></i> My Squishmallow Collection
             </h1>
@@ -319,6 +329,14 @@
           </div>
 
           <div class="collection-stats">
+            <button
+              class="dashboard-button secondary collection-back-btn"
+              id="collection-dashboard-btn"
+            >
+              <span class="button-icon"><i data-lucide="home"></i></span>
+              <span class="button-text">Return to Dashboard</span>
+            </button>
+
             <div class="stat-badge">
               <span class="stat-number" id="collected-count">0</span>
               <span class="stat-label">Collected</span>
@@ -336,14 +354,6 @@
           <div class="collection-grid" id="collection-grid">
             <!-- Squishmallows will be populated by JavaScript -->
           </div>
-
-          <button
-            class="dashboard-button primary"
-            id="collection-dashboard-btn"
-          >
-            <span class="button-icon"><i data-lucide="home"></i></span>
-            <span class="button-text">Return to Dashboard</span>
-          </button>
         </div>
       </div>
     </div>
@@ -362,7 +372,6 @@
           </div>
 
           <div class="settings-form">
-
             <div class="setting-section">
               <h3><i data-lucide="calculator"></i> Math Operations</h3>
               <div class="setting-group">
@@ -421,7 +430,8 @@
                     />
                   </label>
                   <p class="setting-description">
-                    Practices times tables up to this number (e.g., 8 = 0×8 through 12×8)
+                    Practices times tables up to this number (e.g., 8 = 0×8
+                    through 12×8)
                   </p>
                 </div>
 

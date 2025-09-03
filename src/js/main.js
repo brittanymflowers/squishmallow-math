@@ -276,18 +276,28 @@ class SquishCollectorApp {
   updateProgressBar() {
     const squishmallowFill = document.getElementById("squishmallow-fill");
     const progressText = document.getElementById("progress-text");
+    const progressEncouragement = document.getElementById("progress-encouragement");
 
     if (squishmallowFill && progressText) {
       const percentage =
         (this.gameState.correctAnswers / this.gameState.targetScore) * 100;
 
-      // Update Squishmallow fill height
-      squishmallowFill.style.height = `${Math.min(percentage, 100)}%`;
+      // Update progress bar width
+      squishmallowFill.style.width = `${Math.min(percentage, 100)}%`;
 
       // Add animation class for smooth filling
       squishmallowFill.classList.add("animate");
 
-      progressText.textContent = `${this.gameState.correctAnswers} / ${this.gameState.targetScore} correct`;
+      progressText.textContent = `${this.gameState.correctAnswers} out of ${this.gameState.targetScore} complete!`;
+    }
+
+    // Update encouragement text - only show "Great job!" after correct answers
+    if (progressEncouragement) {
+      if (this.gameState.correctAnswers > 0) {
+        progressEncouragement.textContent = "Great job!";
+      } else {
+        progressEncouragement.textContent = "You can do it!";
+      }
     }
   }
 
@@ -559,6 +569,12 @@ class SquishCollectorApp {
       console.log(`📝 Displaying problem: ${problem.displayText}`);
     }
 
+    // Clear any previous visual state from problem display
+    const problemDisplay = document.querySelector(".problem-display");
+    if (problemDisplay) {
+      problemDisplay.classList.remove("correct", "incorrect");
+    }
+
     // Story 2.5: Update problem counter
     this.gameState.problemCount++;
     const problemNumberElement = document.getElementById("problem-number");
@@ -566,10 +582,11 @@ class SquishCollectorApp {
       problemNumberElement.textContent = this.gameState.problemCount;
     }
 
-    // Clear any previous answer
+    // Clear any previous answer and re-enable input
     const answerInput = document.getElementById("answer-input");
     if (answerInput) {
       answerInput.value = "";
+      answerInput.disabled = false;
     }
 
     // Reset submit button state
@@ -915,7 +932,7 @@ class SquishCollectorApp {
       } else {
         // Provide feedback when input limit reached
         this.showFeedback(
-          "That's enough numbers! Try submitting your answer 😊",
+          "That's enough numbers! Try submitting your answer",
           "info"
         );
       }
@@ -978,6 +995,11 @@ class SquishCollectorApp {
       const validation = this.mathEngine.validateAnswer(userAnswer);
 
       const problemDisplay = document.querySelector(".problem-display");
+      
+      // Disable input immediately after submission
+      if (answerInput) {
+        answerInput.disabled = true;
+      }
       
       if (validation.isCorrect) {
         // Add green success background
