@@ -298,6 +298,75 @@
       </div>
     </div>
 
+    <!-- Settings Screen -->
+    <div class="screen" id="settings-screen">
+      <div class="screen-container">
+        <div class="settings-content">
+          <div class="settings-header">
+            <h1 class="settings-title">⚙️ Game Settings</h1>
+            <p class="settings-subtitle">Customize the game for your child's learning level</p>
+          </div>
+
+          <div class="settings-form">
+            <div class="setting-section">
+              <h3>🎯 Difficulty Level</h3>
+              <div class="setting-group">
+                <label class="setting-label">
+                  <input type="radio" name="difficulty" value="easy" checked>
+                  <span class="radio-label">Easy (1-5 tables)</span>
+                </label>
+                <label class="setting-label">
+                  <input type="radio" name="difficulty" value="medium">
+                  <span class="radio-label">Medium (1-8 tables)</span>
+                </label>
+                <label class="setting-label">
+                  <input type="radio" name="difficulty" value="hard">
+                  <span class="radio-label">Hard (1-12 tables)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-section">
+              <h3>🕒 Game Length</h3>
+              <div class="setting-group">
+                <label class="setting-label">
+                  Problems to complete:
+                  <select id="game-length-select">
+                    <option value="5">5 problems</option>
+                    <option value="10" selected>10 problems</option>
+                    <option value="15">15 problems</option>
+                    <option value="20">20 problems</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-section">
+              <h3>❤️ Lives System</h3>
+              <div class="setting-group">
+                <label class="setting-label">
+                  <input type="checkbox" id="lives-enabled" checked>
+                  <span class="checkbox-label">Enable 3-lives system</span>
+                </label>
+                <p class="setting-description">When disabled, students can keep trying until they succeed</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-buttons">
+            <button class="dashboard-button secondary" id="settings-cancel-btn">
+              <span class="button-icon">❌</span>
+              <span class="button-text">Cancel</span>
+            </button>
+            <button class="dashboard-button primary" id="settings-save-btn">
+              <span class="button-icon">💾</span>
+              <span class="button-text">Save Settings</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- JavaScript Files -->
     <!-- Load MathEngine first (Story 2.1) -->
     <script src="js/math-engine.js"></script>

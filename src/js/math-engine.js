@@ -131,6 +131,20 @@ class MathEngine {
   }
 
   /**
+   * Sets the difficulty level for problem generation
+   * @param {string} difficulty - Difficulty level: 'easy', 'medium', or 'hard'
+   */
+  setDifficulty(difficulty) {
+    const validDifficulties = ['easy', 'medium', 'hard'];
+    if (validDifficulties.includes(difficulty)) {
+      this.difficulty = difficulty;
+      console.log(`🎯 Math Engine difficulty set to: ${difficulty}`);
+    } else {
+      console.warn(`⚠️ Invalid difficulty "${difficulty}". Using "${this.difficulty}"`);
+    }
+  }
+
+  /**
    * Gets problem statistics for the current difficulty
    * @returns {Object} Statistics about problem ranges
    */

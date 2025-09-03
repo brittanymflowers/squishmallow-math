@@ -24,6 +24,15 @@ class SquishCollectorApp {
       maxLives: 3,
     };
 
+    // Story 5.1: Settings system
+    this.settings = {
+      difficulty: 'medium',
+      gameLength: 10,
+      livesEnabled: true,
+    };
+
+    this.loadSettings();
+
     // Prevent double-click issues
     this.lastClickTime = 0;
     this.clickDebounceMs = 200; // 200ms debounce
@@ -48,6 +57,9 @@ class SquishCollectorApp {
 
     // Setup success/failure screen buttons (Story 3.3)
     this.setupEndGameScreens();
+
+    // Setup settings screen (Story 5.1)
+    this.setupSettingsScreen();
 
     // Setup collection screen buttons (Story 4.2)
     this.setupCollectionScreen();
@@ -214,8 +226,8 @@ class SquishCollectorApp {
 
   handleSettings() {
     console.log("⚙️ Settings clicked!");
-    // TODO: Implement in Phase 5 - Settings system
-    this.showFeedback("Opening settings... (Coming in Phase 5!)", "info");
+    this.showScreen('settings-screen');
+    this.populateSettingsForm();
   }
 
   // Story 3.1: Progress tracking methods
@@ -233,6 +245,21 @@ class SquishCollectorApp {
 
   // Story 3.2: Lives system methods
   updateLivesDisplay() {
+    const livesContainer = document.getElementById('lives-container');
+    
+    // Hide lives display if lives are disabled
+    if (!this.settings.livesEnabled) {
+      if (livesContainer) {
+        livesContainer.style.display = 'none';
+      }
+      return;
+    }
+    
+    // Show lives display if lives are enabled
+    if (livesContainer) {
+      livesContainer.style.display = 'flex';
+    }
+    
     for (let i = 1; i <= this.gameState.maxLives; i++) {
       const lifeIcon = document.getElementById(`life-${i}`);
       if (lifeIcon) {
@@ -248,6 +275,11 @@ class SquishCollectorApp {
   }
 
   loseLife() {
+    // If lives are disabled, don't lose lives or end the game
+    if (!this.settings.livesEnabled) {
+      return;
+    }
+    
     if (this.gameState.lives > 0) {
       this.gameState.lives--;
       this.updateLivesDisplay();
@@ -827,6 +859,90 @@ class SquishCollectorApp {
         `📊 Game Stats: ${this.gameState.correctAnswers}/${this.gameState.problemCount} correct`
       );
     }
+  }
+
+  // Story 5.1: Settings System Methods
+  
+  loadSettings() {
+    const savedSettings = localStorage.getItem('squishCollectorSettings');
+    if (savedSettings) {
+      this.settings = { ...this.settings, ...JSON.parse(savedSettings) };
+    }
+    
+    // Update game state based on settings
+    this.gameState.targetScore = this.settings.gameLength;
+    if (this.mathEngine) {
+      this.mathEngine.setDifficulty(this.settings.difficulty);
+    }
+  }
+  
+  saveSettings() {
+    localStorage.setItem('squishCollectorSettings', JSON.stringify(this.settings));
+    // Update game state
+    this.gameState.targetScore = this.settings.gameLength;
+    if (this.mathEngine) {
+      this.mathEngine.setDifficulty(this.settings.difficulty);
+    }
+  }
+  
+  setupSettingsScreen() {
+    // Save settings button
+    const saveBtn = document.getElementById('settings-save-btn');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => this.saveSettingsAndReturn());
+    }
+    
+    // Cancel settings button
+    const cancelBtn = document.getElementById('settings-cancel-btn');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => this.showScreen('dashboard-screen'));
+    }
+  }
+  
+  populateSettingsForm() {
+    // Set difficulty radio button
+    const difficultyRadio = document.querySelector(`input[name="difficulty"][value="${this.settings.difficulty}"]`);
+    if (difficultyRadio) {
+      difficultyRadio.checked = true;
+    }
+    
+    // Set game length dropdown
+    const gameLengthSelect = document.getElementById('game-length-select');
+    if (gameLengthSelect) {
+      gameLengthSelect.value = this.settings.gameLength.toString();
+    }
+    
+    // Set lives checkbox
+    const livesCheckbox = document.getElementById('lives-enabled');
+    if (livesCheckbox) {
+      livesCheckbox.checked = this.settings.livesEnabled;
+    }
+  }
+  
+  saveSettingsAndReturn() {
+    // Get difficulty setting
+    const difficultyRadio = document.querySelector('input[name="difficulty"]:checked');
+    if (difficultyRadio) {
+      this.settings.difficulty = difficultyRadio.value;
+    }
+    
+    // Get game length setting
+    const gameLengthSelect = document.getElementById('game-length-select');
+    if (gameLengthSelect) {
+      this.settings.gameLength = parseInt(gameLengthSelect.value);
+    }
+    
+    // Get lives setting
+    const livesCheckbox = document.getElementById('lives-enabled');
+    if (livesCheckbox) {
+      this.settings.livesEnabled = livesCheckbox.checked;
+    }
+    
+    this.saveSettings();
+    this.showFeedback("Settings saved! 💾", "success");
+    setTimeout(() => {
+      this.showScreen('dashboard-screen');
+    }, 1000);
   }
 }
 
