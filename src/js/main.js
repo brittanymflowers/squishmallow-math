@@ -30,11 +30,12 @@ class SquishCollectorApp {
 
     // Story 5.1: Settings system
     this.settings = {
-      difficulty: "medium",
       gameLength: 10,
       livesEnabled: true,
       operations: ["multiplication"], // Story 5.2: Default to multiplication only
       timerSeconds: null, // Story 5.4: Timer setting (null = no timer)
+      multRange: 12, // Highest times table for multiplication/division
+      addRange: "tens", // Number size for addition/subtraction
     };
 
     this.loadSettings();
@@ -499,13 +500,17 @@ class SquishCollectorApp {
   testMathEngine() {
     console.log("🧪 Testing Math Engine...");
 
-    // Test different difficulty levels
-    const difficulties = ["easy", "medium", "hard"];
-    difficulties.forEach((level) => {
-      this.mathEngine.setDifficulty(level);
+    // Test different number ranges
+    const ranges = [
+      { multiplication: 5, addition: "ones" },
+      { multiplication: 8, addition: "tens" },
+      { multiplication: 12, addition: "hundreds" }
+    ];
+    ranges.forEach((range) => {
+      this.mathEngine.setNumberRanges(range);
       const problem = this.mathEngine.generateNewProblem();
       console.log(
-        `${level.toUpperCase()}: ${problem.displayText} = ${problem.answer}`
+        `Range ${range.multiplication}: ${problem.displayText} = ${problem.answer}`
       );
     });
 
@@ -994,8 +999,11 @@ class SquishCollectorApp {
     // Update game state based on settings
     this.gameState.targetScore = this.settings.gameLength;
     if (this.mathEngine) {
-      this.mathEngine.setDifficulty(this.settings.difficulty);
       this.mathEngine.setOperations(this.settings.operations);
+      this.mathEngine.setNumberRanges({
+        multiplication: this.settings.multRange,
+        addition: this.settings.addRange
+      });
     }
   }
 
@@ -1007,8 +1015,11 @@ class SquishCollectorApp {
     // Update game state
     this.gameState.targetScore = this.settings.gameLength;
     if (this.mathEngine) {
-      this.mathEngine.setDifficulty(this.settings.difficulty);
       this.mathEngine.setOperations(this.settings.operations);
+      this.mathEngine.setNumberRanges({
+        multiplication: this.settings.multRange,
+        addition: this.settings.addRange
+      });
     }
   }
 
@@ -1110,12 +1121,16 @@ class SquishCollectorApp {
   }
 
   populateSettingsForm() {
-    // Set difficulty radio button
-    const difficultyRadio = document.querySelector(
-      `input[name="difficulty"][value="${this.settings.difficulty}"]`
-    );
-    if (difficultyRadio) {
-      difficultyRadio.checked = true;
+    // Set multiplication range
+    const multRange = document.getElementById("mult-range");
+    if (multRange) {
+      multRange.value = this.settings.multRange || 12;
+    }
+
+    // Set addition range
+    const addRange = document.getElementById("add-range");
+    if (addRange) {
+      addRange.value = this.settings.addRange || "tens";
     }
 
     // Set game length dropdown
@@ -1153,12 +1168,16 @@ class SquishCollectorApp {
   }
 
   saveSettingsAndReturn() {
-    // Get difficulty setting
-    const difficultyRadio = document.querySelector(
-      'input[name="difficulty"]:checked'
-    );
-    if (difficultyRadio) {
-      this.settings.difficulty = difficultyRadio.value;
+    // Get multiplication range setting
+    const multRange = document.getElementById("mult-range");
+    if (multRange) {
+      this.settings.multRange = parseInt(multRange.value) || 12;
+    }
+
+    // Get addition range setting
+    const addRange = document.getElementById("add-range");
+    if (addRange) {
+      this.settings.addRange = addRange.value || "tens";
     }
 
     // Get game length setting

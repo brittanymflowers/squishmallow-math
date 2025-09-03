@@ -22,10 +22,14 @@ class MathEngine {
    * @returns {Object} Problem object with question, answer, and metadata
    */
   generateMultiplicationProblem() {
-    // Use custom range if available, otherwise fall back to difficulty-based ranges
-    const maxNumber = this.numberRanges.multiplication;
-    const factor1 = this.getRandomNumber(1, maxNumber);
-    const factor2 = this.getRandomNumber(1, maxNumber);
+    // Times table logic: one factor is the table number (0-12), other is the highest table
+    const maxTable = this.numberRanges.multiplication;
+    const tableNumber = this.getRandomNumber(0, 12); // Multiply by 0 through 12
+    const factor = this.getRandomNumber(1, maxTable); // Up to the highest times table
+    
+    // Randomly decide which factor comes first for variety
+    const factor1 = Math.random() < 0.5 ? tableNumber : factor;
+    const factor2 = factor1 === tableNumber ? factor : tableNumber;
     const answer = factor1 * factor2;
 
     const problem = {
