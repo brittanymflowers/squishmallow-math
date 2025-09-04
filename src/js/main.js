@@ -15,6 +15,7 @@ class SquishCollectorApp {
     this.gameState = {
       problemCount: 0,
       correctAnswers: 0,
+      totalAttempts: 0,
       startTime: null,
       isGameActive: false,
       // Story 3.1: Progress tracking
@@ -400,12 +401,15 @@ class SquishCollectorApp {
 
     if (accuracyElement) {
       const accuracy =
-        this.gameState.problemCount > 0
+        this.gameState.totalAttempts > 0
           ? Math.round(
-              (this.gameState.correctAnswers / this.gameState.problemCount) *
+              (this.gameState.correctAnswers / this.gameState.totalAttempts) *
                 100
             )
           : 100;
+      console.log(
+        `🏆 Final Accuracy: ${this.gameState.correctAnswers}/${this.gameState.totalAttempts} = ${accuracy}%`
+      );
       accuracyElement.textContent = `${accuracy}%`;
     }
 
@@ -493,6 +497,7 @@ class SquishCollectorApp {
   resetGameState() {
     this.gameState.correctAnswers = 0;
     this.gameState.problemCount = 0;
+    this.gameState.totalAttempts = 0;
     this.gameState.lives = this.gameState.maxLives;
     this.gameState.startTime = null;
     this.updateProgressBar();
@@ -1049,6 +1054,9 @@ class SquishCollectorApp {
 
       // Story 2.4: Validate answer using MathEngine
       const validation = this.mathEngine.validateAnswer(userAnswer);
+      
+      // Track total attempts for accuracy calculation
+      this.gameState.totalAttempts++;
 
       const problemDisplay = document.querySelector(".problem-display");
 
@@ -1109,7 +1117,7 @@ class SquishCollectorApp {
         `✅ Answer validation: ${userAnswer} -> ${validation.feedback}`
       );
       console.log(
-        `📊 Game Stats: ${this.gameState.correctAnswers}/${this.gameState.problemCount} correct`
+        `📊 Game Stats: ${this.gameState.correctAnswers}/${this.gameState.totalAttempts} correct (${this.gameState.problemCount} problems shown)`
       );
     }
   }
