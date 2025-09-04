@@ -74,6 +74,12 @@
               <span class="button-subtitle">See your Squishmallows</span>
             </button>
 
+            <button id="create-studio-btn" class="dashboard-button creative">
+              <span class="button-icon"><i data-lucide="palette"></i></span>
+              <span class="button-text">Create Studio</span>
+              <span class="button-subtitle">Design your own Squishmallows!</span>
+            </button>
+
             <button id="settings-btn" class="dashboard-button tertiary">
               <span class="button-icon"><i data-lucide="settings"></i></span>
               <span class="button-text">Settings</span>
@@ -600,6 +606,100 @@
               <span class="button-icon"><i data-lucide="save"></i></span>
               <span class="button-text">Save Settings</span>
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Story 7.5: Creator Studio Screen -->
+    <div class="screen" id="create-studio-screen">
+      <div class="screen-container">
+        <div class="creator-content">
+          <div class="creator-header">
+            <button class="back-button" id="creator-back-btn">
+              <i data-lucide="arrow-left"></i> Back to Dashboard
+            </button>
+            <h1 class="creator-title">
+              <i data-lucide="palette"></i> Squishmallow Creator Studio
+            </h1>
+            <p class="creator-subtitle">
+              Design your own custom Squishmallows with colors, patterns, and special effects!
+            </p>
+          </div>
+
+          <div class="creator-workspace">
+            <!-- Canvas Area -->
+            <div class="canvas-section">
+              <div class="canvas-header">
+                <h3><i data-lucide="image"></i> Canvas</h3>
+                <div class="canvas-controls">
+                  <button id="undo-btn" class="tool-button" title="Undo">
+                    <i data-lucide="undo-2"></i>
+                  </button>
+                  <button id="redo-btn" class="tool-button" title="Redo">
+                    <i data-lucide="redo-2"></i>
+                  </button>
+                  <button id="clear-btn" class="tool-button danger" title="Clear Canvas">
+                    <i data-lucide="trash-2"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="canvas-container">
+                <canvas id="creator-canvas" width="400" height="400"></canvas>
+                <div id="template-overlay"></div>
+              </div>
+            </div>
+
+            <!-- Tools Panel -->
+            <div class="tools-section">
+              <div class="tool-panel">
+                <h3><i data-lucide="brush"></i> Templates</h3>
+                <div class="template-grid" id="template-grid">
+                  <!-- Templates will be populated by JavaScript -->
+                </div>
+              </div>
+
+              <div class="tool-panel">
+                <h3><i data-lucide="palette"></i> Colors</h3>
+                <div class="color-picker" id="color-picker">
+                  <!-- Colors will be populated by JavaScript -->
+                </div>
+              </div>
+
+              <div class="tool-panel">
+                <h3><i data-lucide="sparkles"></i> Patterns</h3>
+                <div class="pattern-selector" id="pattern-selector">
+                  <!-- Patterns will be populated by JavaScript -->
+                </div>
+              </div>
+
+              <div class="tool-panel">
+                <h3><i data-lucide="wand-2"></i> Special Effects</h3>
+                <div class="effects-selector" id="effects-selector">
+                  <!-- Effects will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="creator-actions">
+            <div class="creation-info">
+              <input
+                type="text"
+                id="creation-name"
+                placeholder="Name your creation..."
+                maxlength="20"
+                class="creation-name-input"
+              />
+            </div>
+            <div class="action-buttons">
+              <button class="creator-button secondary" id="save-draft-btn">
+                <i data-lucide="save"></i> Save Draft
+              </button>
+              <button class="creator-button primary" id="finish-creation-btn">
+                <i data-lucide="check"></i> Finish Creation
+              </button>
+            </div>
           </div>
         </div>
       </div>

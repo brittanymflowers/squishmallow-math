@@ -233,6 +233,18 @@ class SquishCollectorApp {
       });
     }
 
+    // Create Studio button
+    const createStudioBtn = document.getElementById("create-studio-btn");
+    if (createStudioBtn) {
+      createStudioBtn.addEventListener("click", () => this.handleCreateStudio());
+      createStudioBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          this.handleCreateStudio();
+        }
+      });
+    }
+
     // Settings button
     const settingsBtn = document.getElementById("settings-btn");
     if (settingsBtn) {
@@ -295,6 +307,19 @@ class SquishCollectorApp {
     console.log("⚙️ Settings clicked!");
     this.showScreen("settings-screen");
     this.populateSettingsForm();
+  }
+
+  // Story 7.5: Create Studio handler
+  handleCreateStudio() {
+    console.log("🎨 Create Studio clicked!");
+    this.showScreen("create-studio-screen");
+    this.initializeCreatorStudio();
+  }
+
+  initializeCreatorStudio() {
+    console.log("🎨 Initializing Creator Studio...");
+    // TODO: Initialize canvas, templates, colors, patterns, effects
+    // This will be implemented in the next steps
   }
 
   // Story 3.1: Progress tracking methods
