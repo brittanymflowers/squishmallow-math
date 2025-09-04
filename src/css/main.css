@@ -473,7 +473,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
   padding: 20px;
 }
 
@@ -517,7 +517,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: 15px 0;
+  margin: 5px 0;
   width: 100%;
 }
 
@@ -606,27 +606,47 @@ body {
   color: #ccc;
 }
 
+.timer-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
 .timer-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  font-size: 14px;
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--accent-lavender);
+  border-radius: 12px;
+  padding: 10px 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: fit-content;
 }
 
-.timer-label {
-  font-weight: 600;
+.timer-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--primary-blue);
+  flex-shrink: 0;
 }
 
 .timer-display {
+  font-family: var(--font-primary);
+  font-size: 22px;
   font-weight: 700;
-  color: var(--primary-purple);
+  color: var(--primary-blue);
+  line-height: 1;
 }
 
 .timer-warning {
-  color: #ff6b6b !important;
+  border-color: #ff6b6b;
+  background: rgba(255, 240, 240, 0.95);
 }
 
+.timer-warning .timer-icon,
 .timer-warning .timer-display {
   color: #ff6b6b !important;
 }
@@ -636,7 +656,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  padding: 5px 15px;
 }
 
 .problem-display {

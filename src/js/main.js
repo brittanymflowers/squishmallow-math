@@ -1336,11 +1336,11 @@ class SquishCollectorApp {
       this.updateTimerDisplay();
 
       // Check if time is running low (30 seconds or less)
-      const timerDisplay = document.getElementById("timer-display");
+      const timerContainer = document.getElementById("timer-container");
       if (this.gameState.timeRemaining <= 30) {
-        timerDisplay.classList.add("timer-warning");
+        timerContainer.classList.add("timer-warning");
       } else {
-        timerDisplay.classList.remove("timer-warning");
+        timerContainer.classList.remove("timer-warning");
       }
 
       if (this.gameState.timeRemaining === 0) {
@@ -1373,16 +1373,16 @@ class SquishCollectorApp {
   }
 
   showTimer() {
-    const timerContainer = document.getElementById("timer-container");
-    if (timerContainer) {
-      timerContainer.style.display = "block";
+    const timerWrapper = document.getElementById("timer-wrapper");
+    if (timerWrapper) {
+      timerWrapper.style.display = "flex";
     }
   }
 
   hideTimer() {
-    const timerContainer = document.getElementById("timer-container");
-    if (timerContainer) {
-      timerContainer.style.display = "none";
+    const timerWrapper = document.getElementById("timer-wrapper");
+    if (timerWrapper) {
+      timerWrapper.style.display = "none";
     }
   }
 
