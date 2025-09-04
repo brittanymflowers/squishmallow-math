@@ -90,6 +90,17 @@
               <span class="button-icon"><i data-lucide="home"></i></span>
               <span class="button-text">Return to Dashboard</span>
             </button>
+            
+            <button
+              id="game-mute-btn"
+              class="mute-button"
+              title="Toggle sound on/off"
+            >
+              <span class="button-icon">
+                <i data-lucide="volume-2" id="mute-icon-on"></i>
+                <i data-lucide="volume-x" id="mute-icon-off" style="display: none;"></i>
+              </span>
+            </button>
           </div>
 
           <!-- Left Column: Problem and Progress -->
@@ -124,9 +135,6 @@
                   </div>
                 </div>
               </div>
-              <div class="squishmallow-outline">
-                <div class="squishmallow-fill" id="squishmallow-fill"></div>
-              </div>
               <!-- Timer Display (Story 5.4) -->
               <div
                 class="timer-container"
@@ -140,6 +148,9 @@
                     >00</span
                   >
                 </div>
+              </div>
+              <div class="squishmallow-outline">
+                <div class="squishmallow-fill" id="squishmallow-fill"></div>
               </div>
             </div>
 
@@ -499,6 +510,53 @@
               </div>
             </div>
 
+            <div class="setting-section">
+              <h3><i data-lucide="volume-2"></i> Audio Settings</h3>
+              <div class="setting-group">
+                <label class="setting-label">
+                  <input type="checkbox" id="audio-enabled" checked />
+                  Enable sound effects
+                </label>
+                <p class="setting-description">
+                  Play sounds for correct answers, mistakes, and celebrations
+                </p>
+
+                <label class="setting-label">
+                  Sound volume:
+                  <input 
+                    type="range" 
+                    id="sound-volume" 
+                    min="0" 
+                    max="100" 
+                    value="50"
+                    class="volume-slider"
+                  />
+                  <span id="sound-volume-display">50%</span>
+                </label>
+
+                <label class="setting-label">
+                  <input type="checkbox" id="background-music-enabled" checked />
+                  Enable background music
+                </label>
+                <p class="setting-description">
+                  Play gentle background music during gameplay
+                </p>
+
+                <label class="setting-label">
+                  Music volume:
+                  <input 
+                    type="range" 
+                    id="music-volume" 
+                    min="0" 
+                    max="100" 
+                    value="30"
+                    class="volume-slider"
+                  />
+                  <span id="music-volume-display">30%</span>
+                </label>
+              </div>
+            </div>
+
             <div class="setting-section danger-section">
               <h3><i data-lucide="trash-2"></i> Reset Collection</h3>
               <div class="setting-group">
@@ -532,6 +590,8 @@
     <script src="js/math-engine.js"></script>
     <!-- Load Collection Manager (Story 4.1) -->
     <script src="js/collection-manager.js"></script>
+    <!-- Load Sound Manager (Story 6.2) -->
+    <script src="js/sound-manager.js"></script>
     <!-- Main Application -->
     <script src="js/main.js"></script>
 

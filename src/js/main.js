@@ -11,6 +11,9 @@ class SquishCollectorApp {
     // Initialize Collection Manager for Story 4.1
     this.collectionManager = new CollectionManager();
 
+    // Initialize Sound Manager for Story 6.2
+    this.soundManager = new SoundManager();
+
     // Story 2.5: Game state tracking
     this.gameState = {
       problemCount: 0,
@@ -250,6 +253,9 @@ class SquishCollectorApp {
     this.gameState.startTime = new Date();
     this.gameState.isGameActive = true;
 
+    // Story 6.2: Start background music for gameplay
+    this.soundManager.startBackgroundMusic();
+
     // Story 5.4: Initialize timer if enabled
     this.initializeTimer();
 
@@ -375,10 +381,16 @@ class SquishCollectorApp {
     this.stopTimer();
     this.hideTimer();
 
+    // Story 6.2: Stop background music when game ends
+    this.soundManager.stopBackgroundMusic();
+
     if (result === "success") {
       // Story 4.3: Award a new Squishmallow
       const awardedSquishmallow =
         this.collectionManager.awardRandomSquishmallow();
+
+      // Story 6.2: Play celebration sound for earning Squishmallow
+      this.soundManager.playSound("celebration");
 
       // Update success screen with the earned Squishmallow
       this.updateSuccessScreenStats(awardedSquishmallow);
@@ -632,6 +644,23 @@ class SquishCollectorApp {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           this.showScreen("dashboard-screen");
+        }
+      });
+    }
+
+    // Mute button
+    const muteBtn = document.getElementById("game-mute-btn");
+    if (muteBtn) {
+      this.updateMuteButtonDisplay();
+      
+      muteBtn.addEventListener("click", () => {
+        this.toggleMute();
+      });
+
+      muteBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          this.toggleMute();
         }
       });
     }
@@ -1066,6 +1095,9 @@ class SquishCollectorApp {
       }
 
       if (validation.isCorrect) {
+        // Story 6.2: Play success sound
+        this.soundManager.playSound("correct");
+        
         // Add green success background
         if (problemDisplay) {
           problemDisplay.classList.add("correct");
@@ -1096,6 +1128,9 @@ class SquishCollectorApp {
           }, 1500);
         }
       } else {
+        // Story 6.2: Play incorrect sound
+        this.soundManager.playSound("incorrect");
+        
         // Add red error background and shake animation
         if (problemDisplay) {
           problemDisplay.classList.add("incorrect");
@@ -1177,6 +1212,99 @@ class SquishCollectorApp {
     if (restartBtn) {
       restartBtn.addEventListener("click", () => this.confirmRestartCollection());
     }
+
+    // Story 6.2: Audio settings controls
+    this.setupAudioControls();
+  }
+
+  // Story 6.2: Setup audio controls
+  setupAudioControls() {
+    // Audio enabled checkbox
+    const audioEnabled = document.getElementById("audio-enabled");
+    if (audioEnabled) {
+      audioEnabled.checked = !this.soundManager.isMutedState();
+      audioEnabled.addEventListener("change", (e) => {
+        this.soundManager.setMuted(!e.target.checked);
+      });
+    }
+
+    // Sound volume slider
+    const soundVolume = document.getElementById("sound-volume");
+    const soundVolumeDisplay = document.getElementById("sound-volume-display");
+    if (soundVolume && soundVolumeDisplay) {
+      soundVolume.value = Math.round(this.soundManager.getSoundVolume() * 100);
+      soundVolumeDisplay.textContent = `${soundVolume.value}%`;
+      
+      soundVolume.addEventListener("input", (e) => {
+        const volume = e.target.value / 100;
+        this.soundManager.setSoundVolume(volume);
+        soundVolumeDisplay.textContent = `${e.target.value}%`;
+        
+        // Play test sound
+        this.soundManager.playSound("button");
+      });
+    }
+
+    // Background music enabled checkbox
+    const musicEnabled = document.getElementById("background-music-enabled");
+    if (musicEnabled) {
+      musicEnabled.checked = this.soundManager.isBackgroundMusicEnabledState();
+      musicEnabled.addEventListener("change", (e) => {
+        this.soundManager.setBackgroundMusicEnabled(e.target.checked);
+      });
+    }
+
+    // Music volume slider
+    const musicVolume = document.getElementById("music-volume");
+    const musicVolumeDisplay = document.getElementById("music-volume-display");
+    if (musicVolume && musicVolumeDisplay) {
+      musicVolume.value = Math.round(this.soundManager.getMusicVolume() * 100);
+      musicVolumeDisplay.textContent = `${musicVolume.value}%`;
+      
+      musicVolume.addEventListener("input", (e) => {
+        const volume = e.target.value / 100;
+        this.soundManager.setMusicVolume(volume);
+        musicVolumeDisplay.textContent = `${e.target.value}%`;
+      });
+    }
+  }
+
+  // Story 6.2: Mute button functionality
+  toggleMute() {
+    const currentMuteState = this.soundManager.isMutedState();
+    this.soundManager.setMuted(!currentMuteState);
+    this.updateMuteButtonDisplay();
+    
+    // Play a quick test sound to confirm unmuting (only if unmuting)
+    if (currentMuteState) {
+      setTimeout(() => {
+        this.soundManager.playSound("button");
+      }, 100);
+    }
+    
+    console.log(`🔊 Audio ${currentMuteState ? 'unmuted' : 'muted'}`);
+  }
+
+  updateMuteButtonDisplay() {
+    const muteBtn = document.getElementById("game-mute-btn");
+    const iconOn = document.getElementById("mute-icon-on");
+    const iconOff = document.getElementById("mute-icon-off");
+    
+    if (muteBtn && iconOn && iconOff) {
+      const isMuted = this.soundManager.isMutedState();
+      
+      if (isMuted) {
+        muteBtn.classList.add("muted");
+        iconOn.style.display = "none";
+        iconOff.style.display = "inline";
+        muteBtn.title = "Turn sound on";
+      } else {
+        muteBtn.classList.remove("muted");
+        iconOn.style.display = "inline";
+        iconOff.style.display = "none";
+        muteBtn.title = "Turn sound off";
+      }
+    }
   }
 
   // Story 5.4: Timer functionality methods
@@ -1223,13 +1351,24 @@ class SquishCollectorApp {
 
   updateTimerDisplay() {
     const timerContainer = document.getElementById("timer-container");
-    const timerDisplay = document.getElementById("timer-display");
-    const minutes = Math.floor(this.gameState.timeRemaining / 60);
-    const seconds = this.gameState.timeRemaining % 60;
-    const formattedTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+    const timerMinutes = document.querySelector(".timer-minutes");
+    const timerSeconds = document.querySelector(".timer-seconds");
+    
+    if (timerMinutes && timerSeconds) {
+      const minutes = Math.floor(this.gameState.timeRemaining / 60);
+      const seconds = this.gameState.timeRemaining % 60;
+      
+      timerMinutes.textContent = minutes.toString();
+      timerSeconds.textContent = seconds.toString().padStart(2, "0");
+    }
 
-    if (timerDisplay) {
-      timerDisplay.textContent = formattedTime;
+    // Warning state
+    if (timerContainer) {
+      if (this.gameState.timeRemaining <= 30) {
+        timerContainer.classList.add("timer-warning");
+      } else {
+        timerContainer.classList.remove("timer-warning");
+      }
     }
   }
 

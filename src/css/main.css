@@ -427,6 +427,47 @@ body {
   margin-bottom: 0;
 }
 
+.mute-button {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--accent-lavender);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mute-button:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: var(--primary-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mute-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mute-button.muted {
+  background: rgba(231, 76, 60, 0.1);
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.mute-button .button-icon {
+  font-size: 20px;
+  color: var(--primary-blue);
+}
+
+.mute-button.muted .button-icon {
+  color: #e74c3c;
+}
+
 /* Two-Column Layout */
 .game-left-column {
   display: flex;
@@ -580,6 +621,14 @@ body {
 .timer-display {
   font-weight: 700;
   color: var(--primary-purple);
+}
+
+.timer-warning {
+  color: #ff6b6b !important;
+}
+
+.timer-warning .timer-display {
+  color: #ff6b6b !important;
 }
 
 /* Problem Display Area */
@@ -1174,15 +1223,18 @@ body {
   color: var(--text-primary);
   margin: 8px 0;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 /* Icon styling for success/failure screens */
 .stat-text i {
-  margin-right: 8px;
   width: 18px;
   height: 18px;
   display: inline-block;
-  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 .success-title i,
@@ -1570,6 +1622,42 @@ body {
   box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
 }
 
+.volume-slider {
+  width: 100%;
+  margin: 8px 0;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.volume-slider:hover {
+  opacity: 1;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-blue);
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-blue);
+  cursor: pointer;
+  border: none;
+}
+
 .settings-buttons {
   display: flex;
   justify-content: center;
@@ -1609,27 +1697,25 @@ body {
   margin-left: 20px;
 }
 
-.timer-label {
-  font-size: 16px;
-  font-weight: bold;
-  color: var(--primary-purple);
-}
-
-.timer-display {
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--primary-purple);
-  background: rgba(255, 255, 255, 0.9);
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 2px solid var(--accent-lavender);
-  min-width: 70px;
-  text-align: center;
-}
-
-.timer-warning {
-  color: #ff6b6b !important;
-  animation: pulse 1s infinite;
+/* Responsive timer styles */
+@media (max-width: 768px) {
+  .timer-cloud {
+    min-width: 180px;
+    padding: 10px 16px;
+  }
+  
+  .timer-display {
+    font-size: 20px;
+  }
+  
+  .timer-icon {
+    font-size: 18px;
+  }
+  
+  .timer-message {
+    font-size: 11px;
+    bottom: -18px;
+  }
 }
 
 @keyframes pulse {
