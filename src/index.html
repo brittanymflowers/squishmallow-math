@@ -98,31 +98,28 @@
 
       <!-- Game screen (Story 2.2: Basic Game Screen Layout) -->
       <div id="game-screen" class="screen">
+        <button id="back-to-dashboard-btn" class="back-button">
+          <i data-lucide="arrow-left"></i> Back to Dashboard
+        </button>
+
+        <button
+          id="game-mute-btn"
+          class="mute-button"
+          title="Toggle sound on/off"
+        >
+          <span class="button-icon">
+            <i data-lucide="volume-2" id="mute-icon-on"></i>
+            <i
+              data-lucide="volume-x"
+              id="mute-icon-off"
+              style="display: none"
+            ></i>
+          </span>
+        </button>
+
         <div class="game-content">
           <!-- Game Header -->
-          <div class="game-header">
-            <button
-              id="back-to-dashboard-btn"
-              class="back-button"
-            >
-              <i data-lucide="arrow-left"></i> Back to Dashboard
-            </button>
-
-            <button
-              id="game-mute-btn"
-              class="mute-button"
-              title="Toggle sound on/off"
-            >
-              <span class="button-icon">
-                <i data-lucide="volume-2" id="mute-icon-on"></i>
-                <i
-                  data-lucide="volume-x"
-                  id="mute-icon-off"
-                  style="display: none"
-                ></i>
-              </span>
-            </button>
-          </div>
+          <div class="game-header"></div>
 
           <!-- Left Column: Problem and Progress -->
           <div class="game-left-column">
@@ -333,10 +330,7 @@
               <span class="button-icon"><i data-lucide="refresh-cw"></i></span>
               <span class="button-text">Try Again</span>
             </button>
-            <button
-              class="back-button"
-              id="failure-dashboard-btn"
-            >
+            <button class="back-button" id="failure-dashboard-btn">
               <i data-lucide="arrow-left"></i> Back to Dashboard
             </button>
           </div>
@@ -349,19 +343,14 @@
       <div class="screen-container">
         <div class="collection-content">
           <div class="collection-title-section">
-            <h1 class="collection-title">
-              <i data-lucide="book-open"></i> My Squishmallow Collection
-            </h1>
+            <h1 class="collection-title">My Squishmallow Collection</h1>
             <p class="collection-subtitle">
               Keep practicing to collect them all!
             </p>
           </div>
 
           <div class="collection-stats">
-            <button
-              class="back-button"
-              id="collection-dashboard-btn"
-            >
+            <button class="back-button" id="collection-dashboard-btn">
               <i data-lucide="arrow-left"></i> Back to Dashboard
             </button>
 
@@ -624,9 +613,7 @@
       <div class="screen-container">
         <div class="template-selection-content">
           <div class="template-selection-header">
-            <h1 class="template-selection-title">
-              <i data-lucide="image"></i> Choose Your Template
-            </h1>
+            <h1 class="template-selection-title">Choose Your Template</h1>
             <p class="template-selection-subtitle">
               Select a Squishmallow outline to color and customize!
             </p>
@@ -647,9 +634,7 @@
       <div class="screen-container">
         <div class="creator-content">
           <div class="creator-header">
-            <h1 class="creator-title">
-              <i data-lucide="palette"></i> Squishmallow Creator Studio
-            </h1>
+            <h1 class="creator-title">Squishmallow Creator Studio</h1>
             <p class="creator-subtitle">
               Design your own custom Squishmallows with colors, patterns, and
               special effects!
@@ -690,7 +675,7 @@
                 <div class="color-picker" id="color-picker">
                   <!-- Colors will be populated by JavaScript -->
                 </div>
-                
+
                 <div class="recent-colors-section">
                   <h4><i data-lucide="clock"></i> Recent Colors</h4>
                   <div class="recent-colors" id="recent-colors">
@@ -741,25 +726,19 @@
 
     <!-- Story 7.5: My Creations Screen -->
     <div class="screen" id="my-creations-screen">
+      <button class="back-button" id="creations-dashboard-btn">
+        <i data-lucide="arrow-left"></i> Back to Dashboard
+      </button>
       <div class="screen-container">
         <div class="collection-content">
           <div class="collection-title-section">
-            <h1 class="collection-title">
-              <i data-lucide="palette"></i> My Creations
-            </h1>
+            <h1 class="collection-title">My Creations</h1>
             <p class="collection-subtitle">
               Your beautiful Squishmallow designs and artwork!
             </p>
           </div>
 
           <div class="collection-stats">
-            <button
-              class="back-button"
-              id="creations-dashboard-btn"
-            >
-              <i data-lucide="arrow-left"></i> Back to Dashboard
-            </button>
-
             <div class="stat-badge">
               <span class="stat-number" id="creations-count">0</span>
               <span class="stat-label">Creations</span>
