@@ -51,7 +51,7 @@ class CollectionManager {
         squad: "Feline Squad",
         color: "Gray",
         rarity: "common",
-        image_url: "assets/luna_the_cat.png",
+        image_url: "assets/squishmallows/luna_the_cat.png",
         description: "Luna loves helping students learn math!",
       },
       {
@@ -61,7 +61,7 @@ class CollectionManager {
         squad: "Spooky Squad",
         color: "Red",
         rarity: "common",
-        image_url: "assets/dante_the_devil.png",
+        image_url: "assets/squishmallows/dante_the_devil.png",
         description: "Dante makes math practice devilishly fun!",
       },
       {
@@ -71,7 +71,7 @@ class CollectionManager {
         squad: "Aquatic Squad",
         color: "Pink",
         rarity: "uncommon",
-        image_url: "assets/archie_the_axolotl.png",
+        image_url: "assets/squishmallows/archie_the_axolotl.png",
         description: "Archie loves swimming through math problems!",
       },
       {
@@ -81,7 +81,7 @@ class CollectionManager {
         squad: "Feline Squad",
         color: "Orange",
         rarity: "common",
-        image_url: "assets/cali_the_cat.png",
+        image_url: "assets/squishmallows/cali_the_cat.png",
         description: "Cali purrs with joy when solving equations!",
       },
       {
@@ -91,7 +91,7 @@ class CollectionManager {
         squad: "Prehistoric Squad",
         color: "Green",
         rarity: "rare",
-        image_url: "assets/danny_the_dinosaur.png",
+        image_url: "assets/squishmallows/danny_the_dinosaur.png",
         description: "Danny roars with excitement for multiplication!",
       },
       {
@@ -101,7 +101,7 @@ class CollectionManager {
         squad: "Forest Squad",
         color: "Brown",
         rarity: "common",
-        image_url: "assets/franklin_the_bear.png",
+        image_url: "assets/squishmallows/franklin_the_bear.png",
         description: "Franklin loves counting with his forest friends!",
       },
       {
@@ -111,7 +111,7 @@ class CollectionManager {
         squad: "Garden Squad",
         color: "Brown",
         rarity: "uncommon",
-        image_url: "assets/harry_the_hedgehog.png",
+        image_url: "assets/squishmallows/harry_the_hedgehog.png",
         description: "Harry spikes up with math enthusiasm!",
       },
       {
@@ -121,7 +121,7 @@ class CollectionManager {
         squad: "Farm Squad",
         color: "White",
         rarity: "common",
-        image_url: "assets/lily_the_lamb.png",
+        image_url: "assets/squishmallows/lily_the_lamb.png",
         description: "Lily woolly loves learning numbers!",
       },
       {
@@ -131,7 +131,7 @@ class CollectionManager {
         squad: "Space Squad",
         color: "Galaxy",
         rarity: "epic",
-        image_url: "assets/nebula_the_cat.png",
+        image_url: "assets/squishmallows/nebula_the_cat.png",
         description: "Nebula brings cosmic wisdom to math time!",
       },
       {
@@ -141,7 +141,7 @@ class CollectionManager {
         squad: "Ocean Squad",
         color: "Purple",
         rarity: "rare",
-        image_url: "assets/octavia_the_octopus.png",
+        image_url: "assets/squishmallows/octavia_the_octopus.png",
         description: "Octavia uses all eight arms for counting!",
       },
       {
@@ -151,7 +151,7 @@ class CollectionManager {
         squad: "Pond Squad",
         color: "Green",
         rarity: "uncommon",
-        image_url: "assets/todrick_the_turtle.png",
+        image_url: "assets/squishmallows/todrick_the_turtle.png",
         description: "Todrick takes his time to solve problems perfectly!",
       },
       {
@@ -161,7 +161,7 @@ class CollectionManager {
         squad: "Ocean Squad",
         color: "Blue",
         rarity: "rare",
-        image_url: "assets/wilson_the_whale.png",
+        image_url: "assets/squishmallows/wilson_the_whale.png",
         description: "Wilson makes a big splash in mathematics!",
       },
       {
@@ -171,7 +171,7 @@ class CollectionManager {
         squad: "Bamboo Squad",
         color: "Black and White",
         rarity: "uncommon",
-        image_url: "assets/chonka_the_panda.png",
+        image_url: "assets/squishmallows/chonka_the_panda.png",
         description: "Chonka loves munching on math problems!",
       },
       {
@@ -181,7 +181,7 @@ class CollectionManager {
         squad: "Aquatic Squad",
         color: "Dark Blue",
         rarity: "rare",
-        image_url: "assets/midnight_the_axolotl.png",
+        image_url: "assets/squishmallows/midnight_the_axolotl.png",
         description: "Midnight glows with mathematical knowledge!",
       },
       {
@@ -191,7 +191,7 @@ class CollectionManager {
         squad: "Feline Squad",
         color: "Tabby",
         rarity: "common",
-        image_url: "assets/tabitha_the_cat.png",
+        image_url: "assets/squishmallows/tabitha_the_cat.png",
         description: "Tabitha purrs when solving equations!",
       },
       {
@@ -201,7 +201,7 @@ class CollectionManager {
         squad: "Canine Squad",
         color: "Purple",
         rarity: "uncommon",
-        image_url: "assets/purdy_the_dog.png",
+        image_url: "assets/squishmallows/purdy_the_dog.png",
         description: "Purdy barks with joy at math time!",
       },
       {
@@ -211,7 +211,7 @@ class CollectionManager {
         squad: "Canine Squad",
         color: "Brown",
         rarity: "common",
-        image_url: "assets/wicket_the_dog.png",
+        image_url: "assets/squishmallows/wicket_the_dog.png",
         description: "Wicket loves fetching math answers!",
       },
     ];

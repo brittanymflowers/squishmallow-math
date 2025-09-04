@@ -1686,11 +1686,11 @@ class SquishCollectorApp {
     } else {
       // Fall back to default Luna
       console.log("🎭 Using default Luna mascot");
-      dashboardMascot.src = "assets/luna_the_cat.png";
+      dashboardMascot.src = "assets/squishmallows/luna_the_cat.png";
       dashboardMascot.alt = "Click to change your dashboard companion";
       
       // Update favicon to default Luna
-      this.updateFavicon("assets/luna_the_cat.png");
+      this.updateFavicon("assets/squishmallows/luna_the_cat.png");
     }
   }
 

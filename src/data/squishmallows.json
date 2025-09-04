@@ -7,7 +7,7 @@
       "squad": "Spooky Squad",
       "color": "Red",
       "rarity": "uncommon",
-      "image_url": "assets/dante_the_devil.png",
+      "image_url": "assets/squishmallows/dante_the_devil.png",
       "description": "Dante makes math practice devilishly fun!"
     },
     {
@@ -17,7 +17,7 @@
       "squad": "Ocean Squad",
       "color": "Blue",
       "rarity": "epic",
-      "image_url": "assets/esme_the_narwhal.png",
+      "image_url": "assets/squishmallows/esme_the_narwhal.png",
       "description": "Esme's magical horn sparkles when you solve hard problems!"
     },
     {
@@ -27,7 +27,7 @@
       "squad": "Aquatic Squad",
       "color": "Pink",
       "rarity": "common",
-      "image_url": "assets/archie_the_axolotl.png",
+      "image_url": "assets/squishmallows/archie_the_axolotl.png",
       "description": "Archie loves swimming through multiplication tables!"
     },
     {
@@ -37,7 +37,7 @@
       "squad": "Aquatic Squad",
       "color": "Blue",
       "rarity": "common",
-      "image_url": "assets/bip_the_axolotl.png",
+      "image_url": "assets/squishmallows/bip_the_axolotl.png",
       "description": "Bip bubbles with excitement for every math adventure!"
     },
     {
@@ -47,7 +47,7 @@
       "squad": "Aquatic Squad",
       "color": "Light Blue",
       "rarity": "common",
-      "image_url": "assets/bubbles_the_axolotl.png",
+      "image_url": "assets/squishmallows/bubbles_the_axolotl.png",
       "description": "Bubbles makes learning math as fun as a bubble bath!"
     },
     {
@@ -57,7 +57,7 @@
       "squad": "Aquatic Squad",
       "color": "Dark Blue",
       "rarity": "uncommon",
-      "image_url": "assets/midnight_the_axolotl.png",
+      "image_url": "assets/squishmallows/midnight_the_axolotl.png",
       "description": "Midnight helps you practice math under the stars!"
     },
     {
@@ -67,7 +67,7 @@
       "squad": "Aquatic Squad",
       "color": "Rainbow",
       "rarity": "rare",
-      "image_url": "assets/rainbow_the_axolotl.png",
+      "image_url": "assets/squishmallows/rainbow_the_axolotl.png",
       "description": "Rainbow brings colorful joy to every correct answer!"
     },
     {
@@ -77,7 +77,7 @@
       "squad": "Cozy Squad",
       "color": "Gray",
       "rarity": "common",
-      "image_url": "assets/luna_the_cat.png",
+      "image_url": "assets/squishmallows/luna_the_cat.png",
       "description": "Luna purrs with pride when you get answers right!"
     },
     {
@@ -87,7 +87,7 @@
       "squad": "Cozy Squad",
       "color": "Orange",
       "rarity": "common",
-      "image_url": "assets/cali_the_cat.png",
+      "image_url": "assets/squishmallows/cali_the_cat.png",
       "description": "Cali loves to curl up while you practice multiplication!"
     },
     {
@@ -97,7 +97,7 @@
       "squad": "Cozy Squad",
       "color": "Brown",
       "rarity": "common",
-      "image_url": "assets/mouser_the_cat.png",
+      "image_url": "assets/squishmallows/mouser_the_cat.png",
       "description": "Mouser is always ready to pounce on the right answer!"
     },
     {
@@ -107,7 +107,7 @@
       "squad": "Space Squad",
       "color": "Purple",
       "rarity": "rare",
-      "image_url": "assets/nebula_the_cat.png",
+      "image_url": "assets/squishmallows/nebula_the_cat.png",
       "description": "Nebula travels through space to help with math problems!"
     },
     {
@@ -117,7 +117,7 @@
       "squad": "Cozy Squad",
       "color": "White",
       "rarity": "uncommon",
-      "image_url": "assets/stella_the_cat.png",
+      "image_url": "assets/squishmallows/stella_the_cat.png",
       "description": "Stella shines bright when you solve problems correctly!"
     },
     {
@@ -127,7 +127,7 @@
       "squad": "Cozy Squad",
       "color": "Tabby",
       "rarity": "common",
-      "image_url": "assets/tabitha_the_cat.png",
+      "image_url": "assets/squishmallows/tabitha_the_cat.png",
       "description": "Tabitha loves to help you practice your math skills!"
     },
     {
@@ -137,7 +137,7 @@
       "squad": "Adventure Squad",
       "color": "Brown",
       "rarity": "uncommon",
-      "image_url": "assets/balto_the_dog.png",
+      "image_url": "assets/squishmallows/balto_the_dog.png",
       "description": "Balto is brave and loyal, just like your math practice!"
     },
     {
@@ -147,7 +147,7 @@
       "squad": "Adventure Squad",
       "color": "Golden",
       "rarity": "common",
-      "image_url": "assets/goldie_the_dog.png",
+      "image_url": "assets/squishmallows/goldie_the_dog.png",
       "description": "Goldie retrieves the right answers with you!"
     },
     {
@@ -157,7 +157,7 @@
       "squad": "Adventure Squad",
       "color": "Spotted",
       "rarity": "uncommon",
-      "image_url": "assets/pongo_the_dog.png",
+      "image_url": "assets/squishmallows/pongo_the_dog.png",
       "description": "Pongo spots the correct answers every time!"
     },
     {
@@ -167,7 +167,7 @@
       "squad": "Adventure Squad",
       "color": "White",
       "rarity": "common",
-      "image_url": "assets/purdy_the_dog.png",
+      "image_url": "assets/squishmallows/purdy_the_dog.png",
       "description": "Purdy is pure joy when you master multiplication!"
     },
     {
@@ -177,7 +177,7 @@
       "squad": "Rainbow Squad",
       "color": "Rainbow",
       "rarity": "rare",
-      "image_url": "assets/spectrum_the_dog.png",
+      "image_url": "assets/squishmallows/spectrum_the_dog.png",
       "description": "Spectrum brings all the colors of success to your math!"
     },
     {
@@ -187,7 +187,7 @@
       "squad": "Adventure Squad",
       "color": "Brown",
       "rarity": "common",
-      "image_url": "assets/wicket_the_dog.png",
+      "image_url": "assets/squishmallows/wicket_the_dog.png",
       "description": "Wicket is wickedly good at helping with math problems!"
     },
     {
@@ -197,7 +197,7 @@
       "squad": "Adventure Squad",
       "color": "Black",
       "rarity": "rare",
-      "image_url": "assets/barda_the_panther.png",
+      "image_url": "assets/squishmallows/barda_the_panther.png",
       "description": "Barda prowls through problems with fierce determination!"
     },
     {
@@ -207,7 +207,7 @@
       "squad": "Ocean Squad",
       "color": "Purple",
       "rarity": "epic",
-      "image_url": "assets/billy_the_grimpoteuthis.png",
+      "image_url": "assets/squishmallows/billy_the_grimpoteuthis.png",
       "description": "Billy floats through math problems like a graceful deep-sea dancer!"
     },
     {
@@ -217,7 +217,7 @@
       "squad": "Winter Squad",
       "color": "Brown",
       "rarity": "uncommon",
-      "image_url": "assets/blitz_the_reindeer.png",
+      "image_url": "assets/squishmallows/blitz_the_reindeer.png",
       "description": "Blitz dashes through multiplication tables faster than Santa's sleigh!"
     },
     {
@@ -227,7 +227,7 @@
       "squad": "Ocean Squad",
       "color": "Blue",
       "rarity": "uncommon",
-      "image_url": "assets/bruce_the_shark.png",
+      "image_url": "assets/squishmallows/bruce_the_shark.png",
       "description": "Bruce has a big bite when it comes to solving big numbers!"
     },
     {
@@ -237,7 +237,7 @@
       "squad": "Spooky Squad",
       "color": "Orange",
       "rarity": "common",
-      "image_url": "assets/charlie_the_pumpkin.png",
+      "image_url": "assets/squishmallows/charlie_the_pumpkin.png",
       "description": "Charlie lights up with joy every time you get an answer right!"
     },
     {
@@ -247,7 +247,7 @@
       "squad": "Cozy Squad",
       "color": "Yellow",
       "rarity": "common",
-      "image_url": "assets/cheese_the_mouse.png",
+      "image_url": "assets/squishmallows/cheese_the_mouse.png",
       "description": "Cheese squeaks with excitement when you solve problems!"
     },
     {
@@ -257,7 +257,7 @@
       "color": "Black and White",
       "squad": "Cozy Squad",
       "rarity": "rare",
-      "image_url": "assets/chonka_the_panda.png",
+      "image_url": "assets/squishmallows/chonka_the_panda.png",
       "description": "Chonka munches on bamboo while helping you crunch numbers!"
     },
     {
@@ -267,7 +267,7 @@
       "squad": "Adventure Squad",
       "color": "Green",
       "rarity": "uncommon",
-      "image_url": "assets/danny_the_dinosaur.png",
+      "image_url": "assets/squishmallows/danny_the_dinosaur.png",
       "description": "Danny roars with pride when you master prehistoric math!"
     },
     {
@@ -277,7 +277,7 @@
       "squad": "Ocean Squad",
       "color": "Gray",
       "rarity": "common",
-      "image_url": "assets/edgar_the_dolphin.png",
+      "image_url": "assets/squishmallows/edgar_the_dolphin.png",
       "description": "Edgar clicks and whistles cheerfully as you solve each problem!"
     },
     {
@@ -287,7 +287,7 @@
       "squad": "Adventure Squad",
       "color": "Orange",
       "rarity": "uncommon",
-      "image_url": "assets/fidget_the_fox.png",
+      "image_url": "assets/squishmallows/fidget_the_fox.png",
       "description": "Fidget is sly and clever, always ready to help you find the right answer!"
     },
     {
@@ -297,7 +297,7 @@
       "squad": "Cozy Squad",
       "color": "Brown",
       "rarity": "common",
-      "image_url": "assets/franklin_the_bear.png",
+      "image_url": "assets/squishmallows/franklin_the_bear.png",
       "description": "Franklin gives the warmest bear hugs when you solve problems correctly!"
     },
     {
@@ -307,7 +307,7 @@
       "squad": "Safari Squad",
       "color": "Yellow",
       "rarity": "rare",
-      "image_url": "assets/gino_the_giraffe.png",
+      "image_url": "assets/squishmallows/gino_the_giraffe.png",
       "description": "Gino stretches his neck high to help you reach new math heights!"
     },
     {
@@ -317,7 +317,7 @@
       "squad": "Cozy Squad",
       "color": "Brown",
       "rarity": "common",
-      "image_url": "assets/harry_the_hedgehog.png",
+      "image_url": "assets/squishmallows/harry_the_hedgehog.png",
       "description": "Harry rolls into a ball of joy every time you get an answer right!"
     },
     {
@@ -327,7 +327,7 @@
       "squad": "Farm Squad",
       "color": "White",
       "rarity": "common",
-      "image_url": "assets/lily_the_lamb.png",
+      "image_url": "assets/squishmallows/lily_the_lamb.png",
       "description": "Lily is gentle and encouraging, helping you count like counting sheep!"
     },
     {
@@ -337,7 +337,7 @@
       "squad": "Sky Squad",
       "color": "White",
       "rarity": "uncommon",
-      "image_url": "assets/marshmallow_the_bird.png",
+      "image_url": "assets/squishmallows/marshmallow_the_bird.png",
       "description": "Marshmallow soars to new heights when you solve tricky problems!"
     },
     {
@@ -347,7 +347,7 @@
       "squad": "Ocean Squad",
       "color": "Purple",
       "rarity": "rare",
-      "image_url": "assets/octavia_the_octopus.png",
+      "image_url": "assets/squishmallows/octavia_the_octopus.png",
       "description": "Octavia uses all eight arms to count along with your math practice!"
     },
     {
@@ -357,7 +357,7 @@
       "squad": "Cozy Squad",
       "color": "Gray",
       "rarity": "common",
-      "image_url": "assets/squeaks_the_mouse.png",
+      "image_url": "assets/squishmallows/squeaks_the_mouse.png",
       "description": "Squeaks makes tiny happy sounds when you solve each equation!"
     },
     {
@@ -367,7 +367,7 @@
       "squad": "Fruit Squad",
       "color": "Green",
       "rarity": "uncommon",
-      "image_url": "assets/sweetie_the_watermelon.png",
+      "image_url": "assets/squishmallows/sweetie_the_watermelon.png",
       "description": "Sweetie is as refreshing as getting the right answer on a hot day!"
     },
     {
@@ -377,7 +377,7 @@
       "squad": "Farm Squad",
       "color": "Yellow",
       "rarity": "common",
-      "image_url": "assets/tipper_the_chick.png",
+      "image_url": "assets/squishmallows/tipper_the_chick.png",
       "description": "Tipper chirps happily and tips their hat when you solve problems!"
     },
     {
@@ -387,7 +387,7 @@
       "squad": "Aquatic Squad",
       "color": "Green",
       "rarity": "uncommon",
-      "image_url": "assets/todrick_the_turtle.png",
+      "image_url": "assets/squishmallows/todrick_the_turtle.png",
       "description": "Todrick teaches you that slow and steady wins the math race!"
     },
     {
@@ -397,7 +397,7 @@
       "squad": "Magical Squad",
       "color": "Teal",
       "rarity": "epic",
-      "image_url": "assets/uma_the_mercat.png",
+      "image_url": "assets/squishmallows/uma_the_mercat.png",
       "description": "Uma swims through problems with magical mermaid grace!"
     },
     {
@@ -407,7 +407,7 @@
       "squad": "Safari Squad",
       "color": "Yellow",
       "rarity": "rare",
-      "image_url": "assets/vanessa_the_leopard.png",
+      "image_url": "assets/squishmallows/vanessa_the_leopard.png",
       "description": "Vanessa spots the right answers faster than you can blink!"
     },
     {
@@ -417,7 +417,7 @@
       "squad": "Adventure Squad",
       "color": "Brown",
       "rarity": "uncommon",
-      "image_url": "assets/wiley_the_coyote.png",
+      "image_url": "assets/squishmallows/wiley_the_coyote.png",
       "description": "Wiley howls with joy under the stars when you solve problems!"
     },
     {
@@ -427,7 +427,7 @@
       "squad": "Ocean Squad",
       "color": "Blue",
       "rarity": "epic",
-      "image_url": "assets/wilson_the_whale.png",
+      "image_url": "assets/squishmallows/wilson_the_whale.png",
       "description": "Wilson makes a big splash celebrating your mathematical victories!"
     },
     {
@@ -437,7 +437,7 @@
       "squad": "Fruit Squad",
       "color": "Orange",
       "rarity": "uncommon",
-      "image_url": "assets/ximena_the_mango.png",
+      "image_url": "assets/squishmallows/ximena_the_mango.png",
       "description": "Ximena is as sweet as getting every answer perfectly right!"
     },
     {
@@ -447,7 +447,7 @@
       "squad": "Winter Squad",
       "color": "White",
       "rarity": "rare",
-      "image_url": "assets/yolly_the_yeti.png",
+      "image_url": "assets/squishmallows/yolly_the_yeti.png",
       "description": "Yolly brings cool confidence to even the trickiest math problems!"
     }
   ],

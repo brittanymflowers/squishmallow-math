@@ -4,9 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Squishmallow Collector - Math Adventure</title>
-    
+
     <!-- Favicon - will be updated dynamically -->
-    <link rel="icon" type="image/png" id="favicon" href="assets/luna_the_cat.png">
+    <link
+      rel="icon"
+      type="image/png"
+      id="favicon"
+      href="assets/squishmallows/luna_the_cat.png"
+    />
 
     <!-- Preload critical fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,7 +37,7 @@
         <div class="loading-content">
           <div class="squishmallow-mascot">
             <img
-              src="assets/luna_the_cat.png"
+              src="assets/squishmallows/luna_the_cat.png"
               alt="Adorable Luna the Cat Squishmallow"
               class="mascot-image"
             />
@@ -51,7 +56,7 @@
           <div class="squishmallow-mascot">
             <img
               id="dashboard-mascot"
-              src="assets/luna_the_cat.png"
+              src="assets/squishmallows/luna_the_cat.png"
               alt="Click to change your dashboard companion"
               class="mascot-image small clickable-mascot"
               title="Click to choose your dashboard companion"
@@ -77,7 +82,9 @@
             <button id="create-studio-btn" class="dashboard-button creative">
               <span class="button-icon"><i data-lucide="palette"></i></span>
               <span class="button-text">Create Studio</span>
-              <span class="button-subtitle">Design your own Squishmallows!</span>
+              <span class="button-subtitle"
+                >Design your own Squishmallows!</span
+              >
             </button>
 
             <button id="settings-btn" class="dashboard-button tertiary">
@@ -243,7 +250,7 @@
             <div class="squishmallow-preview">
               <img
                 id="earned-squishmallow-image"
-                src="assets/luna_the_cat.png"
+                src="assets/squishmallows/luna_the_cat.png"
                 alt="Luna the Cat"
                 class="mascot-image earned-squishmallow"
               />
@@ -297,7 +304,7 @@
           <div class="encouragement-display">
             <div class="mascot-encouragement">
               <img
-                src="assets/luna_the_cat.png"
+                src="assets/squishmallows/luna_the_cat.png"
                 alt="Luna the Cat"
                 class="mascot-image encouraging"
               />
@@ -623,7 +630,8 @@
               <i data-lucide="palette"></i> Squishmallow Creator Studio
             </h1>
             <p class="creator-subtitle">
-              Design your own custom Squishmallows with colors, patterns, and special effects!
+              Design your own custom Squishmallows with colors, patterns, and
+              special effects!
             </p>
           </div>
 
@@ -639,7 +647,11 @@
                   <button id="redo-btn" class="tool-button" title="Redo">
                     <i data-lucide="redo-2"></i>
                   </button>
-                  <button id="clear-btn" class="tool-button danger" title="Clear Canvas">
+                  <button
+                    id="clear-btn"
+                    class="tool-button danger"
+                    title="Clear Canvas"
+                  >
                     <i data-lucide="trash-2"></i>
                   </button>
                 </div>
