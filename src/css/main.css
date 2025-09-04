@@ -2677,6 +2677,16 @@ body {
   color: white;
 }
 
+.tool-button.eraser {
+  background: #ffb6e1;
+  color: #d63384;
+}
+
+.tool-button.eraser:hover {
+  background: #d63384;
+  color: white;
+}
+
 .canvas-container {
   position: relative;
   display: flex;
@@ -2692,7 +2702,11 @@ body {
   border: 2px solid var(--primary-purple);
   border-radius: 10px;
   background: white;
-  cursor: crosshair;
+  cursor: default;
+}
+
+#creator-canvas.paintbrush-cursor {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" fill="%23d63384" stroke="white" stroke-width="1"/></svg>') 6 6, auto;
 }
 
 /* Tools Section */

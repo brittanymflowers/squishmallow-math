@@ -343,10 +343,10 @@ class SquishCollectorApp {
 
   initializeTemplateSelection() {
     console.log("🖼️ Initializing Template Selection...");
-    
+
     // Load templates for selection
     this.loadTemplateSelection();
-    
+
     // Setup template selection handlers
     this.setupTemplateSelectionHandlers();
   }
@@ -378,6 +378,9 @@ class SquishCollectorApp {
     this.ctx = canvas.getContext("2d");
     this.selectedColor = "#FF6B9D"; // Default pink
 
+    // Initialize cursor with default color
+    this.updateCursorColor(this.selectedColor);
+
     // Initialize undo/redo system
     this.canvasHistory = [];
     this.historyStep = -1;
@@ -405,36 +408,36 @@ class SquishCollectorApp {
 
     // Available templates
     const templates = [
-      { 
-        id: "fox", 
-        name: "Fox", 
+      {
+        id: "fox",
+        name: "Fox",
         file: "fox-template.png",
-        description: "A cute fox with big ears perfect for coloring!"
+        description: "A cute fox with big ears perfect for coloring!",
       },
-      { 
-        id: "alien", 
-        name: "Alien", 
+      {
+        id: "alien",
+        name: "Alien",
         file: "alien-template.png",
-        description: "A friendly alien visitor ready for cosmic colors!"
+        description: "A friendly alien visitor ready for cosmic colors!",
       },
-      { 
-        id: "cat", 
-        name: "Cat", 
+      {
+        id: "cat",
+        name: "Cat",
         file: "cat-template.png",
-        description: "An adorable kitty waiting for your creative touch!"
+        description: "An adorable kitty waiting for your creative touch!",
       },
-      { 
-        id: "caticorn", 
-        name: "Caticorn", 
+      {
+        id: "caticorn",
+        name: "Caticorn",
         file: "caticorn-template.png",
-        description: "A magical cat-unicorn hybrid ready for rainbow colors!"
+        description: "A magical cat-unicorn hybrid ready for rainbow colors!",
       },
-      { 
-        id: "mushroom", 
-        name: "Mushroom", 
+      {
+        id: "mushroom",
+        name: "Mushroom",
         file: "mushroom-template.png",
-        description: "A whimsical mushroom perfect for forest colors!"
-      }
+        description: "A whimsical mushroom perfect for forest colors!",
+      },
     ];
 
     templateGrid.innerHTML = "";
@@ -464,7 +467,9 @@ class SquishCollectorApp {
     // Back button
     const backBtn = document.getElementById("template-back-btn");
     if (backBtn) {
-      backBtn.addEventListener("click", () => this.showScreen("dashboard-screen"));
+      backBtn.addEventListener("click", () =>
+        this.showScreen("dashboard-screen")
+      );
     }
 
     // Template selection buttons
@@ -475,39 +480,40 @@ class SquishCollectorApp {
         if (templateOption) {
           const templateId = templateOption.dataset.templateId;
           const templates = [
-            { 
-              id: "fox", 
-              name: "Fox", 
+            {
+              id: "fox",
+              name: "Fox",
               file: "fox-template.png",
-              description: "A cute fox with big ears perfect for coloring!"
+              description: "A cute fox with big ears perfect for coloring!",
             },
-            { 
-              id: "alien", 
-              name: "Alien", 
+            {
+              id: "alien",
+              name: "Alien",
               file: "alien-template.png",
-              description: "A friendly alien visitor ready for cosmic colors!"
+              description: "A friendly alien visitor ready for cosmic colors!",
             },
-            { 
-              id: "cat", 
-              name: "Cat", 
+            {
+              id: "cat",
+              name: "Cat",
               file: "cat-template.png",
-              description: "An adorable kitty waiting for your creative touch!"
+              description: "An adorable kitty waiting for your creative touch!",
             },
-            { 
-              id: "caticorn", 
-              name: "Caticorn", 
+            {
+              id: "caticorn",
+              name: "Caticorn",
               file: "caticorn-template.png",
-              description: "A magical cat-unicorn hybrid ready for rainbow colors!"
+              description:
+                "A magical cat-unicorn hybrid ready for rainbow colors!",
             },
-            { 
-              id: "mushroom", 
-              name: "Mushroom", 
+            {
+              id: "mushroom",
+              name: "Mushroom",
               file: "mushroom-template.png",
-              description: "A whimsical mushroom perfect for forest colors!"
-            }
+              description: "A whimsical mushroom perfect for forest colors!",
+            },
           ];
-          
-          const selectedTemplate = templates.find(t => t.id === templateId);
+
+          const selectedTemplate = templates.find((t) => t.id === templateId);
           if (selectedTemplate) {
             this.startCreatorStudio(selectedTemplate);
           }
@@ -519,7 +525,9 @@ class SquishCollectorApp {
   }
 
   startCreatorStudio(selectedTemplate) {
-    console.log(`🎨 Starting Creator Studio with template: ${selectedTemplate.name}`);
+    console.log(
+      `🎨 Starting Creator Studio with template: ${selectedTemplate.name}`
+    );
     this.showScreen("create-studio-screen");
     this.initializeCreatorStudio(selectedTemplate);
   }
@@ -542,7 +550,7 @@ class SquishCollectorApp {
         drawWidth = this.canvas.width * 0.9; // Leave 5% margin on each side
         drawHeight = drawWidth / imgAspectRatio;
       } else {
-        // Image is taller relative to canvas - fit by height  
+        // Image is taller relative to canvas - fit by height
         drawHeight = this.canvas.height * 0.9; // Leave 5% margin on top/bottom
         drawWidth = drawHeight * imgAspectRatio;
       }
@@ -554,17 +562,29 @@ class SquishCollectorApp {
       // Draw template image with proper aspect ratio and centering
       this.ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
       this.templateImage = img;
-      
+
       // Store drawing dimensions for reference
-      this.templateDrawBounds = { x: drawX, y: drawY, width: drawWidth, height: drawHeight };
+      this.templateDrawBounds = {
+        x: drawX,
+        y: drawY,
+        width: drawWidth,
+        height: drawHeight,
+      };
 
       // Store original template image data for protection checking
-      this.originalTemplateData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      this.originalTemplateData = this.ctx.getImageData(
+        0,
+        0,
+        this.canvas.width,
+        this.canvas.height
+      );
 
       // Save state after template load
       this.saveCanvasState();
 
-      console.log(`🖼️ Template loaded: ${drawWidth}x${drawHeight} at (${drawX}, ${drawY})`);
+      console.log(
+        `🖼️ Template loaded: ${drawWidth}x${drawHeight} at (${drawX}, ${drawY})`
+      );
       console.log("🛡️ Original template data stored for outline protection");
     };
 
@@ -639,8 +659,10 @@ class SquishCollectorApp {
       <input type="color" class="color-input" style="position: absolute; opacity: 0; pointer-events: none;" />
     `;
     customColorDiv.title = "Choose custom color";
-    
-    customColorDiv.addEventListener("click", () => this.openCustomColorPicker(customColorDiv));
+
+    customColorDiv.addEventListener("click", () =>
+      this.openCustomColorPicker(customColorDiv)
+    );
     colorPicker.appendChild(customColorDiv);
 
     // Update icons after adding content
@@ -662,24 +684,24 @@ class SquishCollectorApp {
     for (let i = 0; i < this.maxRecentColors; i++) {
       const recentColorDiv = document.createElement("div");
       recentColorDiv.className = "recent-color-option";
-      
+
       if (i < this.recentColors.length) {
         const color = this.recentColors[i];
         recentColorDiv.style.backgroundColor = color;
         recentColorDiv.dataset.color = color;
         recentColorDiv.title = `Recent color: ${color}`;
-        
-        recentColorDiv.addEventListener("click", () => 
+
+        recentColorDiv.addEventListener("click", () =>
           this.selectColor(color, recentColorDiv)
         );
       } else {
         recentColorDiv.classList.add("empty");
         recentColorDiv.title = "No recent color";
       }
-      
+
       recentColorsContainer.appendChild(recentColorDiv);
     }
-    
+
     console.log("🕒 Recent colors section created");
   }
 
@@ -689,21 +711,21 @@ class SquishCollectorApp {
     if (existingIndex !== -1) {
       this.recentColors.splice(existingIndex, 1);
     }
-    
+
     // Add color to the beginning
     this.recentColors.unshift(color);
-    
+
     // Keep only the most recent colors
     if (this.recentColors.length > this.maxRecentColors) {
       this.recentColors = this.recentColors.slice(0, this.maxRecentColors);
     }
-    
+
     // Save to localStorage
     this.saveRecentColors();
-    
+
     // Update the UI
     this.createRecentColorsSection();
-    
+
     console.log(`🕒 Added ${color} to recent colors`);
   }
 
@@ -719,12 +741,14 @@ class SquishCollectorApp {
 
   saveRecentColors() {
     try {
-      localStorage.setItem("squishmallow-recent-colors", JSON.stringify(this.recentColors));
+      localStorage.setItem(
+        "squishmallow-recent-colors",
+        JSON.stringify(this.recentColors)
+      );
     } catch (error) {
       console.error("❌ Error saving recent colors:", error);
     }
   }
-
 
   selectColor(color, colorElement) {
     this.selectedColor = color;
@@ -740,26 +764,55 @@ class SquishCollectorApp {
     // Add to recent colors history
     this.addToRecentColors(color);
 
+    // Update cursor color to match selected color
+    this.updateCursorColor(color);
+
     console.log(`🎨 Selected color: ${color}`);
+  }
+
+  updateCursorColor(color) {
+    const canvas = document.getElementById("creator-canvas");
+    if (!canvas) return;
+
+    // Remove any existing dynamic cursor styles
+    const existingStyle = document.getElementById("dynamic-cursor-style");
+    if (existingStyle) {
+      existingStyle.remove();
+    }
+
+    // Create new cursor with selected color
+    const cursorSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" fill="${color}" stroke="white" stroke-width="1"/></svg>`;
+    const encodedSvg = encodeURIComponent(cursorSvg);
+
+    // Create dynamic style for the cursor
+    const style = document.createElement("style");
+    style.id = "dynamic-cursor-style";
+    style.textContent = `
+      #creator-canvas.paintbrush-cursor {
+        cursor: url('data:image/svg+xml;utf8,${encodedSvg}') 6 6, auto;
+      }
+    `;
+
+    document.head.appendChild(style);
   }
 
   openCustomColorPicker(customColorDiv) {
     const colorInput = customColorDiv.querySelector(".color-input");
-    
+
     // Set up the color input event handler
     colorInput.onchange = (e) => {
       const selectedColor = e.target.value;
-      
+
       // Update the custom color picker appearance to show selected color
       customColorDiv.style.backgroundColor = selectedColor;
       customColorDiv.innerHTML = `<input type="color" class="color-input" value="${selectedColor}" style="position: absolute; opacity: 0; pointer-events: none;" />`;
-      
+
       // Set this as the selected color (this will automatically add to recent colors)
       this.selectColor(selectedColor, customColorDiv);
-      
+
       console.log(`🎨 Custom color selected: ${selectedColor}`);
     };
-    
+
     // Trigger the color picker
     colorInput.click();
   }
@@ -773,22 +826,37 @@ class SquishCollectorApp {
       );
     }
 
+    // Switch Template button
+    const switchTemplateBtn = document.getElementById("switch-template-btn");
+    if (switchTemplateBtn) {
+      switchTemplateBtn.addEventListener("click", (e) => {
+        this.switchTemplate();
+        e.target.blur(); // Remove focus to clear yellow highlight
+      });
+    }
+
     // Undo button
     const undoBtn = document.getElementById("undo-btn");
     if (undoBtn) {
-      undoBtn.addEventListener("click", () => this.undo());
+      undoBtn.addEventListener("click", (e) => {
+        this.undo();
+        e.target.blur(); // Remove focus to clear yellow highlight
+      });
     }
 
     // Redo button
     const redoBtn = document.getElementById("redo-btn");
     if (redoBtn) {
-      redoBtn.addEventListener("click", () => this.redo());
+      redoBtn.addEventListener("click", (e) => {
+        this.redo();
+        e.target.blur(); // Remove focus to clear yellow highlight
+      });
     }
 
-    // Canvas Clear button (trash button)
+    // Canvas Clear button (eraser button)
     const canvasClearBtn = document.getElementById("canvas-clear-btn");
     if (canvasClearBtn) {
-      canvasClearBtn.addEventListener("click", () => {
+      canvasClearBtn.addEventListener("click", (e) => {
         // Clear canvas completely and redraw template
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -801,13 +869,18 @@ class SquishCollectorApp {
             this.templateDrawBounds.width,
             this.templateDrawBounds.height
           );
-          console.log("🗑️ Canvas cleared and template restored with proper aspect ratio");
+          console.log(
+            "🗑️ Canvas cleared and template restored with proper aspect ratio"
+          );
         } else {
           console.log("🗑️ Canvas cleared");
         }
 
         // Save state after clearing
         this.saveCanvasState();
+
+        // Remove focus to clear yellow highlight
+        e.target.blur();
       });
     }
 
@@ -817,12 +890,12 @@ class SquishCollectorApp {
       saveDraftBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         // Debounce check to prevent double-clicks
         if (!this.isValidClick()) {
           return;
         }
-        
+
         this.saveDraft();
       });
     }
@@ -833,12 +906,12 @@ class SquishCollectorApp {
       finishBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         // Debounce check to prevent double-clicks
         if (!this.isValidClick()) {
           return;
         }
-        
+
         this.finishCreation();
       });
     }
@@ -846,6 +919,16 @@ class SquishCollectorApp {
     // Canvas click for coloring
     if (this.canvas) {
       this.canvas.addEventListener("click", (e) => this.handleCanvasClick(e));
+
+      // Canvas mousemove for smart cursor
+      this.canvas.addEventListener("mousemove", (e) =>
+        this.handleCanvasMouseMove(e)
+      );
+
+      // Canvas mouseleave to reset cursor
+      this.canvas.addEventListener("mouseleave", () => {
+        this.canvas.classList.remove("paintbrush-cursor");
+      });
     }
 
     console.log("🔧 Creator tools setup complete");
@@ -854,31 +937,47 @@ class SquishCollectorApp {
   // Name validation for creations
   validateCreationName(name, templateName, currentCreationId = null) {
     if (!name || name.trim() === "") {
-      return { valid: false, message: "Please give your creation a name first! 🎨" };
+      return {
+        valid: false,
+        message: "Please give your creation a name first! 🎨",
+      };
     }
 
     const trimmedName = name.trim();
 
     // Length validation
     if (trimmedName.length < 2) {
-      return { valid: false, message: "Name must be at least 2 characters long! 📝" };
+      return {
+        valid: false,
+        message: "Name must be at least 2 characters long! 📝",
+      };
     }
 
     if (trimmedName.length > 15) {
-      return { valid: false, message: "Name must be 15 characters or less! ✂️" };
+      return {
+        valid: false,
+        message: "Name must be 15 characters or less! ✂️",
+      };
     }
 
     // Character validation - only letters and numbers, no spaces or special characters
     const validNameRegex = /^[a-zA-Z0-9]+$/;
     if (!validNameRegex.test(trimmedName)) {
-      return { valid: false, message: "Name can only contain letters and numbers (no spaces or special characters)! 🔤" };
+      return {
+        valid: false,
+        message:
+          "Name can only contain letters and numbers (no spaces or special characters)! 🔤",
+      };
     }
 
     // Check for duplicate names - compare the generated filename
-    const proposedFilename = this.generateCreationFilename(trimmedName, templateName);
+    const proposedFilename = this.generateCreationFilename(
+      trimmedName,
+      templateName
+    );
     const existingCreations = this.loadSavedCreations();
-    
-    const duplicateExists = existingCreations.some(creation => {
+
+    const duplicateExists = existingCreations.some((creation) => {
       // Skip checking against the current creation if we're editing
       if (currentCreationId && creation.id === currentCreationId) {
         return false;
@@ -887,7 +986,10 @@ class SquishCollectorApp {
     });
 
     if (duplicateExists) {
-      return { valid: false, message: `Name "${trimmedName}" already exists for this template! Try a different name. 🔄` };
+      return {
+        valid: false,
+        message: `Name "${trimmedName}" already exists for this template! Try a different name. 🔄`,
+      };
     }
 
     return { valid: true, name: trimmedName };
@@ -909,7 +1011,10 @@ class SquishCollectorApp {
     const creationName = nameInput ? nameInput.value.trim() : "";
 
     // Validate the creation name
-    const validation = this.validateCreationName(creationName, this.selectedTemplate.name);
+    const validation = this.validateCreationName(
+      creationName,
+      this.selectedTemplate.name
+    );
     if (!validation.valid) {
       this.showFeedback(validation.message, "error");
       if (nameInput) nameInput.focus();
@@ -917,8 +1022,11 @@ class SquishCollectorApp {
     }
 
     // Generate standardized filename
-    const filename = this.generateCreationFilename(validation.name, this.selectedTemplate.name);
-    
+    const filename = this.generateCreationFilename(
+      validation.name,
+      this.selectedTemplate.name
+    );
+
     // Save canvas as image data
     const imageData = this.canvas.toDataURL("image/png");
     const creation = {
@@ -932,10 +1040,10 @@ class SquishCollectorApp {
     };
 
     this.saveCreationToStorage(creation);
-    this.showFeedback(`Draft "${creationName}" saved! 💾`, "success");
+    this.showFeedback(`Draft of "${creationName}" saved!`, "success");
 
     console.log(`💾 Draft saved: ${creationName}`);
-    
+
     // Navigate to My Creations page after saving
     setTimeout(() => {
       this.showMyCreationsScreen();
@@ -947,7 +1055,10 @@ class SquishCollectorApp {
     const creationName = nameInput ? nameInput.value.trim() : "";
 
     // Validate the creation name
-    const validation = this.validateCreationName(creationName, this.selectedTemplate.name);
+    const validation = this.validateCreationName(
+      creationName,
+      this.selectedTemplate.name
+    );
     if (!validation.valid) {
       this.showFeedback(validation.message, "error");
       if (nameInput) nameInput.focus();
@@ -955,8 +1066,11 @@ class SquishCollectorApp {
     }
 
     // Generate standardized filename
-    const filename = this.generateCreationFilename(validation.name, this.selectedTemplate.name);
-    
+    const filename = this.generateCreationFilename(
+      validation.name,
+      this.selectedTemplate.name
+    );
+
     // Save canvas as completed creation
     const imageData = this.canvas.toDataURL("image/png");
     const creation = {
@@ -1002,6 +1116,43 @@ class SquishCollectorApp {
     this.floodFill(x, y, this.selectedColor);
   }
 
+  handleCanvasMouseMove(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const x = Math.floor(e.clientX - rect.left);
+    const y = Math.floor(e.clientY - rect.top);
+
+    // Check if this area is colorable
+    const isColorable = this.isAreaColorable(x, y);
+
+    if (isColorable) {
+      this.canvas.classList.add("paintbrush-cursor");
+    } else {
+      this.canvas.classList.remove("paintbrush-cursor");
+    }
+  }
+
+  isAreaColorable(x, y) {
+    // Check if coordinates are within canvas bounds
+    if (x < 0 || x >= this.canvas.width || y < 0 || y >= this.canvas.height) {
+      return false;
+    }
+
+    // Check if this is original template black (outlines that can't be colored)
+    const isOriginalBlack = this.isPixelOriginallyBlack(x, y);
+    if (isOriginalBlack) {
+      return false;
+    }
+
+    // Check if this is outside the template boundaries
+    const isOutsideTemplate = this.isPixelOutsideTemplate(x, y);
+    if (isOutsideTemplate) {
+      return false;
+    }
+
+    // If it's not black outline and not outside template, it's colorable
+    return true;
+  }
+
   floodFill(startX, startY, fillColor) {
     const imageData = this.ctx.getImageData(
       0,
@@ -1024,7 +1175,6 @@ class SquishCollectorApp {
     const isOriginalBlack = this.isPixelOriginallyBlack(startX, startY);
 
     if (isOriginalBlack) {
-      this.showFeedback("Can't color over the original outlines and details! 🖍️", "info");
       return;
     }
 
@@ -1032,7 +1182,6 @@ class SquishCollectorApp {
     const isOutsideTemplate = this.isPixelOutsideTemplate(startX, startY);
 
     if (isOutsideTemplate) {
-      this.showFeedback("Keep your coloring inside the Squishmallow outline! 🎨", "info");
       return;
     }
 
@@ -1076,11 +1225,16 @@ class SquishCollectorApp {
 
       // Simple rule: Never fill any pixel that was originally black
       const isOriginallyBlack = this.isPixelOriginallyBlack(x, y);
-      
+
       // Also never fill pixels outside the template boundaries
       const isOutsideTemplate = this.isPixelOutsideTemplate(x, y);
 
-      if (distance <= tolerance && a > 0 && !isOriginallyBlack && !isOutsideTemplate) {
+      if (
+        distance <= tolerance &&
+        a > 0 &&
+        !isOriginallyBlack &&
+        !isOutsideTemplate
+      ) {
         // Fill this pixel
         data[index] = fillR;
         data[index + 1] = fillG;
@@ -1113,7 +1267,6 @@ class SquishCollectorApp {
     );
   }
 
-
   // Check if a pixel was originally black (used during flood fill to prevent crossing outlines)
   isPixelOriginallyBlack(x, y) {
     if (!this.originalTemplateData) return false;
@@ -1137,7 +1290,6 @@ class SquishCollectorApp {
     // If the original pixel was transparent (alpha < 128), it's outside the template
     return originalA < 128;
   }
-
 
   // Undo/Redo functionality
   saveCanvasState() {
@@ -2644,10 +2796,28 @@ class SquishCollectorApp {
     }
   }
 
+  // Switch template functionality for Creator Studio
+  switchTemplate() {
+    // Warn user about losing current work
+    const confirmed = confirm(
+      "Switching templates will clear your current work. Are you sure you want to continue?"
+    );
+
+    if (confirmed) {
+      console.log("🔄 Switching template - returning to template selection");
+      this.showScreen("template-selection-screen");
+      this.initializeTemplateSelection();
+    } else {
+      console.log("🔄 Template switch cancelled by user");
+    }
+  }
+
   // Story 7.5: My Creations Screen Methods
   setupMyCreationsScreen() {
     // My Creations screen - return to dashboard button
-    const creationsDashboardBtn = document.getElementById("creations-dashboard-btn");
+    const creationsDashboardBtn = document.getElementById(
+      "creations-dashboard-btn"
+    );
     if (creationsDashboardBtn) {
       creationsDashboardBtn.addEventListener("click", () => {
         this.showDashboard();
@@ -2684,7 +2854,9 @@ class SquishCollectorApp {
     // Load saved creations from localStorage
     const savedCreations = this.loadSavedCreations();
 
-    console.log(`🖼️ Populating creations grid with ${savedCreations.length} creations`);
+    console.log(
+      `🖼️ Populating creations grid with ${savedCreations.length} creations`
+    );
 
     creationsGrid.innerHTML = "";
 
@@ -2702,24 +2874,36 @@ class SquishCollectorApp {
     }
 
     // Sort creations by timestamp (newest first)
-    savedCreations.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    savedCreations.sort(
+      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+    );
 
     savedCreations.forEach((creation) => {
       const card = document.createElement("div");
-      card.className = `creation-card ${creation.isDraft ? "draft" : "finished"}`;
+      card.className = `creation-card ${
+        creation.isDraft ? "draft" : "finished"
+      }`;
 
       const formattedDate = new Date(creation.timestamp).toLocaleDateString();
 
       card.innerHTML = `
-        <img src="${creation.imageData}" alt="${creation.name}" class="creation-preview" />
+        <img src="${creation.imageData}" alt="${
+        creation.name
+      }" class="creation-preview" />
         <h4 class="creation-name">${creation.name}</h4>
-        <span class="creation-status">${creation.isDraft ? "Draft" : "Finished"}</span>
+        <span class="creation-status">${
+          creation.isDraft ? "Draft" : "Finished"
+        }</span>
         <p class="creation-date">${formattedDate}</p>
-        ${creation.isDraft ? `
+        ${
+          creation.isDraft
+            ? `
           <button class="delete-draft-btn" data-creation-id="${creation.id}" title="Delete Draft">
             <i data-lucide="trash-2"></i>
           </button>
-        ` : ''}
+        `
+            : ""
+        }
       `;
 
       // Add click handler to view/edit creation
@@ -2728,13 +2912,16 @@ class SquishCollectorApp {
         if (e.target.closest(".delete-draft-btn")) {
           return;
         }
-        
+
         if (creation.isDraft) {
           // TODO: Load draft back into creator studio for editing
           this.showFeedback("Draft editing will be available soon!", "info");
         } else {
           // TODO: Show full-size view of finished creation
-          this.showFeedback("Full-size viewing will be available soon!", "info");
+          this.showFeedback(
+            "Full-size viewing will be available soon!",
+            "info"
+          );
         }
       });
 
@@ -2746,10 +2933,10 @@ class SquishCollectorApp {
 
   updateCreationsStats() {
     const savedCreations = this.loadSavedCreations();
-    
+
     const totalCount = savedCreations.length;
-    const draftsCount = savedCreations.filter(c => c.isDraft).length;
-    const finishedCount = savedCreations.filter(c => !c.isDraft).length;
+    const draftsCount = savedCreations.filter((c) => c.isDraft).length;
+    const finishedCount = savedCreations.filter((c) => !c.isDraft).length;
 
     const creationsCountElement = document.getElementById("creations-count");
     const draftsCountElement = document.getElementById("drafts-count");
@@ -2772,34 +2959,43 @@ class SquishCollectorApp {
 
   deleteDraft(creationId) {
     // Show confirmation dialog
-    const confirmed = confirm("Are you sure you want to delete this draft? This action cannot be undone.");
-    
+    const confirmed = confirm(
+      "Are you sure you want to delete this draft? This action cannot be undone."
+    );
+
     if (!confirmed) {
       return;
     }
 
     try {
       let savedCreations = this.loadSavedCreations();
-      
+
       // Find the creation to get its name for feedback
-      const creationToDelete = savedCreations.find(c => c.id === creationId);
-      
+      const creationToDelete = savedCreations.find((c) => c.id === creationId);
+
       // Remove the creation with the matching ID
-      savedCreations = savedCreations.filter(creation => creation.id !== creationId);
-      
+      savedCreations = savedCreations.filter(
+        (creation) => creation.id !== creationId
+      );
+
       // Save back to localStorage
-      localStorage.setItem("squishmallow-creations", JSON.stringify(savedCreations));
-      
+      localStorage.setItem(
+        "squishmallow-creations",
+        JSON.stringify(savedCreations)
+      );
+
       // Update the display
       this.populateCreationsGrid();
       this.updateCreationsStats();
-      
+
       // Show success message
       const creationName = creationToDelete ? creationToDelete.name : "Draft";
-      this.showFeedback(`"${creationName}" deleted successfully! 🗑️`, "success");
-      
+      this.showFeedback(
+        `"${creationName}" deleted successfully! 🗑️`,
+        "success"
+      );
+
       console.log(`🗑️ Deleted draft: ${creationName} (ID: ${creationId})`);
-      
     } catch (error) {
       console.error("❌ Error deleting draft:", error);
       this.showFeedback("Error deleting draft. Please try again.", "error");
