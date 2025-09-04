@@ -2824,6 +2824,15 @@ class SquishCollectorApp {
       });
     }
 
+    // Create Another button
+    const createAnotherBtn = document.getElementById("create-another-btn");
+    if (createAnotherBtn) {
+      createAnotherBtn.addEventListener("click", () => {
+        this.showScreen("template-selection-screen");
+        this.initializeTemplateSelection();
+      });
+    }
+
     // Handle delete draft button clicks
     document.addEventListener("click", (e) => {
       const deleteBtn = e.target.closest(".delete-draft-btn");
