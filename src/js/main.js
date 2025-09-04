@@ -2564,6 +2564,17 @@ class SquishCollectorApp {
       });
     }
 
+    // Handle delete draft button clicks
+    document.addEventListener("click", (e) => {
+      const deleteBtn = e.target.closest(".delete-draft-btn");
+      if (deleteBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const creationId = deleteBtn.dataset.creationId;
+        this.deleteDraft(creationId);
+      }
+    });
+
     console.log("✅ My Creations screen setup complete!");
   }
 
@@ -2614,10 +2625,20 @@ class SquishCollectorApp {
         <h4 class="creation-name">${creation.name}</h4>
         <span class="creation-status">${creation.isDraft ? "Draft" : "Finished"}</span>
         <p class="creation-date">${formattedDate}</p>
+        ${creation.isDraft ? `
+          <button class="delete-draft-btn" data-creation-id="${creation.id}" title="Delete Draft">
+            <i data-lucide="trash-2"></i>
+          </button>
+        ` : ''}
       `;
 
       // Add click handler to view/edit creation
-      card.addEventListener("click", () => {
+      card.addEventListener("click", (e) => {
+        // Don't trigger card click if delete button was clicked
+        if (e.target.closest(".delete-draft-btn")) {
+          return;
+        }
+        
         if (creation.isDraft) {
           // TODO: Load draft back into creator studio for editing
           this.showFeedback("Draft editing will be available soon!", "info");
@@ -2656,6 +2677,42 @@ class SquishCollectorApp {
     } catch (error) {
       console.error("❌ Error loading saved creations:", error);
       return [];
+    }
+  }
+
+  deleteDraft(creationId) {
+    // Show confirmation dialog
+    const confirmed = confirm("Are you sure you want to delete this draft? This action cannot be undone.");
+    
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      let savedCreations = this.loadSavedCreations();
+      
+      // Find the creation to get its name for feedback
+      const creationToDelete = savedCreations.find(c => c.id === creationId);
+      
+      // Remove the creation with the matching ID
+      savedCreations = savedCreations.filter(creation => creation.id !== creationId);
+      
+      // Save back to localStorage
+      localStorage.setItem("squishmallow-creations", JSON.stringify(savedCreations));
+      
+      // Update the display
+      this.populateCreationsGrid();
+      this.updateCreationsStats();
+      
+      // Show success message
+      const creationName = creationToDelete ? creationToDelete.name : "Draft";
+      this.showFeedback(`"${creationName}" deleted successfully! 🗑️`, "success");
+      
+      console.log(`🗑️ Deleted draft: ${creationName} (ID: ${creationId})`);
+      
+    } catch (error) {
+      console.error("❌ Error deleting draft:", error);
+      this.showFeedback("Error deleting draft. Please try again.", "error");
     }
   }
 }
