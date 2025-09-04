@@ -60,7 +60,7 @@ class SoundManager {
       },
       incorrect: {
         file: "audio/incorrect.mp3", 
-        fallback: { frequency: 220, duration: 300, type: "error" } // A3 note
+        fallback: { frequency: 300, duration: 200, type: "gentle" } // Softer D4 note
       },
       celebration: {
         file: "audio/celebration.mp3",
@@ -128,7 +128,7 @@ class SoundManager {
             }
             
             osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-            osc.type = config.type === 'error' ? 'sawtooth' : 'sine';
+            osc.type = 'sine'; // Always use sine wave for gentle sounds
             
             // Volume envelope
             const volume = this.soundVolume * 0.3;
