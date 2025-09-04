@@ -40,6 +40,8 @@ class SquishCollectorApp {
       timerSeconds: null, // Story 5.4: Timer setting (null = no timer)
       multRange: 12, // Highest times table for multiplication/division
       addRange: "tens", // Number size for addition/subtraction
+      // Story 7.4: Dashboard mascot selection
+      selectedMascot: null, // ID of selected dashboard mascot
     };
 
     this.loadSettings();
@@ -124,6 +126,8 @@ class SquishCollectorApp {
   showDashboard() {
     console.log("🏠 Loading dashboard...");
     this.showScreen("dashboard-screen");
+    // Story 7.4: Update dashboard mascot when showing dashboard
+    this.updateDashboardMascot();
   }
 
   setupKeyboardNavigation() {
@@ -237,6 +241,18 @@ class SquishCollectorApp {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           this.handleSettings();
+        }
+      });
+    }
+
+    // Story 7.4: Dashboard mascot click handler
+    const dashboardMascot = document.getElementById("dashboard-mascot");
+    if (dashboardMascot) {
+      dashboardMascot.addEventListener("click", () => this.openMascotSelectionModal());
+      dashboardMascot.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          this.openMascotSelectionModal();
         }
       });
     }
@@ -1502,6 +1518,191 @@ class SquishCollectorApp {
     setTimeout(() => {
       this.showScreen("dashboard-screen");
     }, 1000);
+  }
+
+  // Story 7.4: Mascot Selection Methods
+  openMascotSelectionModal() {
+    console.log("🎭 Opening mascot selection modal...");
+    
+    // Populate the modal with collected Squishmallows
+    this.populateMascotSelection();
+    
+    // Show the modal
+    const modal = document.getElementById("mascot-selection-modal");
+    if (modal) {
+      modal.style.display = "flex";
+      // Add show class for animation after a brief delay
+      setTimeout(() => {
+        modal.classList.add("show");
+      }, 10);
+      
+      // Setup modal close handlers
+      this.setupMascotModalCloseHandlers();
+    }
+  }
+
+  populateMascotSelection() {
+    const grid = document.getElementById("mascot-selection-grid");
+    if (!grid || !this.collectionManager) {
+      console.error("❌ Could not populate mascot selection - missing elements");
+      return;
+    }
+
+    // Get collected Squishmallows
+    const allSquishmallows = this.collectionManager.getAllSquishmallows();
+    const collectedIds = Array.from(this.collectionManager.userCollection);
+    
+    // Clear existing content
+    grid.innerHTML = "";
+
+    if (collectedIds.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+          <p style="color: var(--text-muted); font-style: italic;">
+            No Squishmallows collected yet! Play the math game to earn your first companion.
+          </p>
+        </div>
+      `;
+      return;
+    }
+
+    // Create mascot options for collected Squishmallows
+    collectedIds.forEach(squishId => {
+      const squishmallow = allSquishmallows.find(s => s.id === squishId);
+      if (!squishmallow) {
+        console.warn(`⚠️ Collected Squishmallow not found in data: ${squishId}`);
+        return;
+      }
+
+      const optionDiv = document.createElement("div");
+      optionDiv.className = "mascot-option";
+      if (this.settings.selectedMascot === squishId) {
+        optionDiv.classList.add("selected");
+      }
+
+      // Use same image approach as collection page
+      console.log(`🖼️ ${squishmallow.name}: ${squishmallow.image_url}`);
+
+      optionDiv.innerHTML = `
+        <img 
+          src="${squishmallow.image_url}" 
+          alt="${squishmallow.name}"
+          class="mascot-option-image"
+          onerror="this.style.background='linear-gradient(135deg, #9B59B6, #E91E63)'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.innerHTML='💖';"
+        />
+        <h3 class="mascot-option-name">${squishmallow.name}</h3>
+      `;
+
+      // Add click handler
+      optionDiv.addEventListener("click", (e) => this.selectMascot(squishId, e.currentTarget));
+      
+      grid.appendChild(optionDiv);
+    });
+
+    // Update icons for any fallback content
+    setTimeout(() => lucide.createIcons(), 100);
+  }
+
+  selectMascot(squishId, clickedElement) {
+    console.log(`🎭 Selected mascot: ${squishId}`);
+    
+    // Update settings
+    this.settings.selectedMascot = squishId;
+    this.saveSettings();
+    
+    // Update visual selection in modal
+    const options = document.querySelectorAll(".mascot-option");
+    options.forEach(option => {
+      option.classList.remove("selected");
+    });
+    
+    // Add selected class to clicked option
+    if (clickedElement) {
+      clickedElement.classList.add("selected");
+    }
+    
+    // Update dashboard mascot
+    this.updateDashboardMascot();
+    
+    // Play selection sound
+    this.soundManager.playSound("button");
+    
+    // Show feedback
+    const squishmallow = this.collectionManager.getAllSquishmallows().find(s => s.id === squishId);
+    if (squishmallow) {
+      this.showFeedback(`${squishmallow.name} is now your dashboard companion!`, "success");
+    }
+    
+    // Close modal after brief delay
+    setTimeout(() => {
+      this.closeMascotSelectionModal();
+    }, 800);
+  }
+
+  updateDashboardMascot() {
+    const dashboardMascot = document.getElementById("dashboard-mascot");
+    if (!dashboardMascot || !this.collectionManager) return;
+
+    // Get selected mascot or fall back to default
+    let selectedMascot = null;
+    if (this.settings.selectedMascot) {
+      selectedMascot = this.collectionManager.getAllSquishmallows()
+        .find(s => s.id === this.settings.selectedMascot);
+    }
+
+    if (selectedMascot) {
+      // Update to selected mascot - use same approach as collection page
+      console.log(`🎭 Dashboard mascot updated to: ${selectedMascot.name}, image: ${selectedMascot.image_url}`);
+      dashboardMascot.src = selectedMascot.image_url;
+      dashboardMascot.alt = `Your dashboard companion: ${selectedMascot.name}`;
+    } else {
+      // Fall back to default Luna
+      console.log("🎭 Using default Luna mascot");
+      dashboardMascot.src = "assets/luna_the_cat.png";
+      dashboardMascot.alt = "Click to change your dashboard companion";
+    }
+  }
+
+  setupMascotModalCloseHandlers() {
+    // Close button
+    const closeBtn = document.getElementById("mascot-modal-close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => this.closeMascotSelectionModal());
+    }
+
+    // ESC key
+    const escHandler = (e) => {
+      if (e.key === "Escape") {
+        this.closeMascotSelectionModal();
+        document.removeEventListener("keydown", escHandler);
+      }
+    };
+    document.addEventListener("keydown", escHandler);
+
+    // Click outside modal
+    const modal = document.getElementById("mascot-selection-modal");
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          this.closeMascotSelectionModal();
+        }
+      });
+    }
+  }
+
+  closeMascotSelectionModal() {
+    console.log("🎭 Closing mascot selection modal...");
+    
+    const modal = document.getElementById("mascot-selection-modal");
+    if (modal) {
+      // Remove show class for animation
+      modal.classList.remove("show");
+      
+      // Hide modal after animation completes
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 300);
+    }
   }
 }
 

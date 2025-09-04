@@ -47,9 +47,11 @@
         <div class="dashboard-content">
           <div class="squishmallow-mascot">
             <img
+              id="dashboard-mascot"
               src="assets/luna_the_cat.png"
-              alt="Adorable Luna the Cat Squishmallow"
-              class="mascot-image small"
+              alt="Click to change your dashboard companion"
+              class="mascot-image small clickable-mascot"
+              title="Click to choose your dashboard companion"
             />
           </div>
           <h1 class="game-title">Squishmallow Collector</h1>
@@ -90,7 +92,7 @@
               <span class="button-icon"><i data-lucide="home"></i></span>
               <span class="button-text">Return to Dashboard</span>
             </button>
-            
+
             <button
               id="game-mute-btn"
               class="mute-button"
@@ -98,7 +100,11 @@
             >
               <span class="button-icon">
                 <i data-lucide="volume-2" id="mute-icon-on"></i>
-                <i data-lucide="volume-x" id="mute-icon-off" style="display: none;"></i>
+                <i
+                  data-lucide="volume-x"
+                  id="mute-icon-off"
+                  style="display: none"
+                ></i>
               </span>
             </button>
           </div>
@@ -155,7 +161,10 @@
               <div class="timer-container" id="timer-container">
                 <i data-lucide="clock" class="timer-icon"></i>
                 <span class="timer-display" id="timer-display">
-                  <span class="timer-minutes">5</span>:<span class="timer-seconds">00</span>
+                  <span class="timer-minutes">5</span>:<span
+                    class="timer-seconds"
+                    >00</span
+                  >
                 </span>
               </div>
             </div>
@@ -519,11 +528,11 @@
 
                 <label class="setting-label">
                   Sound volume:
-                  <input 
-                    type="range" 
-                    id="sound-volume" 
-                    min="0" 
-                    max="100" 
+                  <input
+                    type="range"
+                    id="sound-volume"
+                    min="0"
+                    max="100"
                     value="50"
                     class="volume-slider"
                   />
@@ -531,7 +540,11 @@
                 </label>
 
                 <label class="setting-label">
-                  <input type="checkbox" id="background-music-enabled" checked />
+                  <input
+                    type="checkbox"
+                    id="background-music-enabled"
+                    checked
+                  />
                   Enable background music
                 </label>
                 <p class="setting-description">
@@ -540,11 +553,11 @@
 
                 <label class="setting-label">
                   Music volume:
-                  <input 
-                    type="range" 
-                    id="music-volume" 
-                    min="0" 
-                    max="100" 
+                  <input
+                    type="range"
+                    id="music-volume"
+                    min="0"
+                    max="100"
                     value="30"
                     class="volume-slider"
                   />
@@ -556,12 +569,20 @@
             <div class="setting-section danger-section">
               <h3><i data-lucide="trash-2"></i> Reset Collection</h3>
               <div class="setting-group">
-                <button class="restart-collection-btn" id="restart-collection-btn">
-                  <span class="button-icon"><i data-lucide="refresh-cw"></i></span>
-                  <span class="button-text">Restart Squishmallow Collection</span>
+                <button
+                  class="restart-collection-btn"
+                  id="restart-collection-btn"
+                >
+                  <span class="button-icon"
+                    ><i data-lucide="refresh-cw"></i
+                  ></span>
+                  <span class="button-text"
+                    >Restart Squishmallow Collection</span
+                  >
                 </button>
                 <p class="setting-description">
-                  This will permanently delete all your collected Squishmallows and start fresh
+                  This will permanently delete all your collected Squishmallows
+                  and start fresh
                 </p>
               </div>
             </div>
@@ -576,6 +597,35 @@
               <span class="button-icon"><i data-lucide="save"></i></span>
               <span class="button-text">Save Settings</span>
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Story 7.4: Mascot Selection Modal -->
+    <div
+      id="mascot-selection-modal"
+      class="modal-overlay"
+      style="display: none"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">
+            <i data-lucide="heart"></i>
+            Choose Your Dashboard Companion
+            <i data-lucide="heart"></i>
+          </h2>
+          <button class="modal-close-btn" id="mascot-modal-close" title="Close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-description">
+            Select a Squishmallow from your collection as your dashboard
+            companion!
+          </p>
+          <div class="mascot-selection-grid" id="mascot-selection-grid">
+            <!-- Mascots will be populated by JavaScript -->
           </div>
         </div>
       </div>
