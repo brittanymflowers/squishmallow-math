@@ -103,10 +103,9 @@
           <div class="game-header">
             <button
               id="back-to-dashboard-btn"
-              class="dashboard-button secondary"
+              class="back-button"
             >
-              <span class="button-icon"><i data-lucide="home"></i></span>
-              <span class="button-text">Return to Dashboard</span>
+              <i data-lucide="arrow-left"></i> Back to Dashboard
             </button>
 
             <button
@@ -276,9 +275,8 @@
           </div>
 
           <div class="success-buttons">
-            <button class="dashboard-button primary" id="success-dashboard-btn">
-              <span class="button-icon"><i data-lucide="home"></i></span>
-              <span class="button-text">Return to Dashboard</span>
+            <button class="back-button" id="success-dashboard-btn">
+              <i data-lucide="arrow-left"></i> Back to Dashboard
             </button>
             <button
               class="dashboard-button secondary"
@@ -336,11 +334,10 @@
               <span class="button-text">Try Again</span>
             </button>
             <button
-              class="dashboard-button secondary"
+              class="back-button"
               id="failure-dashboard-btn"
             >
-              <span class="button-icon"><i data-lucide="home"></i></span>
-              <span class="button-text">Dashboard</span>
+              <i data-lucide="arrow-left"></i> Back to Dashboard
             </button>
           </div>
         </div>
@@ -362,11 +359,10 @@
 
           <div class="collection-stats">
             <button
-              class="dashboard-button secondary collection-back-btn"
+              class="back-button"
               id="collection-dashboard-btn"
             >
-              <span class="button-icon"><i data-lucide="home"></i></span>
-              <span class="button-text">Return to Dashboard</span>
+              <i data-lucide="arrow-left"></i> Back to Dashboard
             </button>
 
             <div class="stat-badge">
@@ -605,9 +601,8 @@
           </div>
 
           <div class="settings-buttons">
-            <button class="dashboard-button secondary" id="settings-cancel-btn">
-              <span class="button-icon"><i data-lucide="x"></i></span>
-              <span class="button-text">Cancel</span>
+            <button class="back-button" id="settings-cancel-btn">
+              <i data-lucide="arrow-left"></i> Back to Dashboard
             </button>
             <button class="dashboard-button primary" id="settings-save-btn">
               <span class="button-icon"><i data-lucide="save"></i></span>
@@ -620,15 +615,15 @@
 
     <!-- Story 7.5: Template Selection Screen -->
     <div class="screen" id="template-selection-screen">
+      <button class="back-button" id="template-back-btn">
+        <i data-lucide="arrow-left"></i> Back to Dashboard
+      </button>
+      <button class="my-creations-button" id="my-creations-btn">
+        <i data-lucide="image"></i> My Creations
+      </button>
       <div class="screen-container">
         <div class="template-selection-content">
           <div class="template-selection-header">
-            <button class="back-button" id="template-back-btn">
-              <i data-lucide="arrow-left"></i> Back to Dashboard
-            </button>
-            <button class="my-creations-button" id="my-creations-btn">
-              <i data-lucide="image"></i> My Creations
-            </button>
             <h1 class="template-selection-title">
               <i data-lucide="image"></i> Choose Your Template
             </h1>
@@ -646,12 +641,12 @@
 
     <!-- Story 7.5: Creator Studio Screen -->
     <div class="screen" id="create-studio-screen">
+      <button class="back-button" id="creator-back-btn">
+        <i data-lucide="arrow-left"></i> Back to Dashboard
+      </button>
       <div class="screen-container">
         <div class="creator-content">
           <div class="creator-header">
-            <button class="back-button" id="creator-back-btn">
-              <i data-lucide="arrow-left"></i> Back to Dashboard
-            </button>
             <h1 class="creator-title">
               <i data-lucide="palette"></i> Squishmallow Creator Studio
             </h1>
@@ -725,9 +720,10 @@
               <input
                 type="text"
                 id="creation-name"
-                placeholder="Name your creation..."
-                maxlength="20"
+                placeholder="Name your creation (letters and numbers only)..."
+                maxlength="15"
                 class="creation-name-input"
+                title="Use letters and numbers only (no spaces or special characters)"
               />
             </div>
             <div class="action-buttons">
@@ -758,11 +754,10 @@
 
           <div class="collection-stats">
             <button
-              class="dashboard-button secondary collection-back-btn"
+              class="back-button"
               id="creations-dashboard-btn"
             >
-              <span class="button-icon"><i data-lucide="home"></i></span>
-              <span class="button-text">Return to Dashboard</span>
+              <i data-lucide="arrow-left"></i> Back to Dashboard
             </button>
 
             <div class="stat-badge">

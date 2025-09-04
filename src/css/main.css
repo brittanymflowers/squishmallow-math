@@ -2156,6 +2156,38 @@ body {
   display: block;
 }
 
+/* Template selection header responsive design */
+@media (max-width: 768px) {
+  .back-button,
+  .my-creations-button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+  
+  .template-selection-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-button {
+    position: static;
+    margin: 10px auto;
+    display: block;
+  }
+  
+  .my-creations-button {
+    position: static;
+    margin: 10px auto;
+    display: block;
+  }
+  
+  #template-selection-screen,
+  #create-studio-screen {
+    padding-top: 60px; /* Make room for repositioned buttons */
+  }
+}
+
 /* Responsive design for modal */
 @media (max-width: 768px) {
   .modal-content {
@@ -2455,8 +2487,8 @@ body {
 
 .back-button {
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 20px;
+  top: 20px;
   background: var(--secondary-teal);
   color: white;
   border: none;
@@ -2479,8 +2511,8 @@ body {
 /* My Creations button on template selection screen */
 .my-creations-button {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 20px;
+  top: 20px;
   background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
   color: white;
   border: none;

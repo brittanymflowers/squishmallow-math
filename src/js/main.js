@@ -814,13 +814,33 @@ class SquishCollectorApp {
     // Save Draft button
     const saveDraftBtn = document.getElementById("save-draft-btn");
     if (saveDraftBtn) {
-      saveDraftBtn.addEventListener("click", () => this.saveDraft());
+      saveDraftBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Debounce check to prevent double-clicks
+        if (!this.isValidClick()) {
+          return;
+        }
+        
+        this.saveDraft();
+      });
     }
 
     // Finish Creation button
     const finishBtn = document.getElementById("finish-creation-btn");
     if (finishBtn) {
-      finishBtn.addEventListener("click", () => this.finishCreation());
+      finishBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Debounce check to prevent double-clicks
+        if (!this.isValidClick()) {
+          return;
+        }
+        
+        this.finishCreation();
+      });
     }
 
     // Canvas click for coloring
@@ -831,22 +851,81 @@ class SquishCollectorApp {
     console.log("🔧 Creator tools setup complete");
   }
 
+  // Name validation for creations
+  validateCreationName(name, templateName, currentCreationId = null) {
+    if (!name || name.trim() === "") {
+      return { valid: false, message: "Please give your creation a name first! 🎨" };
+    }
+
+    const trimmedName = name.trim();
+
+    // Length validation
+    if (trimmedName.length < 2) {
+      return { valid: false, message: "Name must be at least 2 characters long! 📝" };
+    }
+
+    if (trimmedName.length > 15) {
+      return { valid: false, message: "Name must be 15 characters or less! ✂️" };
+    }
+
+    // Character validation - only letters and numbers, no spaces or special characters
+    const validNameRegex = /^[a-zA-Z0-9]+$/;
+    if (!validNameRegex.test(trimmedName)) {
+      return { valid: false, message: "Name can only contain letters and numbers (no spaces or special characters)! 🔤" };
+    }
+
+    // Check for duplicate names - compare the generated filename
+    const proposedFilename = this.generateCreationFilename(trimmedName, templateName);
+    const existingCreations = this.loadSavedCreations();
+    
+    const duplicateExists = existingCreations.some(creation => {
+      // Skip checking against the current creation if we're editing
+      if (currentCreationId && creation.id === currentCreationId) {
+        return false;
+      }
+      return creation.filename === proposedFilename;
+    });
+
+    if (duplicateExists) {
+      return { valid: false, message: `Name "${trimmedName}" already exists for this template! Try a different name. 🔄` };
+    }
+
+    return { valid: true, name: trimmedName };
+  }
+
+  // Generate standardized filename for creation
+  generateCreationFilename(creationName, templateName) {
+    // Convert name to lowercase (already validated to be letters/numbers only)
+    const safeName = creationName.toLowerCase();
+
+    // Create standardized filename: name-the-species.png
+    const templateSpecies = templateName.toLowerCase();
+    return `${safeName}-the-${templateSpecies}.png`;
+  }
+
   // Save functionality
   saveDraft() {
     const nameInput = document.getElementById("creation-name");
     const creationName = nameInput ? nameInput.value.trim() : "";
 
-    if (!creationName) {
-      this.showFeedback("Please give your creation a name first! 🎨", "info");
+    // Validate the creation name
+    const validation = this.validateCreationName(creationName, this.selectedTemplate.name);
+    if (!validation.valid) {
+      this.showFeedback(validation.message, "error");
       if (nameInput) nameInput.focus();
       return;
     }
 
+    // Generate standardized filename
+    const filename = this.generateCreationFilename(validation.name, this.selectedTemplate.name);
+    
     // Save canvas as image data
     const imageData = this.canvas.toDataURL("image/png");
     const creation = {
       id: Date.now().toString(),
-      name: creationName,
+      name: validation.name,
+      filename: filename,
+      templateName: this.selectedTemplate.name,
       imageData: imageData,
       timestamp: new Date().toISOString(),
       isDraft: true,
@@ -856,23 +935,35 @@ class SquishCollectorApp {
     this.showFeedback(`Draft "${creationName}" saved! 💾`, "success");
 
     console.log(`💾 Draft saved: ${creationName}`);
+    
+    // Navigate to My Creations page after saving
+    setTimeout(() => {
+      this.showMyCreationsScreen();
+    }, 1500); // Wait for feedback message to be seen
   }
 
   finishCreation() {
     const nameInput = document.getElementById("creation-name");
     const creationName = nameInput ? nameInput.value.trim() : "";
 
-    if (!creationName) {
-      this.showFeedback("Please give your creation a name first! 🎨", "info");
+    // Validate the creation name
+    const validation = this.validateCreationName(creationName, this.selectedTemplate.name);
+    if (!validation.valid) {
+      this.showFeedback(validation.message, "error");
       if (nameInput) nameInput.focus();
       return;
     }
 
+    // Generate standardized filename
+    const filename = this.generateCreationFilename(validation.name, this.selectedTemplate.name);
+    
     // Save canvas as completed creation
     const imageData = this.canvas.toDataURL("image/png");
     const creation = {
       id: Date.now().toString(),
-      name: creationName,
+      name: validation.name,
+      filename: filename,
+      templateName: this.selectedTemplate.name,
       imageData: imageData,
       timestamp: new Date().toISOString(),
       isDraft: false,
