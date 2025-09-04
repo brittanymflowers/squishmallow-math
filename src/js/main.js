@@ -1655,11 +1655,25 @@ class SquishCollectorApp {
       console.log(`🎭 Dashboard mascot updated to: ${selectedMascot.name}, image: ${selectedMascot.image_url}`);
       dashboardMascot.src = selectedMascot.image_url;
       dashboardMascot.alt = `Your dashboard companion: ${selectedMascot.name}`;
+      
+      // Update browser favicon to match selected mascot
+      this.updateFavicon(selectedMascot.image_url);
     } else {
       // Fall back to default Luna
       console.log("🎭 Using default Luna mascot");
       dashboardMascot.src = "assets/luna_the_cat.png";
       dashboardMascot.alt = "Click to change your dashboard companion";
+      
+      // Update favicon to default Luna
+      this.updateFavicon("assets/luna_the_cat.png");
+    }
+  }
+
+  updateFavicon(imageUrl) {
+    const favicon = document.getElementById("favicon");
+    if (favicon && imageUrl) {
+      favicon.href = imageUrl;
+      console.log(`🎨 Browser favicon updated to: ${imageUrl}`);
     }
   }
 
