@@ -1481,6 +1481,15 @@ body {
   border: 1px solid var(--accent-lavender);
 }
 
+.danger-section {
+  background: rgba(255, 245, 245, 0.9);
+  border: 2px solid #ff6b6b;
+}
+
+.danger-section h3 {
+  color: #e74c3c;
+}
+
 .setting-section h3 {
   color: var(--primary-purple);
   font-family: var(--font-title);
@@ -1531,6 +1540,34 @@ body {
   color: var(--text-muted);
   margin: 5px 0 0 32px;
   font-style: italic;
+}
+
+.restart-collection-btn {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 20px;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.restart-collection-btn:hover {
+  background: linear-gradient(135deg, #c0392b, #a93226);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(231, 76, 60, 0.4);
+}
+
+.restart-collection-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
 }
 
 .settings-buttons {

@@ -932,6 +932,41 @@ class SquishCollectorApp {
       percentageElement.textContent = `${stats.percentage}%`;
   }
 
+  confirmRestartCollection() {
+    const confirmed = confirm(
+      "This will delete all progress on your squishmallow collection - are you sure?"
+    );
+    
+    if (confirmed) {
+      this.restartCollection();
+    }
+  }
+
+  restartCollection() {
+    try {
+      // Clear the collection from localStorage
+      localStorage.removeItem("squishmallow-collection");
+      
+      // Reset the collection manager's user collection
+      this.collectionManager.userCollection = new Set();
+      
+      console.log("🔄 Collection has been reset");
+      
+      // Update the collection screen if it's currently displayed
+      const collectionScreen = document.getElementById("collection-screen");
+      if (collectionScreen && collectionScreen.classList.contains("active")) {
+        this.populateCollectionGrid();
+      }
+      
+      // Show a feedback message
+      this.showFeedback("Collection has been reset successfully!", "info");
+      
+    } catch (error) {
+      console.error("❌ Error resetting collection:", error);
+      this.showFeedback("Error resetting collection. Please try again.", "error");
+    }
+  }
+
   addNumberToInput(number) {
     const answerInput = document.getElementById("answer-input");
     if (answerInput) {
@@ -1127,6 +1162,12 @@ class SquishCollectorApp {
       cancelBtn.addEventListener("click", () =>
         this.showScreen("dashboard-screen")
       );
+    }
+
+    // Restart collection button
+    const restartBtn = document.getElementById("restart-collection-btn");
+    if (restartBtn) {
+      restartBtn.addEventListener("click", () => this.confirmRestartCollection());
     }
   }
 
