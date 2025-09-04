@@ -236,7 +236,9 @@ class SquishCollectorApp {
     // Create Studio button
     const createStudioBtn = document.getElementById("create-studio-btn");
     if (createStudioBtn) {
-      createStudioBtn.addEventListener("click", () => this.handleCreateStudio());
+      createStudioBtn.addEventListener("click", () =>
+        this.handleCreateStudio()
+      );
       createStudioBtn.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -260,7 +262,9 @@ class SquishCollectorApp {
     // Story 7.4: Dashboard mascot click handler
     const dashboardMascot = document.getElementById("dashboard-mascot");
     if (dashboardMascot) {
-      dashboardMascot.addEventListener("click", () => this.openMascotSelectionModal());
+      dashboardMascot.addEventListener("click", () =>
+        this.openMascotSelectionModal()
+      );
       dashboardMascot.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -312,14 +316,539 @@ class SquishCollectorApp {
   // Story 7.5: Create Studio handler
   handleCreateStudio() {
     console.log("🎨 Create Studio clicked!");
-    this.showScreen("create-studio-screen");
-    this.initializeCreatorStudio();
+    this.showScreen("template-selection-screen");
+    this.initializeTemplateSelection();
   }
 
-  initializeCreatorStudio() {
+  initializeTemplateSelection() {
+    console.log("🖼️ Initializing Template Selection...");
+    
+    // Load templates for selection
+    this.loadTemplateSelection();
+    
+    // Setup template selection handlers
+    this.setupTemplateSelectionHandlers();
+  }
+
+  initializeCreatorStudio(selectedTemplate) {
     console.log("🎨 Initializing Creator Studio...");
-    // TODO: Initialize canvas, templates, colors, patterns, effects
-    // This will be implemented in the next steps
+
+    // Store selected template
+    this.selectedTemplate = selectedTemplate;
+
+    // Initialize canvas
+    this.setupCanvas();
+
+    // Load the selected template onto canvas
+    this.loadSelectedTemplate(selectedTemplate);
+
+    // Create color palette
+    this.createColorPalette();
+
+    // Setup tool event handlers
+    this.setupCreatorTools();
+  }
+
+  setupCanvas() {
+    const canvas = document.getElementById("creator-canvas");
+    if (!canvas) return;
+
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.selectedColor = "#FF6B9D"; // Default pink
+
+    // Initialize undo/redo system
+    this.canvasHistory = [];
+    this.historyStep = -1;
+    this.maxHistorySteps = 20; // Limit history to prevent memory issues
+
+    // Set canvas background to white for better coloring
+    this.ctx.fillStyle = "white";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Save initial state
+    this.saveCanvasState();
+
+    console.log(
+      "🖼️ Canvas initialized with white background and history system"
+    );
+  }
+
+  loadTemplateSelection() {
+    const templateGrid = document.getElementById("template-selection-grid");
+    if (!templateGrid) return;
+
+    // Available templates
+    const templates = [
+      { 
+        id: "fox", 
+        name: "Fox", 
+        file: "fox-template.png",
+        description: "A cute fox with big ears perfect for coloring!"
+      }
+    ];
+
+    templateGrid.innerHTML = "";
+
+    templates.forEach((template) => {
+      const templateDiv = document.createElement("div");
+      templateDiv.className = "template-selection-option";
+      templateDiv.dataset.templateId = template.id;
+      templateDiv.innerHTML = `
+        <img src="assets/templates/${template.file}" alt="${template.name}" class="template-preview">
+        <div class="template-info">
+          <h3>${template.name}</h3>
+          <p>${template.description}</p>
+        </div>
+        <button class="select-template-btn">
+          <i data-lucide="palette"></i> Color This Template
+        </button>
+      `;
+
+      templateGrid.appendChild(templateDiv);
+    });
+
+    // Update icons after adding content
+    setTimeout(() => lucide.createIcons(), 50);
+
+    console.log("📄 Template selection loaded");
+  }
+
+  setupTemplateSelectionHandlers() {
+    // Back button
+    const backBtn = document.getElementById("template-back-btn");
+    if (backBtn) {
+      backBtn.addEventListener("click", () => this.showScreen("dashboard-screen"));
+    }
+
+    // Template selection buttons
+    const templateGrid = document.getElementById("template-selection-grid");
+    if (templateGrid) {
+      templateGrid.addEventListener("click", (e) => {
+        const templateOption = e.target.closest(".template-selection-option");
+        if (templateOption && e.target.closest(".select-template-btn")) {
+          const templateId = templateOption.dataset.templateId;
+          const templates = [{ 
+            id: "fox", 
+            name: "Fox", 
+            file: "fox-template.png",
+            description: "A cute fox with big ears perfect for coloring!"
+          }];
+          
+          const selectedTemplate = templates.find(t => t.id === templateId);
+          if (selectedTemplate) {
+            this.startCreatorStudio(selectedTemplate);
+          }
+        }
+      });
+    }
+
+    console.log("📄 Template selection handlers setup");
+  }
+
+  startCreatorStudio(selectedTemplate) {
+    console.log(`🎨 Starting Creator Studio with template: ${selectedTemplate.name}`);
+    this.showScreen("create-studio-screen");
+    this.initializeCreatorStudio(selectedTemplate);
+  }
+
+  loadSelectedTemplate(template) {
+    // Load template image onto canvas
+    const img = new Image();
+    img.onload = () => {
+      // Clear canvas and set white background
+      this.ctx.fillStyle = "white";
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+      // Draw template image
+      this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+      this.templateImage = img;
+
+      // Save state after template load
+      this.saveCanvasState();
+
+      console.log("🖼️ Selected template loaded onto canvas");
+    };
+
+    img.onerror = () => {
+      console.warn("⚠️ Failed to load selected template image");
+    };
+
+    img.src = `assets/templates/${template.file}`;
+  }
+
+  createColorPalette() {
+    const colorPicker = document.getElementById("color-picker");
+    if (!colorPicker) return;
+
+    // Child-friendly color palette
+    const colors = [
+      "#FF6B9D",
+      "#FFB3BA",
+      "#FFDFBA",
+      "#FFFFBA",
+      "#BAFFC9",
+      "#BAE1FF",
+      "#C9C9FF",
+      "#FFB3FF",
+      "#FF9999",
+      "#FFD700",
+      "#98FB98",
+      "#87CEEB",
+      "#DDA0DD",
+      "#F0E68C",
+      "#FFA07A",
+      "#20B2AA",
+      "#FF69B4",
+      "#32CD32",
+      "#FF4500",
+      "#4169E1",
+      "#DC143C",
+      "#00CED1",
+      "#FF1493",
+      "#00FF00",
+      "#8A2BE2",
+      "#FF8C00",
+      "#000000",
+      "#FFFFFF",
+      "#808080",
+      "#654321",
+    ];
+
+    colorPicker.innerHTML = "";
+
+    colors.forEach((color) => {
+      const colorDiv = document.createElement("div");
+      colorDiv.className = "color-option";
+      colorDiv.style.backgroundColor = color;
+      colorDiv.dataset.color = color;
+
+      if (color === this.selectedColor) {
+        colorDiv.classList.add("selected");
+      }
+
+      colorDiv.addEventListener("click", () =>
+        this.selectColor(color, colorDiv)
+      );
+      colorPicker.appendChild(colorDiv);
+    });
+
+    console.log("🎨 Color palette created");
+  }
+
+
+  selectColor(color, colorElement) {
+    this.selectedColor = color;
+
+    // Remove selected class from all colors
+    document
+      .querySelectorAll(".color-option")
+      .forEach((el) => el.classList.remove("selected"));
+
+    // Add selected class to clicked color
+    colorElement.classList.add("selected");
+
+    console.log(`🎨 Selected color: ${color}`);
+  }
+
+  setupCreatorTools() {
+    // Back button
+    const backBtn = document.getElementById("creator-back-btn");
+    if (backBtn) {
+      backBtn.addEventListener("click", () =>
+        this.showScreen("dashboard-screen")
+      );
+    }
+
+    // Undo button
+    const undoBtn = document.getElementById("undo-btn");
+    if (undoBtn) {
+      undoBtn.addEventListener("click", () => this.undo());
+    }
+
+    // Redo button
+    const redoBtn = document.getElementById("redo-btn");
+    if (redoBtn) {
+      redoBtn.addEventListener("click", () => this.redo());
+    }
+
+    // Clear button
+    const clearBtn = document.getElementById("clear-btn");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        // Clear canvas and restore white background
+        this.ctx.fillStyle = "white";
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Redraw template if one is loaded
+        if (this.templateImage) {
+          this.ctx.drawImage(
+            this.templateImage,
+            0,
+            0,
+            this.canvas.width,
+            this.canvas.height
+          );
+          console.log("🗑️ Canvas cleared and template restored");
+        } else {
+          console.log("🗑️ Canvas cleared");
+        }
+
+        // Save state after clearing
+        this.saveCanvasState();
+      });
+    }
+
+    // Save Draft button
+    const saveDraftBtn = document.getElementById("save-draft-btn");
+    if (saveDraftBtn) {
+      saveDraftBtn.addEventListener("click", () => this.saveDraft());
+    }
+
+    // Finish Creation button
+    const finishBtn = document.getElementById("finish-creation-btn");
+    if (finishBtn) {
+      finishBtn.addEventListener("click", () => this.finishCreation());
+    }
+
+    // Canvas click for coloring
+    if (this.canvas) {
+      this.canvas.addEventListener("click", (e) => this.handleCanvasClick(e));
+    }
+
+    console.log("🔧 Creator tools setup complete");
+  }
+
+  // Save functionality
+  saveDraft() {
+    const nameInput = document.getElementById("creation-name");
+    const creationName = nameInput ? nameInput.value.trim() : "";
+
+    if (!creationName) {
+      this.showFeedback("Please give your creation a name first! 🎨", "info");
+      if (nameInput) nameInput.focus();
+      return;
+    }
+
+    // Save canvas as image data
+    const imageData = this.canvas.toDataURL("image/png");
+    const creation = {
+      id: Date.now().toString(),
+      name: creationName,
+      imageData: imageData,
+      timestamp: new Date().toISOString(),
+      isDraft: true,
+    };
+
+    this.saveCreationToStorage(creation);
+    this.showFeedback(`Draft "${creationName}" saved! 💾`, "success");
+
+    console.log(`💾 Draft saved: ${creationName}`);
+  }
+
+  finishCreation() {
+    const nameInput = document.getElementById("creation-name");
+    const creationName = nameInput ? nameInput.value.trim() : "";
+
+    if (!creationName) {
+      this.showFeedback("Please give your creation a name first! 🎨", "info");
+      if (nameInput) nameInput.focus();
+      return;
+    }
+
+    // Save canvas as completed creation
+    const imageData = this.canvas.toDataURL("image/png");
+    const creation = {
+      id: Date.now().toString(),
+      name: creationName,
+      imageData: imageData,
+      timestamp: new Date().toISOString(),
+      isDraft: false,
+    };
+
+    this.saveCreationToStorage(creation);
+    this.showFeedback(`Creation "${creationName}" completed! 🎉`, "success");
+
+    // TODO: Add to collection manager as a reward option
+
+    console.log(`🎉 Creation finished: ${creationName}`);
+  }
+
+  saveCreationToStorage(creation) {
+    try {
+      let savedCreations = JSON.parse(
+        localStorage.getItem("squishmallow-creations") || "[]"
+      );
+      savedCreations.push(creation);
+      localStorage.setItem(
+        "squishmallow-creations",
+        JSON.stringify(savedCreations)
+      );
+    } catch (error) {
+      console.error("❌ Error saving creation:", error);
+      this.showFeedback("Error saving creation. Please try again.", "error");
+    }
+  }
+
+  handleCanvasClick(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const x = Math.floor(e.clientX - rect.left);
+    const y = Math.floor(e.clientY - rect.top);
+
+    // Proper flood fill with selected color
+    this.floodFill(x, y, this.selectedColor);
+  }
+
+  floodFill(startX, startY, fillColor) {
+    const imageData = this.ctx.getImageData(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    );
+    const data = imageData.data;
+    const width = this.canvas.width;
+    const height = this.canvas.height;
+
+    // Get the color at the starting point
+    const startIndex = (startY * width + startX) * 4;
+    const startR = data[startIndex];
+    const startG = data[startIndex + 1];
+    const startB = data[startIndex + 2];
+    const startA = data[startIndex + 3];
+
+    // Convert fill color to RGB
+    const hex = fillColor.replace("#", "");
+    const fillR = parseInt(hex.substr(0, 2), 16);
+    const fillG = parseInt(hex.substr(2, 2), 16);
+    const fillB = parseInt(hex.substr(4, 2), 16);
+
+    // Don't fill if already the same color (with tolerance)
+    if (this.colorDistance(startR, startG, startB, fillR, fillG, fillB) < 10) {
+      return;
+    }
+
+    // Color tolerance for anti-aliased edges (higher = more aggressive filling)
+    const tolerance = 200;
+
+    // Track visited pixels to prevent infinite loops
+    const visited = new Set();
+
+    // Stack-based flood fill to avoid recursion limits
+    const stack = [[startX, startY]];
+
+    while (stack.length > 0) {
+      const [x, y] = stack.pop();
+
+      if (x < 0 || x >= width || y < 0 || y >= height) continue;
+
+      const pixelKey = `${x},${y}`;
+      if (visited.has(pixelKey)) continue;
+      visited.add(pixelKey);
+
+      const index = (y * width + x) * 4;
+      const r = data[index];
+      const g = data[index + 1];
+      const b = data[index + 2];
+      const a = data[index + 3];
+
+      // Check if pixel is similar enough to start color (tolerance-based)
+      const distance = this.colorDistance(r, g, b, startR, startG, startB);
+
+      if (distance <= tolerance && a > 0) {
+        // Fill this pixel
+        data[index] = fillR;
+        data[index + 1] = fillG;
+        data[index + 2] = fillB;
+        data[index + 3] = 255; // Full opacity
+
+        // Add neighboring pixels to stack
+        stack.push([x + 1, y]);
+        stack.push([x - 1, y]);
+        stack.push([x, y + 1]);
+        stack.push([x, y - 1]);
+      }
+    }
+
+    // Apply the modified image data back to canvas
+    this.ctx.putImageData(imageData, 0, 0);
+
+    // Save state after coloring action
+    this.saveCanvasState();
+
+    console.log(
+      `🎨 Flood filled with color ${fillColor} at (${startX}, ${startY}) with tolerance`
+    );
+  }
+
+  // Helper function to calculate color distance for tolerance-based filling
+  colorDistance(r1, g1, b1, r2, g2, b2) {
+    return Math.sqrt(
+      Math.pow(r2 - r1, 2) + Math.pow(g2 - g1, 2) + Math.pow(b2 - b1, 2)
+    );
+  }
+
+  // Undo/Redo functionality
+  saveCanvasState() {
+    // Remove any future states if we're in the middle of history
+    if (this.historyStep < this.canvasHistory.length - 1) {
+      this.canvasHistory = this.canvasHistory.slice(0, this.historyStep + 1);
+    }
+
+    // Save current canvas state as image data
+    const imageData = this.ctx.getImageData(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    );
+    this.canvasHistory.push(imageData);
+    this.historyStep++;
+
+    // Limit history size
+    if (this.canvasHistory.length > this.maxHistorySteps) {
+      this.canvasHistory.shift();
+      this.historyStep--;
+    }
+
+    // Update undo/redo button states
+    this.updateUndoRedoButtons();
+  }
+
+  undo() {
+    if (this.historyStep > 0) {
+      this.historyStep--;
+      const imageData = this.canvasHistory[this.historyStep];
+      this.ctx.putImageData(imageData, 0, 0);
+      this.updateUndoRedoButtons();
+      console.log("⏪ Undo action performed");
+    }
+  }
+
+  redo() {
+    if (this.historyStep < this.canvasHistory.length - 1) {
+      this.historyStep++;
+      const imageData = this.canvasHistory[this.historyStep];
+      this.ctx.putImageData(imageData, 0, 0);
+      this.updateUndoRedoButtons();
+      console.log("⏩ Redo action performed");
+    }
+  }
+
+  updateUndoRedoButtons() {
+    const undoBtn = document.getElementById("undo-btn");
+    const redoBtn = document.getElementById("redo-btn");
+
+    if (undoBtn) {
+      undoBtn.disabled = this.historyStep <= 0;
+      undoBtn.style.opacity = this.historyStep <= 0 ? "0.5" : "1";
+    }
+
+    if (redoBtn) {
+      redoBtn.disabled = this.historyStep >= this.canvasHistory.length - 1;
+      redoBtn.style.opacity =
+        this.historyStep >= this.canvasHistory.length - 1 ? "0.5" : "1";
+    }
   }
 
   // Story 3.1: Progress tracking methods
@@ -480,7 +1009,7 @@ class SquishCollectorApp {
         squishImage.style.opacity = "0";
         squishImage.innerHTML = "";
         squishImage.style.background = "transparent";
-        
+
         squishImage.src = awardedSquishmallow.image_url;
         squishImage.alt = awardedSquishmallow.name;
         console.log("🖼️ Updated image src to:", awardedSquishmallow.image_url);
@@ -693,7 +1222,7 @@ class SquishCollectorApp {
     const muteBtn = document.getElementById("game-mute-btn");
     if (muteBtn) {
       this.updateMuteButtonDisplay();
-      
+
       muteBtn.addEventListener("click", () => {
         this.toggleMute();
       });
@@ -1011,7 +1540,7 @@ class SquishCollectorApp {
     const confirmed = confirm(
       "This will delete all progress on your squishmallow collection - are you sure?"
     );
-    
+
     if (confirmed) {
       this.restartCollection();
     }
@@ -1021,24 +1550,26 @@ class SquishCollectorApp {
     try {
       // Clear the collection from localStorage
       localStorage.removeItem("squishmallow-collection");
-      
+
       // Reset the collection manager's user collection
       this.collectionManager.userCollection = new Set();
-      
+
       console.log("🔄 Collection has been reset");
-      
+
       // Update the collection screen if it's currently displayed
       const collectionScreen = document.getElementById("collection-screen");
       if (collectionScreen && collectionScreen.classList.contains("active")) {
         this.populateCollectionGrid();
       }
-      
+
       // Show a feedback message
       this.showFeedback("Collection has been reset successfully!", "info");
-      
     } catch (error) {
       console.error("❌ Error resetting collection:", error);
-      this.showFeedback("Error resetting collection. Please try again.", "error");
+      this.showFeedback(
+        "Error resetting collection. Please try again.",
+        "error"
+      );
     }
   }
 
@@ -1124,7 +1655,7 @@ class SquishCollectorApp {
 
       // Story 2.4: Validate answer using MathEngine
       const validation = this.mathEngine.validateAnswer(userAnswer);
-      
+
       // Track total attempts for accuracy calculation
       this.gameState.totalAttempts++;
 
@@ -1138,7 +1669,7 @@ class SquishCollectorApp {
       if (validation.isCorrect) {
         // Story 6.2: Play success sound
         this.soundManager.playSound("correct");
-        
+
         // Add green success background
         if (problemDisplay) {
           problemDisplay.classList.add("correct");
@@ -1171,7 +1702,7 @@ class SquishCollectorApp {
       } else {
         // Story 6.2: Play incorrect sound
         this.soundManager.playSound("incorrect");
-        
+
         // Add red error background and shake animation
         if (problemDisplay) {
           problemDisplay.classList.add("incorrect");
@@ -1251,7 +1782,9 @@ class SquishCollectorApp {
     // Restart collection button
     const restartBtn = document.getElementById("restart-collection-btn");
     if (restartBtn) {
-      restartBtn.addEventListener("click", () => this.confirmRestartCollection());
+      restartBtn.addEventListener("click", () =>
+        this.confirmRestartCollection()
+      );
     }
 
     // Story 6.2: Audio settings controls
@@ -1275,12 +1808,12 @@ class SquishCollectorApp {
     if (soundVolume && soundVolumeDisplay) {
       soundVolume.value = Math.round(this.soundManager.getSoundVolume() * 100);
       soundVolumeDisplay.textContent = `${soundVolume.value}%`;
-      
+
       soundVolume.addEventListener("input", (e) => {
         const volume = e.target.value / 100;
         this.soundManager.setSoundVolume(volume);
         soundVolumeDisplay.textContent = `${e.target.value}%`;
-        
+
         // Play test sound
         this.soundManager.playSound("button");
       });
@@ -1301,7 +1834,7 @@ class SquishCollectorApp {
     if (musicVolume && musicVolumeDisplay) {
       musicVolume.value = Math.round(this.soundManager.getMusicVolume() * 100);
       musicVolumeDisplay.textContent = `${musicVolume.value}%`;
-      
+
       musicVolume.addEventListener("input", (e) => {
         const volume = e.target.value / 100;
         this.soundManager.setMusicVolume(volume);
@@ -1315,25 +1848,25 @@ class SquishCollectorApp {
     const currentMuteState = this.soundManager.isMutedState();
     this.soundManager.setMuted(!currentMuteState);
     this.updateMuteButtonDisplay();
-    
+
     // Play a quick test sound to confirm unmuting (only if unmuting)
     if (currentMuteState) {
       setTimeout(() => {
         this.soundManager.playSound("button");
       }, 100);
     }
-    
-    console.log(`🔊 Audio ${currentMuteState ? 'unmuted' : 'muted'}`);
+
+    console.log(`🔊 Audio ${currentMuteState ? "unmuted" : "muted"}`);
   }
 
   updateMuteButtonDisplay() {
     const muteBtn = document.getElementById("game-mute-btn");
     const iconOn = document.getElementById("mute-icon-on");
     const iconOff = document.getElementById("mute-icon-off");
-    
+
     if (muteBtn && iconOn && iconOff) {
       const isMuted = this.soundManager.isMutedState();
-      
+
       if (isMuted) {
         muteBtn.classList.add("muted");
         iconOn.style.display = "none";
@@ -1394,11 +1927,11 @@ class SquishCollectorApp {
     const timerContainer = document.getElementById("timer-container");
     const timerMinutes = document.querySelector(".timer-minutes");
     const timerSeconds = document.querySelector(".timer-seconds");
-    
+
     if (timerMinutes && timerSeconds) {
       const minutes = Math.floor(this.gameState.timeRemaining / 60);
       const seconds = this.gameState.timeRemaining % 60;
-      
+
       timerMinutes.textContent = minutes.toString();
       timerSeconds.textContent = seconds.toString().padStart(2, "0");
     }
@@ -1548,10 +2081,10 @@ class SquishCollectorApp {
   // Story 7.4: Mascot Selection Methods
   openMascotSelectionModal() {
     console.log("🎭 Opening mascot selection modal...");
-    
+
     // Populate the modal with collected Squishmallows
     this.populateMascotSelection();
-    
+
     // Show the modal
     const modal = document.getElementById("mascot-selection-modal");
     if (modal) {
@@ -1560,7 +2093,7 @@ class SquishCollectorApp {
       setTimeout(() => {
         modal.classList.add("show");
       }, 10);
-      
+
       // Setup modal close handlers
       this.setupMascotModalCloseHandlers();
     }
@@ -1569,14 +2102,16 @@ class SquishCollectorApp {
   populateMascotSelection() {
     const grid = document.getElementById("mascot-selection-grid");
     if (!grid || !this.collectionManager) {
-      console.error("❌ Could not populate mascot selection - missing elements");
+      console.error(
+        "❌ Could not populate mascot selection - missing elements"
+      );
       return;
     }
 
     // Get collected Squishmallows
     const allSquishmallows = this.collectionManager.getAllSquishmallows();
     const collectedIds = Array.from(this.collectionManager.userCollection);
-    
+
     // Clear existing content
     grid.innerHTML = "";
 
@@ -1592,10 +2127,12 @@ class SquishCollectorApp {
     }
 
     // Create mascot options for collected Squishmallows
-    collectedIds.forEach(squishId => {
-      const squishmallow = allSquishmallows.find(s => s.id === squishId);
+    collectedIds.forEach((squishId) => {
+      const squishmallow = allSquishmallows.find((s) => s.id === squishId);
       if (!squishmallow) {
-        console.warn(`⚠️ Collected Squishmallow not found in data: ${squishId}`);
+        console.warn(
+          `⚠️ Collected Squishmallow not found in data: ${squishId}`
+        );
         return;
       }
 
@@ -1619,8 +2156,10 @@ class SquishCollectorApp {
       `;
 
       // Add click handler
-      optionDiv.addEventListener("click", (e) => this.selectMascot(squishId, e.currentTarget));
-      
+      optionDiv.addEventListener("click", (e) =>
+        this.selectMascot(squishId, e.currentTarget)
+      );
+
       grid.appendChild(optionDiv);
     });
 
@@ -1630,34 +2169,39 @@ class SquishCollectorApp {
 
   selectMascot(squishId, clickedElement) {
     console.log(`🎭 Selected mascot: ${squishId}`);
-    
+
     // Update settings
     this.settings.selectedMascot = squishId;
     this.saveSettings();
-    
+
     // Update visual selection in modal
     const options = document.querySelectorAll(".mascot-option");
-    options.forEach(option => {
+    options.forEach((option) => {
       option.classList.remove("selected");
     });
-    
+
     // Add selected class to clicked option
     if (clickedElement) {
       clickedElement.classList.add("selected");
     }
-    
+
     // Update dashboard mascot
     this.updateDashboardMascot();
-    
+
     // Play selection sound
     this.soundManager.playSound("button");
-    
+
     // Show feedback
-    const squishmallow = this.collectionManager.getAllSquishmallows().find(s => s.id === squishId);
+    const squishmallow = this.collectionManager
+      .getAllSquishmallows()
+      .find((s) => s.id === squishId);
     if (squishmallow) {
-      this.showFeedback(`${squishmallow.name} is now your dashboard companion!`, "success");
+      this.showFeedback(
+        `${squishmallow.name} is now your dashboard companion!`,
+        "success"
+      );
     }
-    
+
     // Close modal after brief delay
     setTimeout(() => {
       this.closeMascotSelectionModal();
@@ -1671,16 +2215,19 @@ class SquishCollectorApp {
     // Get selected mascot or fall back to default
     let selectedMascot = null;
     if (this.settings.selectedMascot) {
-      selectedMascot = this.collectionManager.getAllSquishmallows()
-        .find(s => s.id === this.settings.selectedMascot);
+      selectedMascot = this.collectionManager
+        .getAllSquishmallows()
+        .find((s) => s.id === this.settings.selectedMascot);
     }
 
     if (selectedMascot) {
       // Update to selected mascot - use same approach as collection page
-      console.log(`🎭 Dashboard mascot updated to: ${selectedMascot.name}, image: ${selectedMascot.image_url}`);
+      console.log(
+        `🎭 Dashboard mascot updated to: ${selectedMascot.name}, image: ${selectedMascot.image_url}`
+      );
       dashboardMascot.src = selectedMascot.image_url;
       dashboardMascot.alt = `Your dashboard companion: ${selectedMascot.name}`;
-      
+
       // Update browser favicon to match selected mascot
       this.updateFavicon(selectedMascot.image_url);
     } else {
@@ -1688,7 +2235,7 @@ class SquishCollectorApp {
       console.log("🎭 Using default Luna mascot");
       dashboardMascot.src = "assets/squishmallows/luna_the_cat.png";
       dashboardMascot.alt = "Click to change your dashboard companion";
-      
+
       // Update favicon to default Luna
       this.updateFavicon("assets/squishmallows/luna_the_cat.png");
     }
@@ -1706,7 +2253,9 @@ class SquishCollectorApp {
     // Close button
     const closeBtn = document.getElementById("mascot-modal-close");
     if (closeBtn) {
-      closeBtn.addEventListener("click", () => this.closeMascotSelectionModal());
+      closeBtn.addEventListener("click", () =>
+        this.closeMascotSelectionModal()
+      );
     }
 
     // ESC key
@@ -1731,12 +2280,12 @@ class SquishCollectorApp {
 
   closeMascotSelectionModal() {
     console.log("🎭 Closing mascot selection modal...");
-    
+
     const modal = document.getElementById("mascot-selection-modal");
     if (modal) {
       // Remove show class for animation
       modal.classList.remove("show");
-      
+
       // Hide modal after animation completes
       setTimeout(() => {
         modal.style.display = "none";
