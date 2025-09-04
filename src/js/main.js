@@ -785,13 +785,12 @@ class SquishCollectorApp {
       redoBtn.addEventListener("click", () => this.redo());
     }
 
-    // Clear button
-    const clearBtn = document.getElementById("clear-btn");
-    if (clearBtn) {
-      clearBtn.addEventListener("click", () => {
-        // Clear canvas and restore white background
-        this.ctx.fillStyle = "white";
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    // Canvas Clear button (trash button)
+    const canvasClearBtn = document.getElementById("canvas-clear-btn");
+    if (canvasClearBtn) {
+      canvasClearBtn.addEventListener("click", () => {
+        // Clear canvas completely and redraw template
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Redraw template if one is loaded
         if (this.templateImage && this.templateDrawBounds) {

@@ -115,6 +115,13 @@ body {
   padding-top: 20px;
 }
 
+/* Create studio screen needs scrolling capability */
+#create-studio-screen {
+  overflow-y: auto;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+
 /* Typography Styles */
 .game-title {
   font-family: var(--font-title);
