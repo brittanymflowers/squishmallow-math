@@ -80,6 +80,9 @@ class SquishCollectorApp {
     // Setup collection screen buttons (Story 4.2)
     this.setupCollectionScreen();
 
+    // Setup my creations screen buttons (Story 7.5)
+    this.setupMyCreationsScreen();
+
     // Show loading screen first
     this.showScreen("loading-screen");
 
@@ -273,6 +276,18 @@ class SquishCollectorApp {
       });
     }
 
+    // Story 7.5: My Creations button
+    const myCreationsBtn = document.getElementById("my-creations-btn");
+    if (myCreationsBtn) {
+      myCreationsBtn.addEventListener("click", () => this.handleMyCreations());
+      myCreationsBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          this.handleMyCreations();
+        }
+      });
+    }
+
     console.log("✅ Dashboard buttons setup complete!");
   }
 
@@ -320,6 +335,12 @@ class SquishCollectorApp {
     this.initializeTemplateSelection();
   }
 
+  // Story 7.5: My Creations handler
+  handleMyCreations() {
+    console.log("🖼️ My Creations clicked!");
+    this.showMyCreationsScreen();
+  }
+
   initializeTemplateSelection() {
     console.log("🖼️ Initializing Template Selection...");
     
@@ -362,6 +383,10 @@ class SquishCollectorApp {
     this.historyStep = -1;
     this.maxHistorySteps = 20; // Limit history to prevent memory issues
 
+    // Initialize recent colors system
+    this.recentColors = this.loadRecentColors();
+    this.maxRecentColors = 8; // Keep track of last 8 colors
+
     // Set canvas background to white for better coloring
     this.ctx.fillStyle = "white";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -385,6 +410,30 @@ class SquishCollectorApp {
         name: "Fox", 
         file: "fox-template.png",
         description: "A cute fox with big ears perfect for coloring!"
+      },
+      { 
+        id: "alien", 
+        name: "Alien", 
+        file: "alien-template.png",
+        description: "A friendly alien visitor ready for cosmic colors!"
+      },
+      { 
+        id: "cat", 
+        name: "Cat", 
+        file: "cat-template.png",
+        description: "An adorable kitty waiting for your creative touch!"
+      },
+      { 
+        id: "caticorn", 
+        name: "Caticorn", 
+        file: "caticorn-template.png",
+        description: "A magical cat-unicorn hybrid ready for rainbow colors!"
+      },
+      { 
+        id: "mushroom", 
+        name: "Mushroom", 
+        file: "mushroom-template.png",
+        description: "A whimsical mushroom perfect for forest colors!"
       }
     ];
 
@@ -400,9 +449,6 @@ class SquishCollectorApp {
           <h3>${template.name}</h3>
           <p>${template.description}</p>
         </div>
-        <button class="select-template-btn">
-          <i data-lucide="palette"></i> Color This Template
-        </button>
       `;
 
       templateGrid.appendChild(templateDiv);
@@ -426,14 +472,40 @@ class SquishCollectorApp {
     if (templateGrid) {
       templateGrid.addEventListener("click", (e) => {
         const templateOption = e.target.closest(".template-selection-option");
-        if (templateOption && e.target.closest(".select-template-btn")) {
+        if (templateOption) {
           const templateId = templateOption.dataset.templateId;
-          const templates = [{ 
-            id: "fox", 
-            name: "Fox", 
-            file: "fox-template.png",
-            description: "A cute fox with big ears perfect for coloring!"
-          }];
+          const templates = [
+            { 
+              id: "fox", 
+              name: "Fox", 
+              file: "fox-template.png",
+              description: "A cute fox with big ears perfect for coloring!"
+            },
+            { 
+              id: "alien", 
+              name: "Alien", 
+              file: "alien-template.png",
+              description: "A friendly alien visitor ready for cosmic colors!"
+            },
+            { 
+              id: "cat", 
+              name: "Cat", 
+              file: "cat-template.png",
+              description: "An adorable kitty waiting for your creative touch!"
+            },
+            { 
+              id: "caticorn", 
+              name: "Caticorn", 
+              file: "caticorn-template.png",
+              description: "A magical cat-unicorn hybrid ready for rainbow colors!"
+            },
+            { 
+              id: "mushroom", 
+              name: "Mushroom", 
+              file: "mushroom-template.png",
+              description: "A whimsical mushroom perfect for forest colors!"
+            }
+          ];
           
           const selectedTemplate = templates.find(t => t.id === templateId);
           if (selectedTemplate) {
@@ -456,18 +528,44 @@ class SquishCollectorApp {
     // Load template image onto canvas
     const img = new Image();
     img.onload = () => {
-      // Clear canvas and set white background
-      this.ctx.fillStyle = "white";
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      // Clear canvas but keep it transparent (no white background)
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-      // Draw template image
-      this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+      // Calculate dimensions to maintain aspect ratio
+      const imgAspectRatio = img.width / img.height;
+      const canvasAspectRatio = this.canvas.width / this.canvas.height;
+
+      let drawWidth, drawHeight, drawX, drawY;
+
+      if (imgAspectRatio > canvasAspectRatio) {
+        // Image is wider relative to canvas - fit by width
+        drawWidth = this.canvas.width * 0.9; // Leave 5% margin on each side
+        drawHeight = drawWidth / imgAspectRatio;
+      } else {
+        // Image is taller relative to canvas - fit by height  
+        drawHeight = this.canvas.height * 0.9; // Leave 5% margin on top/bottom
+        drawWidth = drawHeight * imgAspectRatio;
+      }
+
+      // Center the image
+      drawX = (this.canvas.width - drawWidth) / 2;
+      drawY = (this.canvas.height - drawHeight) / 2;
+
+      // Draw template image with proper aspect ratio and centering
+      this.ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
       this.templateImage = img;
+      
+      // Store drawing dimensions for reference
+      this.templateDrawBounds = { x: drawX, y: drawY, width: drawWidth, height: drawHeight };
+
+      // Store original template image data for protection checking
+      this.originalTemplateData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
 
       // Save state after template load
       this.saveCanvasState();
 
-      console.log("🖼️ Selected template loaded onto canvas");
+      console.log(`🖼️ Template loaded: ${drawWidth}x${drawHeight} at (${drawX}, ${drawY})`);
+      console.log("🛡️ Original template data stored for outline protection");
     };
 
     img.onerror = () => {
@@ -533,7 +631,98 @@ class SquishCollectorApp {
       colorPicker.appendChild(colorDiv);
     });
 
+    // Add custom color picker option
+    const customColorDiv = document.createElement("div");
+    customColorDiv.className = "color-option custom-color-picker";
+    customColorDiv.innerHTML = `
+      <i data-lucide="plus" style="width: 16px; height: 16px; color: #666;"></i>
+      <input type="color" class="color-input" style="position: absolute; opacity: 0; pointer-events: none;" />
+    `;
+    customColorDiv.title = "Choose custom color";
+    
+    customColorDiv.addEventListener("click", () => this.openCustomColorPicker(customColorDiv));
+    colorPicker.appendChild(customColorDiv);
+
+    // Update icons after adding content
+    setTimeout(() => lucide.createIcons(), 50);
+
+    // Create recent colors section
+    this.createRecentColorsSection();
+
     console.log("🎨 Color palette created");
+  }
+
+  createRecentColorsSection() {
+    const recentColorsContainer = document.getElementById("recent-colors");
+    if (!recentColorsContainer) return;
+
+    recentColorsContainer.innerHTML = "";
+
+    // Create 8 recent color slots
+    for (let i = 0; i < this.maxRecentColors; i++) {
+      const recentColorDiv = document.createElement("div");
+      recentColorDiv.className = "recent-color-option";
+      
+      if (i < this.recentColors.length) {
+        const color = this.recentColors[i];
+        recentColorDiv.style.backgroundColor = color;
+        recentColorDiv.dataset.color = color;
+        recentColorDiv.title = `Recent color: ${color}`;
+        
+        recentColorDiv.addEventListener("click", () => 
+          this.selectColor(color, recentColorDiv)
+        );
+      } else {
+        recentColorDiv.classList.add("empty");
+        recentColorDiv.title = "No recent color";
+      }
+      
+      recentColorsContainer.appendChild(recentColorDiv);
+    }
+    
+    console.log("🕒 Recent colors section created");
+  }
+
+  addToRecentColors(color) {
+    // Remove color if it already exists
+    const existingIndex = this.recentColors.indexOf(color);
+    if (existingIndex !== -1) {
+      this.recentColors.splice(existingIndex, 1);
+    }
+    
+    // Add color to the beginning
+    this.recentColors.unshift(color);
+    
+    // Keep only the most recent colors
+    if (this.recentColors.length > this.maxRecentColors) {
+      this.recentColors = this.recentColors.slice(0, this.maxRecentColors);
+    }
+    
+    // Save to localStorage
+    this.saveRecentColors();
+    
+    // Update the UI
+    this.createRecentColorsSection();
+    
+    console.log(`🕒 Added ${color} to recent colors`);
+  }
+
+  loadRecentColors() {
+    try {
+      const saved = localStorage.getItem("squishmallow-recent-colors");
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error("❌ Error loading recent colors:", error);
+      return [];
+    }
+  }
+
+  saveRecentColors() {
+    try {
+      localStorage.setItem("squishmallow-recent-colors", JSON.stringify(this.recentColors));
+    } catch (error) {
+      console.error("❌ Error saving recent colors:", error);
+    }
   }
 
 
@@ -542,13 +731,37 @@ class SquishCollectorApp {
 
     // Remove selected class from all colors
     document
-      .querySelectorAll(".color-option")
+      .querySelectorAll(".color-option, .recent-color-option")
       .forEach((el) => el.classList.remove("selected"));
 
     // Add selected class to clicked color
     colorElement.classList.add("selected");
 
+    // Add to recent colors history
+    this.addToRecentColors(color);
+
     console.log(`🎨 Selected color: ${color}`);
+  }
+
+  openCustomColorPicker(customColorDiv) {
+    const colorInput = customColorDiv.querySelector(".color-input");
+    
+    // Set up the color input event handler
+    colorInput.onchange = (e) => {
+      const selectedColor = e.target.value;
+      
+      // Update the custom color picker appearance to show selected color
+      customColorDiv.style.backgroundColor = selectedColor;
+      customColorDiv.innerHTML = `<input type="color" class="color-input" value="${selectedColor}" style="position: absolute; opacity: 0; pointer-events: none;" />`;
+      
+      // Set this as the selected color (this will automatically add to recent colors)
+      this.selectColor(selectedColor, customColorDiv);
+      
+      console.log(`🎨 Custom color selected: ${selectedColor}`);
+    };
+    
+    // Trigger the color picker
+    colorInput.click();
   }
 
   setupCreatorTools() {
@@ -581,15 +794,15 @@ class SquishCollectorApp {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Redraw template if one is loaded
-        if (this.templateImage) {
+        if (this.templateImage && this.templateDrawBounds) {
           this.ctx.drawImage(
             this.templateImage,
-            0,
-            0,
-            this.canvas.width,
-            this.canvas.height
+            this.templateDrawBounds.x,
+            this.templateDrawBounds.y,
+            this.templateDrawBounds.width,
+            this.templateDrawBounds.height
           );
-          console.log("🗑️ Canvas cleared and template restored");
+          console.log("🗑️ Canvas cleared and template restored with proper aspect ratio");
         } else {
           console.log("🗑️ Canvas cleared");
         }
@@ -717,6 +930,22 @@ class SquishCollectorApp {
     const startB = data[startIndex + 2];
     const startA = data[startIndex + 3];
 
+    // Check if this is original template black (protect original outlines/details)
+    const isOriginalBlack = this.isPixelOriginallyBlack(startX, startY);
+
+    if (isOriginalBlack) {
+      this.showFeedback("Can't color over the original outlines and details! 🖍️", "info");
+      return;
+    }
+
+    // Check if we're trying to color outside the template boundaries (transparent background)
+    const isOutsideTemplate = this.isPixelOutsideTemplate(startX, startY);
+
+    if (isOutsideTemplate) {
+      this.showFeedback("Keep your coloring inside the Squishmallow outline! 🎨", "info");
+      return;
+    }
+
     // Convert fill color to RGB
     const hex = fillColor.replace("#", "");
     const fillR = parseInt(hex.substr(0, 2), 16);
@@ -755,7 +984,13 @@ class SquishCollectorApp {
       // Check if pixel is similar enough to start color (tolerance-based)
       const distance = this.colorDistance(r, g, b, startR, startG, startB);
 
-      if (distance <= tolerance && a > 0) {
+      // Simple rule: Never fill any pixel that was originally black
+      const isOriginallyBlack = this.isPixelOriginallyBlack(x, y);
+      
+      // Also never fill pixels outside the template boundaries
+      const isOutsideTemplate = this.isPixelOutsideTemplate(x, y);
+
+      if (distance <= tolerance && a > 0 && !isOriginallyBlack && !isOutsideTemplate) {
         // Fill this pixel
         data[index] = fillR;
         data[index + 1] = fillG;
@@ -787,6 +1022,32 @@ class SquishCollectorApp {
       Math.pow(r2 - r1, 2) + Math.pow(g2 - g1, 2) + Math.pow(b2 - b1, 2)
     );
   }
+
+
+  // Check if a pixel was originally black (used during flood fill to prevent crossing outlines)
+  isPixelOriginallyBlack(x, y) {
+    if (!this.originalTemplateData) return false;
+
+    const index = (y * this.canvas.width + x) * 4;
+    const originalR = this.originalTemplateData.data[index];
+    const originalG = this.originalTemplateData.data[index + 1];
+    const originalB = this.originalTemplateData.data[index + 2];
+
+    // Check if original pixel was black (with small tolerance for anti-aliasing)
+    return this.colorDistance(originalR, originalG, originalB, 0, 0, 0) < 50;
+  }
+
+  // Check if a pixel is outside the template boundaries (transparent background)
+  isPixelOutsideTemplate(x, y) {
+    if (!this.originalTemplateData) return false;
+
+    const index = (y * this.canvas.width + x) * 4;
+    const originalA = this.originalTemplateData.data[index + 3];
+
+    // If the original pixel was transparent (alpha < 128), it's outside the template
+    return originalA < 128;
+  }
+
 
   // Undo/Redo functionality
   saveCanvasState() {
@@ -2290,6 +2551,111 @@ class SquishCollectorApp {
       setTimeout(() => {
         modal.style.display = "none";
       }, 300);
+    }
+  }
+
+  // Story 7.5: My Creations Screen Methods
+  setupMyCreationsScreen() {
+    // My Creations screen - return to dashboard button
+    const creationsDashboardBtn = document.getElementById("creations-dashboard-btn");
+    if (creationsDashboardBtn) {
+      creationsDashboardBtn.addEventListener("click", () => {
+        this.showDashboard();
+      });
+    }
+
+    console.log("✅ My Creations screen setup complete!");
+  }
+
+  showMyCreationsScreen() {
+    this.populateCreationsGrid();
+    this.updateCreationsStats();
+    this.showScreen("my-creations-screen");
+  }
+
+  populateCreationsGrid() {
+    const creationsGrid = document.getElementById("creations-grid");
+    if (!creationsGrid) {
+      console.error("❌ Creations grid element not found");
+      return;
+    }
+
+    // Load saved creations from localStorage
+    const savedCreations = this.loadSavedCreations();
+
+    console.log(`🖼️ Populating creations grid with ${savedCreations.length} creations`);
+
+    creationsGrid.innerHTML = "";
+
+    if (savedCreations.length === 0) {
+      creationsGrid.innerHTML = `
+        <div class="empty-creations">
+          <i data-lucide="image-off"></i>
+          <p>No creations yet!</p>
+          <p>Visit the Create Studio to make your first masterpiece.</p>
+        </div>
+      `;
+      // Update icons for empty state
+      this.updateIcons();
+      return;
+    }
+
+    // Sort creations by timestamp (newest first)
+    savedCreations.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    savedCreations.forEach((creation) => {
+      const card = document.createElement("div");
+      card.className = `creation-card ${creation.isDraft ? "draft" : "finished"}`;
+
+      const formattedDate = new Date(creation.timestamp).toLocaleDateString();
+
+      card.innerHTML = `
+        <img src="${creation.imageData}" alt="${creation.name}" class="creation-preview" />
+        <h4 class="creation-name">${creation.name}</h4>
+        <span class="creation-status">${creation.isDraft ? "Draft" : "Finished"}</span>
+        <p class="creation-date">${formattedDate}</p>
+      `;
+
+      // Add click handler to view/edit creation
+      card.addEventListener("click", () => {
+        if (creation.isDraft) {
+          // TODO: Load draft back into creator studio for editing
+          this.showFeedback("Draft editing will be available soon!", "info");
+        } else {
+          // TODO: Show full-size view of finished creation
+          this.showFeedback("Full-size viewing will be available soon!", "info");
+        }
+      });
+
+      creationsGrid.appendChild(card);
+    });
+
+    console.log(`✅ Added ${savedCreations.length} creation cards to grid`);
+  }
+
+  updateCreationsStats() {
+    const savedCreations = this.loadSavedCreations();
+    
+    const totalCount = savedCreations.length;
+    const draftsCount = savedCreations.filter(c => c.isDraft).length;
+    const finishedCount = savedCreations.filter(c => !c.isDraft).length;
+
+    const creationsCountElement = document.getElementById("creations-count");
+    const draftsCountElement = document.getElementById("drafts-count");
+    const finishedCountElement = document.getElementById("finished-count");
+
+    if (creationsCountElement) creationsCountElement.textContent = totalCount;
+    if (draftsCountElement) draftsCountElement.textContent = draftsCount;
+    if (finishedCountElement) finishedCountElement.textContent = finishedCount;
+  }
+
+  loadSavedCreations() {
+    try {
+      const saved = localStorage.getItem("squishmallow-creations");
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error("❌ Error loading saved creations:", error);
+      return [];
     }
   }
 }

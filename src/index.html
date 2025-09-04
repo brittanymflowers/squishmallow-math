@@ -87,6 +87,12 @@
               >
             </button>
 
+            <button id="my-creations-btn" class="dashboard-button tertiary">
+              <span class="button-icon"><i data-lucide="image"></i></span>
+              <span class="button-text">My Creations</span>
+              <span class="button-subtitle">View your artwork</span>
+            </button>
+
             <button id="settings-btn" class="dashboard-button tertiary">
               <span class="button-icon"><i data-lucide="settings"></i></span>
               <span class="button-text">Settings</span>
@@ -692,6 +698,13 @@
                 <div class="color-picker" id="color-picker">
                   <!-- Colors will be populated by JavaScript -->
                 </div>
+                
+                <div class="recent-colors-section">
+                  <h4><i data-lucide="clock"></i> Recent Colors</h4>
+                  <div class="recent-colors" id="recent-colors">
+                    <!-- Recent colors will be populated by JavaScript -->
+                  </div>
+                </div>
               </div>
 
               <div class="tool-panel">
@@ -728,6 +741,49 @@
                 <i data-lucide="check"></i> Finish Creation
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Story 7.5: My Creations Screen -->
+    <div class="screen" id="my-creations-screen">
+      <div class="screen-container">
+        <div class="collection-content">
+          <div class="collection-title-section">
+            <h1 class="collection-title">
+              <i data-lucide="palette"></i> My Creations
+            </h1>
+            <p class="collection-subtitle">
+              Your beautiful Squishmallow designs and artwork!
+            </p>
+          </div>
+
+          <div class="collection-stats">
+            <button
+              class="dashboard-button secondary collection-back-btn"
+              id="creations-dashboard-btn"
+            >
+              <span class="button-icon"><i data-lucide="home"></i></span>
+              <span class="button-text">Return to Dashboard</span>
+            </button>
+
+            <div class="stat-badge">
+              <span class="stat-number" id="creations-count">0</span>
+              <span class="stat-label">Creations</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="drafts-count">0</span>
+              <span class="stat-label">Drafts</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number" id="finished-count">0</span>
+              <span class="stat-label">Finished</span>
+            </div>
+          </div>
+
+          <div class="creations-grid" id="creations-grid">
+            <!-- Creations will be populated by JavaScript -->
           </div>
         </div>
       </div>
