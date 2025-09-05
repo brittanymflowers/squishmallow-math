@@ -648,39 +648,8 @@ class SquishCollectorApp {
     const templateGrid = document.getElementById("template-selection-grid");
     if (!templateGrid) return;
 
-    // Available templates
-    const templates = [
-      {
-        id: "fox",
-        name: "Fox",
-        file: "fox-template.png",
-        description: "A cute fox with big ears perfect for coloring!",
-      },
-      {
-        id: "alien",
-        name: "Alien",
-        file: "alien-template.png",
-        description: "A friendly alien visitor ready for cosmic colors!",
-      },
-      {
-        id: "cat",
-        name: "Cat",
-        file: "cat-template.png",
-        description: "An adorable kitty waiting for your creative touch!",
-      },
-      {
-        id: "caticorn",
-        name: "Caticorn",
-        file: "caticorn-template.png",
-        description: "A magical cat-unicorn hybrid ready for rainbow colors!",
-      },
-      {
-        id: "mushroom",
-        name: "Mushroom",
-        file: "mushroom-template.png",
-        description: "A whimsical mushroom perfect for forest colors!",
-      },
-    ];
+    // Use templates from configuration file
+    const templates = window.TEMPLATES;
 
     templateGrid.innerHTML = "";
 
@@ -721,39 +690,7 @@ class SquishCollectorApp {
         const templateOption = e.target.closest(".template-selection-option");
         if (templateOption) {
           const templateId = templateOption.dataset.templateId;
-          const templates = [
-            {
-              id: "fox",
-              name: "Fox",
-              file: "fox-template.png",
-              description: "A cute fox with big ears perfect for coloring!",
-            },
-            {
-              id: "alien",
-              name: "Alien",
-              file: "alien-template.png",
-              description: "A friendly alien visitor ready for cosmic colors!",
-            },
-            {
-              id: "cat",
-              name: "Cat",
-              file: "cat-template.png",
-              description: "An adorable kitty waiting for your creative touch!",
-            },
-            {
-              id: "caticorn",
-              name: "Caticorn",
-              file: "caticorn-template.png",
-              description:
-                "A magical cat-unicorn hybrid ready for rainbow colors!",
-            },
-            {
-              id: "mushroom",
-              name: "Mushroom",
-              file: "mushroom-template.png",
-              description: "A whimsical mushroom perfect for forest colors!",
-            },
-          ];
+          const templates = window.TEMPLATES;
 
           const selectedTemplate = templates.find((t) => t.id === templateId);
           if (selectedTemplate) {
@@ -789,11 +726,11 @@ class SquishCollectorApp {
 
       if (imgAspectRatio > canvasAspectRatio) {
         // Image is wider relative to canvas - fit by width
-        drawWidth = this.canvas.width * 0.9; // Leave 5% margin on each side
+        drawWidth = this.canvas.width * 0.95; // Leave smaller margin for better mobile experience
         drawHeight = drawWidth / imgAspectRatio;
       } else {
         // Image is taller relative to canvas - fit by height
-        drawHeight = this.canvas.height * 0.9; // Leave 5% margin on top/bottom
+        drawHeight = this.canvas.height * 0.95; // Leave smaller margin for better mobile experience
         drawWidth = drawHeight * imgAspectRatio;
       }
 
@@ -1181,13 +1118,95 @@ class SquishCollectorApp {
         this.canvas.classList.remove("paintbrush-cursor");
       });
 
-      // Mobile touch events
+      // Initialize zoom/pan state
+      this.zoomState = {
+        scale: 1,
+        translateX: 0,
+        translateY: 0,
+        lastDistance: 0,
+        isPinching: false,
+        lastPanX: 0,
+        lastPanY: 0,
+        lastTapTime: 0
+      };
+
+      // Mobile touch events with pinch-to-zoom support
       this.canvas.addEventListener("touchstart", (e) => {
         e.preventDefault(); // Prevent scrolling
-        this.handleCanvasTouch(e);
+        
+        if (e.touches.length === 2) {
+          // Start pinch gesture
+          this.zoomState.isPinching = true;
+          this.zoomState.lastDistance = this.getTouchDistance(e.touches[0], e.touches[1]);
+        } else if (e.touches.length === 1 && !this.zoomState.isPinching) {
+          // Single touch - either color or start pan
+          if (this.zoomState.scale > 1) {
+            // If zoomed in, prepare for panning
+            this.zoomState.lastPanX = e.touches[0].clientX;
+            this.zoomState.lastPanY = e.touches[0].clientY;
+          } else {
+            // Normal coloring
+            this.handleCanvasTouch(e);
+          }
+        }
       });
+
       this.canvas.addEventListener("touchmove", (e) => {
         e.preventDefault(); // Prevent scrolling
+        
+        if (e.touches.length === 2 && this.zoomState.isPinching) {
+          // Handle pinch zoom
+          const currentDistance = this.getTouchDistance(e.touches[0], e.touches[1]);
+          const scaleChange = currentDistance / this.zoomState.lastDistance;
+          
+          this.zoomState.scale *= scaleChange;
+          this.zoomState.scale = Math.max(1, Math.min(3, this.zoomState.scale)); // Limit zoom 1x-3x
+          
+          this.zoomState.lastDistance = currentDistance;
+          this.updateCanvasTransform();
+        } else if (e.touches.length === 1 && this.zoomState.scale > 1) {
+          // Handle panning when zoomed
+          const deltaX = e.touches[0].clientX - this.zoomState.lastPanX;
+          const deltaY = e.touches[0].clientY - this.zoomState.lastPanY;
+          
+          this.zoomState.translateX += deltaX;
+          this.zoomState.translateY += deltaY;
+          
+          // Limit panning to keep image visible
+          const maxTranslate = 100 * this.zoomState.scale;
+          this.zoomState.translateX = Math.max(-maxTranslate, Math.min(maxTranslate, this.zoomState.translateX));
+          this.zoomState.translateY = Math.max(-maxTranslate, Math.min(maxTranslate, this.zoomState.translateY));
+          
+          this.zoomState.lastPanX = e.touches[0].clientX;
+          this.zoomState.lastPanY = e.touches[0].clientY;
+          
+          this.updateCanvasTransform();
+        }
+      });
+
+      this.canvas.addEventListener("touchend", (e) => {
+        if (e.touches.length < 2) {
+          this.zoomState.isPinching = false;
+        }
+        
+        // Handle single tap
+        if (e.touches.length === 0 && e.changedTouches.length === 1) {
+          const now = Date.now();
+          const timeSinceLastTap = now - this.zoomState.lastTapTime;
+          
+          if (timeSinceLastTap < 300) {
+            // Double tap - reset zoom
+            this.resetZoom();
+          } else if (this.zoomState.scale > 1) {
+            // Single tap on zoomed canvas - try to color
+            this.handleCanvasTouch(e, true);
+          } else {
+            // Single tap on normal canvas - color immediately
+            this.handleCanvasTouch(e, true);
+          }
+          
+          this.zoomState.lastTapTime = now;
+        }
       });
     }
 
@@ -1517,23 +1536,62 @@ class SquishCollectorApp {
     this.floodFill(x, y, this.selectedColor);
   }
 
-  handleCanvasTouch(e) {
-    if (e.touches && e.touches.length > 0) {
-      const touch = e.touches[0];
-      const rect = this.canvas.getBoundingClientRect();
-      
-      // Get canvas actual size vs display size for proper scaling
-      const scaleX = this.canvas.width / rect.width;
-      const scaleY = this.canvas.height / rect.height;
-      
-      const x = Math.floor((touch.clientX - rect.left) * scaleX);
-      const y = Math.floor((touch.clientY - rect.top) * scaleY);
-
-      console.log(`🎨 Touch at: ${touch.clientX - rect.left}, ${touch.clientY - rect.top} -> Canvas: ${x}, ${y}`);
-      
-      // Proper flood fill with selected color
-      this.floodFill(x, y, this.selectedColor);
+  handleCanvasTouch(e, isEndEvent = false) {
+    let touch;
+    if (isEndEvent && e.changedTouches && e.changedTouches.length > 0) {
+      touch = e.changedTouches[0];
+    } else if (e.touches && e.touches.length > 0) {
+      touch = e.touches[0];
+    } else {
+      return;
     }
+    
+    const rect = this.canvas.getBoundingClientRect();
+    
+    // Account for zoom and pan transforms
+    const clientX = touch.clientX - rect.left;
+    const clientY = touch.clientY - rect.top;
+    
+    // Reverse the transform to get canvas coordinates
+    const transformedX = (clientX - this.zoomState.translateX) / this.zoomState.scale;
+    const transformedY = (clientY - this.zoomState.translateY) / this.zoomState.scale;
+    
+    // Get canvas actual size vs display size for proper scaling
+    const scaleX = this.canvas.width / rect.width;
+    const scaleY = this.canvas.height / rect.height;
+    
+    const x = Math.floor(transformedX * scaleX);
+    const y = Math.floor(transformedY * scaleY);
+    
+    console.log(`🎨 Touch at: ${clientX}, ${clientY} -> Transformed: ${transformedX}, ${transformedY} -> Canvas: ${x}, ${y} (zoom: ${this.zoomState.scale})`);
+    
+    // Proper flood fill with selected color
+    this.floodFill(x, y, this.selectedColor);
+  }
+
+  // Helper method to calculate distance between two touch points
+  getTouchDistance(touch1, touch2) {
+    const dx = touch1.clientX - touch2.clientX;
+    const dy = touch1.clientY - touch2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  // Apply zoom and pan transforms to canvas
+  updateCanvasTransform() {
+    const transform = `translate(${this.zoomState.translateX}px, ${this.zoomState.translateY}px) scale(${this.zoomState.scale})`;
+    this.canvas.style.transform = transform;
+    this.canvas.style.transformOrigin = 'center center';
+    
+    console.log(`🔍 Canvas zoom: ${this.zoomState.scale}x, pan: (${this.zoomState.translateX}, ${this.zoomState.translateY})`);
+  }
+
+  // Reset zoom and pan to default state
+  resetZoom() {
+    this.zoomState.scale = 1;
+    this.zoomState.translateX = 0;
+    this.zoomState.translateY = 0;
+    this.updateCanvasTransform();
+    console.log(`🔍 Zoom reset to default`);
   }
 
   clearCanvas() {
