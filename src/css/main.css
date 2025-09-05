@@ -3157,6 +3157,7 @@ body {
 .mobile-menu-item {
   display: flex;
   align-items: center;
+  gap: 12px;
   width: 100%;
   padding: 16px 20px;
   background: none;
@@ -3182,7 +3183,7 @@ body {
 }
 
 .mobile-menu-item i {
-  margin-right: 12px;
+  margin-right: 24px !important;
   width: 20px;
   height: 20px;
   flex-shrink: 0;
@@ -3335,161 +3336,251 @@ body {
   }
 }
 
-/* Responsive Styles for Two-Column Game Layout */
-@media (max-width: 900px) {
+/* Hide mobile elements on desktop */
+@media (min-width: 769px) {
+  .mobile-timer,
+  .mobile-problem,
+  .mobile-progress,
+  .mobile-answer-input {
+    display: none !important;
+  }
+}
+
+/* Mobile Game Screen - Complete Redesign for No-Scroll Layout */
+@media (max-width: 768px) {
   .screen {
-    overflow-y: auto !important;
-    height: auto !important;
-    min-height: 100vh;
+    overflow: hidden !important;
+    height: 100vh !important;
   }
   
   #game-screen {
+    display: flex !important;
+    flex-direction: column !important;
     justify-content: flex-start !important;
     align-items: stretch !important;
+    height: 100vh;
+    padding: 0;
   }
   
   .game-content {
-    grid-template-columns: 1fr !important;
-    grid-template-rows: auto auto auto !important;
-    height: auto !important;
-    min-height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-    gap: 15px;
-    padding: 10px;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh;
+    padding: 70px 15px 15px 15px; /* Top padding for menu/mute buttons */
+    gap: 0;
+    overflow: hidden;
   }
   
   .game-left-column,
   .game-right-column {
-    padding: 15px !important;
+    display: none !important; /* Hide original columns on mobile */
   }
   
-  .squishmallow-progress {
-    flex-direction: column !important;
-    gap: 15px;
-  }
+  /* Mobile Game Layout Order: Timer → Problem → Progress → Answer/Numpad */
   
-  .progress-stats {
-    grid-template-columns: 1fr !important;
-    gap: 10px;
-    text-align: center;
-  }
-  
-  /* Enhanced Game Screen Mobile Optimizations */
-  .game-left-column {
-    order: 1;
-    padding: 15px 10px !important;
-  }
-  
-  .game-right-column {
-    order: 2;
-    padding: 15px 10px !important;
-  }
-  
-  .problem-text {
-    font-size: 40px !important;
-    line-height: 1.2;
+  /* 1. Timer at top (hidden by default, shown when timer enabled) */
+  .mobile-timer {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
     margin-bottom: 15px;
+    visibility: hidden; /* Hide but preserve space */
   }
   
-  .problem-display {
-    padding: 25px 20px !important;
-    margin: 15px 0;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  .mobile-timer.timer-enabled {
+    visibility: visible; /* Show when enabled */
   }
   
-  .answer-input {
-    font-size: 22px !important;
-    padding: 15px 20px !important;
-    max-width: 280px;
-    border-radius: 15px;
-    border: 3px solid var(--accent-lavender);
-    margin: 15px 0;
+  .timer-container {
+    padding: 8px 16px !important;
+    border-radius: 20px !important;
+    font-size: 16px !important;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--primary-purple);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--accent-lavender);
   }
   
-  .answer-input:focus {
-    border-color: var(--primary-purple);
-    box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.2);
-  }
-  
-  .number-pad {
+  /* 2. Math Problem */
+  .mobile-problem {
+    text-align: center;
     padding: 20px 15px;
     background: white;
     border-radius: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .problem-text {
+    font-size: 48px !important;
+    font-weight: 800;
+    color: var(--primary-purple);
+    margin: 0;
+    line-height: 1.1;
+  }
+  
+  /* 3. Compact Progress Bar */
+  .mobile-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .mobile-lives {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .life-heart {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  
+  .life-heart.lost {
+    color: #ccc !important;
+    opacity: 0.3 !important;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+  }
+  
+  .life-heart.filled {
+    color: #e91e63 !important;
+    opacity: 1 !important;
+    transform: scale(1);
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-score {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-purple);
+  }
+  
+  /* 4. Mobile Answer Input (native keyboard) */
+  .mobile-answer-input {
+    text-align: center;
+    padding: 15px;
+    background: white;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mobile-answer-field {
+    width: 100%;
+    border: 3px solid var(--accent-lavender);
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--primary-purple);
+    background: rgba(255, 255, 255, 0.9);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  
+  .mobile-answer-field:focus {
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.2);
+    background: white;
+  }
+  
+  .mobile-answer-field::placeholder {
+    color: var(--primary-purple);
+    opacity: 0.5;
+  }
+  
+  .mobile-submit-button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px 20px;
+    background: var(--primary-purple);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 12px rgba(123, 31, 162, 0.3);
+  }
+  
+  .mobile-submit-button:hover {
+    background: var(--primary-purple-dark, #6a1b7b);
+    transform: translateY(-1px);
+  }
+  
+  .mobile-submit-button:active {
+    transform: translateY(0);
+  }
+  
+  .mobile-submit-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  /* 5. Compact Number Pad */
+  .number-pad {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.1);
   }
   
   .number-grid {
-    max-width: 300px;
-    gap: 12px;
+    max-width: 280px;
     margin: 0 auto;
+    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
   
   .number-btn,
   .action-btn {
-    width: 75px;
-    height: 75px;
-    font-size: 26px;
-    border-radius: 15px;
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 24px !important;
+    border-radius: 12px;
     border: none;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.2s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.1s ease;
+    font-weight: 700;
   }
   
   .number-btn:active,
   .action-btn:active {
     transform: translateY(2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   }
   
+  .action-btn .button-text {
+    font-size: 10px !important;
+    font-weight: 600;
+  }
+  
+  /* Hide desktop-specific elements on mobile */
+  .answer-input,
+  .number-pad-container,
+  .encouraging-message,
+  .problem-display .encouraging-message,
   .squishmallow-progress {
-    margin: 20px 0;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-  }
-  
-  .lives-container {
-    justify-content: center;
-    margin: 15px 0;
-  }
-  
-  .life-heart {
-    width: 32px;
-    height: 32px;
-    margin: 0 6px;
-  }
-  
-  .timer-container {
-    padding: 12px 20px;
-    border-radius: 12px;
-    margin: 15px 0;
-  }
-  
-  .timer-display {
-    font-size: 20px;
-    font-weight: 700;
-  }
-  
-  .progress-stats {
-    padding: 15px;
-    gap: 15px;
-  }
-  
-  .stat-item {
-    padding: 10px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.8);
-  }
-  
-  .stat-number {
-    font-size: 24px;
-  }
-  
-  .stat-label {
-    font-size: 12px;
+    display: none !important;
   }
 }
 

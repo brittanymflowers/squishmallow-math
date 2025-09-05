@@ -96,6 +96,9 @@ class SquishCollectorApp {
 
     // Setup mobile navigation menu
     this.setupMobileMenu();
+    
+    // Setup mobile game controls
+    this.setupMobileGameControls();
 
     console.log("✅ App initialization complete!");
   }
@@ -135,8 +138,8 @@ class SquishCollectorApp {
   updateMobileMenuVisibility(screenId) {
     const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
     if (mobileMenuToggle) {
-      // Hide mobile menu on dashboard, show on all other screens
-      if (screenId === "dashboard-screen") {
+      // Hide mobile menu on dashboard and loading screen, show on all other screens
+      if (screenId === "dashboard-screen" || screenId === "loading-screen") {
         mobileMenuToggle.style.display = "none";
       } else {
         // Only show if we're on mobile (let CSS media query handle the rest)
@@ -217,6 +220,10 @@ class SquishCollectorApp {
           // Navigate to the selected screen
           if (targetScreen === "dashboard-screen") {
             this.showDashboard();
+          } else if (targetScreen === "game-screen") {
+            // Start a new game instead of just showing the screen
+            console.log("📱 Mobile menu: Starting new game");
+            this.handleStartGame();
           } else if (targetScreen === "template-selection-screen") {
             this.showScreen("template-selection-screen");
             this.initializeTemplateSelection();
@@ -255,6 +262,80 @@ class SquishCollectorApp {
     if (menuOverlay) {
       menuOverlay.classList.remove("active");
       document.body.style.overflow = ""; // Restore scrolling
+    }
+  }
+
+  // Mobile Game Controls Setup
+  setupMobileGameControls() {
+    const mobileSubmitBtn = document.getElementById("mobile-submit-btn");
+    const mobileAnswerField = document.getElementById("mobile-answer-field");
+    
+    if (mobileSubmitBtn) {
+      mobileSubmitBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.submitMobileAnswer();
+        e.target.blur();
+      });
+    }
+    
+    if (mobileAnswerField) {
+      // Allow Enter key to submit
+      mobileAnswerField.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          this.submitMobileAnswer();
+        }
+      });
+      
+      // Update submit button state as user types
+      mobileAnswerField.addEventListener("input", () => {
+        this.updateMobileSubmitButton();
+      });
+    }
+    
+    console.log("📱 Mobile game controls setup complete!");
+  }
+  
+  submitMobileAnswer() {
+    const mobileAnswerField = document.getElementById("mobile-answer-field");
+    const desktopAnswerInput = document.getElementById("answer-input");
+    
+    if (mobileAnswerField && desktopAnswerInput) {
+      // Sync mobile answer to desktop input for processing
+      desktopAnswerInput.value = mobileAnswerField.value;
+      console.log("📱 Mobile answer submitted:", mobileAnswerField.value);
+      
+      // Use existing submit logic
+      this.submitAnswer();
+      
+      // Clear mobile field after submission
+      mobileAnswerField.value = "";
+      this.updateMobileSubmitButton();
+    }
+  }
+  
+  updateMobileSubmitButton() {
+    const mobileSubmitBtn = document.getElementById("mobile-submit-btn");
+    const mobileAnswerField = document.getElementById("mobile-answer-field");
+    
+    if (mobileSubmitBtn && mobileAnswerField) {
+      const hasAnswer = mobileAnswerField.value.trim().length > 0;
+      mobileSubmitBtn.disabled = !hasAnswer;
+    }
+  }
+  
+  // Update timer visibility for mobile
+  updateMobileTimerVisibility() {
+    const mobileTimer = document.querySelector(".mobile-timer");
+    if (mobileTimer) {
+      if (this.settings.timerSeconds && this.settings.timerSeconds > 0) {
+        mobileTimer.classList.add("timer-enabled");
+        console.log("📱 Mobile timer enabled with", this.settings.timerSeconds, "seconds");
+      } else {
+        mobileTimer.classList.remove("timer-enabled");
+        console.log("📱 Mobile timer disabled");
+      }
     }
   }
 
@@ -413,6 +494,9 @@ class SquishCollectorApp {
 
     // Story 5.4: Initialize timer if enabled
     this.initializeTimer();
+    
+    // Update mobile timer visibility
+    this.updateMobileTimerVisibility();
 
     // Update progress displays
     this.updateProgressBar();
@@ -1481,6 +1565,12 @@ class SquishCollectorApp {
       squishmallowFill.classList.add("animate");
 
       progressText.textContent = `${this.gameState.correctAnswers} out of ${this.gameState.targetScore} complete!`;
+      
+      // Update mobile progress display
+      const mobileProgressText = document.getElementById("mobile-progress-text");
+      if (mobileProgressText) {
+        mobileProgressText.textContent = `${this.gameState.correctAnswers}/${this.gameState.targetScore}`;
+      }
     }
 
     // Update encouragement text - only show "Great job!" after correct answers
@@ -1517,8 +1607,14 @@ class SquishCollectorApp {
       livesContainer.style.display = "flex";
     }
 
+    console.log(`🔄 Updating lives display - Current lives: ${this.gameState.lives}, Max lives: ${this.gameState.maxLives}`);
+    
     for (let i = 1; i <= this.gameState.maxLives; i++) {
       const lifeIcon = document.getElementById(`life-${i}`);
+      const mobileLifeIcon = document.getElementById(`mobile-life-${i}`);
+      
+      console.log(`❤️ Processing life ${i} - lifeIcon: ${!!lifeIcon}, mobileLifeIcon: ${!!mobileLifeIcon}`);
+      
       if (lifeIcon) {
         if (i <= this.gameState.lives) {
           // Life is active - show filled heart
@@ -1530,14 +1626,32 @@ class SquishCollectorApp {
           lifeIcon.classList.remove("filled");
         }
       }
+      
+      // Sync mobile lives display
+      if (mobileLifeIcon) {
+        if (i <= this.gameState.lives) {
+          mobileLifeIcon.classList.remove("lost");
+          mobileLifeIcon.classList.add("filled");
+          console.log(`💖 Mobile life ${i} restored (lives: ${this.gameState.lives}), classes: ${mobileLifeIcon.className}`);
+        } else {
+          mobileLifeIcon.classList.add("lost");
+          mobileLifeIcon.classList.remove("filled");
+          console.log(`💔 Mobile life ${i} lost (lives: ${this.gameState.lives}), classes: ${mobileLifeIcon.className}`);
+        }
+      } else {
+        console.log(`⚠️ Mobile life icon ${i} not found in DOM`);
+      }
     }
   }
 
   loseLife() {
     // If lives are disabled, don't lose lives or end the game
     if (!this.settings.livesEnabled) {
+      console.log("💔 Lives disabled, not losing life");
       return;
     }
+    
+    console.log("💔 Losing life, current lives:", this.gameState.lives);
 
     if (this.gameState.lives > 0) {
       this.gameState.lives--;
@@ -1688,11 +1802,18 @@ class SquishCollectorApp {
   }
 
   resetGameState() {
+    // Stop any existing timer before resetting
+    this.stopTimer();
+    
     this.gameState.correctAnswers = 0;
     this.gameState.problemCount = 0;
     this.gameState.totalAttempts = 0;
     this.gameState.lives = this.gameState.maxLives;
     this.gameState.startTime = null;
+    this.gameState.timeRemaining = 0;
+    
+    console.log("🔄 Game state reset, lives:", this.gameState.lives, "maxLives:", this.gameState.maxLives);
+    
     this.updateProgressBar();
     this.updateLivesDisplay();
   }
@@ -1783,9 +1904,16 @@ class SquishCollectorApp {
   // Game screen methods for Story 2.2
   displayProblem(problem) {
     const problemElement = document.getElementById("current-problem");
+    const mobileProblemElement = document.getElementById("mobile-current-problem");
+    
     if (problemElement) {
       problemElement.textContent = problem.displayText;
       console.log(`📝 Displaying problem: ${problem.displayText}`);
+    }
+    
+    // Sync mobile problem display
+    if (mobileProblemElement) {
+      mobileProblemElement.textContent = problem.displayText;
     }
 
     // Clear any previous visual state from problem display
@@ -2192,6 +2320,12 @@ class SquishCollectorApp {
       // Limit input length (reasonable for multiplication answers)
       if (currentValue.length < 6) {
         answerInput.value = currentValue + number;
+        
+        // Update mobile answer display
+        const mobileAnswerText = document.getElementById("mobile-answer-text");
+        if (mobileAnswerText) {
+          mobileAnswerText.textContent = answerInput.value;
+        }
 
         // Enable submit button if there's an answer
         this.updateSubmitButton();
@@ -2214,17 +2348,32 @@ class SquishCollectorApp {
 
   clearInput() {
     const answerInput = document.getElementById("answer-input");
+    const mobileAnswerText = document.getElementById("mobile-answer-text");
+    
     if (answerInput) {
       answerInput.value = "";
       this.updateSubmitButton();
       console.log("🗑️ Input cleared");
     }
+    
+    // Clear mobile answer display
+    if (mobileAnswerText) {
+      mobileAnswerText.textContent = "";
+    }
   }
 
   backspaceInput() {
     const answerInput = document.getElementById("answer-input");
+    const mobileAnswerText = document.getElementById("mobile-answer-text");
+    
     if (answerInput && answerInput.value.length > 0) {
       answerInput.value = answerInput.value.slice(0, -1);
+      
+      // Update mobile answer display
+      if (mobileAnswerText) {
+        mobileAnswerText.textContent = answerInput.value;
+      }
+      
       this.updateSubmitButton();
       console.log(`⌫ Backspace, current input: ${answerInput.value}`);
     }
@@ -2495,14 +2644,17 @@ class SquishCollectorApp {
   // Story 5.4: Timer functionality methods
   initializeTimer() {
     const timerSeconds = this.settings.timerSeconds;
+    console.log(`⏰ Initializing timer - timerSeconds: ${timerSeconds}`);
 
     if (timerSeconds && timerSeconds > 0) {
       this.gameState.timeRemaining = timerSeconds;
       this.gameState.timerInterval = null;
+      console.log(`⏰ Timer set to ${timerSeconds} seconds, timeRemaining: ${this.gameState.timeRemaining}`);
       this.showTimer();
       this.updateTimerDisplay();
       this.startTimer();
     } else {
+      console.log(`⏰ Timer disabled or invalid`);
       this.hideTimer();
     }
   }
@@ -2545,6 +2697,18 @@ class SquishCollectorApp {
 
       timerMinutes.textContent = minutes.toString();
       timerSeconds.textContent = seconds.toString().padStart(2, "0");
+      
+      // Update mobile timer display
+      const mobileTimerMinutes = document.querySelector("#mobile-timer-display .timer-minutes");
+      const mobileTimerSeconds = document.querySelector("#mobile-timer-display .timer-seconds");
+      
+      if (mobileTimerMinutes && mobileTimerSeconds) {
+        mobileTimerMinutes.textContent = minutes.toString();
+        mobileTimerSeconds.textContent = seconds.toString().padStart(2, "0");
+        console.log(`📱 Mobile timer updated: ${minutes}:${seconds.toString().padStart(2, "0")} (timeRemaining: ${this.gameState.timeRemaining})`);
+      } else {
+        console.log(`⚠️ Mobile timer elements not found in DOM`);
+      }
     }
 
     // Warning state

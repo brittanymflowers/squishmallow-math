@@ -35,7 +35,11 @@
       <div class="mobile-menu-content">
         <div class="mobile-menu-header">
           <h3>Navigation</h3>
-          <button id="mobile-menu-close" class="mobile-menu-close" aria-label="Close menu">
+          <button
+            id="mobile-menu-close"
+            class="mobile-menu-close"
+            aria-label="Close menu"
+          >
             <i data-lucide="x"></i>
           </button>
         </div>
@@ -44,16 +48,23 @@
             <i data-lucide="home"></i>
             <span>Dashboard</span>
           </button>
+          <button class="mobile-menu-item" data-screen="game-screen">
+            <i data-lucide="gamepad-2"></i>
+            <span>Start New Game</span>
+          </button>
           <button class="mobile-menu-item" data-screen="collection-screen">
-            <i data-lucide="heart"></i>
+            <i data-lucide="book-open"></i>
             <span>My Collection</span>
           </button>
-          <button class="mobile-menu-item" data-screen="template-selection-screen">
+          <button
+            class="mobile-menu-item"
+            data-screen="template-selection-screen"
+          >
             <i data-lucide="palette"></i>
             <span>Create Art</span>
           </button>
           <button class="mobile-menu-item" data-screen="my-creations-screen">
-            <i data-lucide="gallery-horizontal"></i>
+            <i data-lucide="image"></i>
             <span>My Creations</span>
           </button>
           <button class="mobile-menu-item" data-screen="settings-screen">
@@ -65,7 +76,11 @@
     </div>
 
     <!-- Mobile Menu Toggle Button -->
-    <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Open menu">
+    <button
+      id="mobile-menu-toggle"
+      class="mobile-menu-toggle"
+      aria-label="Open menu"
+    >
       <i data-lucide="menu"></i>
     </button>
 
@@ -157,6 +172,60 @@
         </button>
 
         <div class="game-content">
+          <!-- Mobile-Specific Layout (hidden on desktop) -->
+          <div class="mobile-timer">
+            <div class="timer-container" id="mobile-timer-container">
+              <i data-lucide="clock" class="timer-icon"></i>
+              <span class="timer-display" id="mobile-timer-display">
+                <span class="timer-minutes">5</span>:<span class="timer-seconds"
+                  >00</span
+                >
+              </span>
+            </div>
+          </div>
+
+          <div class="mobile-problem">
+            <div class="problem-text" id="mobile-current-problem">
+              3 × 4 = ?
+            </div>
+          </div>
+
+          <div class="mobile-progress">
+            <div class="mobile-lives" id="mobile-lives-display">
+              <i
+                data-lucide="heart"
+                class="life-heart filled"
+                id="mobile-life-1"
+              ></i>
+              <i
+                data-lucide="heart"
+                class="life-heart filled"
+                id="mobile-life-2"
+              ></i>
+              <i
+                data-lucide="heart"
+                class="life-heart filled"
+                id="mobile-life-3"
+              ></i>
+            </div>
+            <div class="mobile-score" id="mobile-progress-text">0/10</div>
+          </div>
+
+          <div class="mobile-answer-input">
+            <input
+              type="number"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              id="mobile-answer-field"
+              class="mobile-answer-field"
+              placeholder="Your answer"
+              autocomplete="off"
+            />
+            <button id="mobile-submit-btn" class="mobile-submit-button">
+              <i data-lucide="check"></i> Submit Answer
+            </button>
+          </div>
+
           <!-- Game Header -->
           <div class="game-header"></div>
 
@@ -686,7 +755,11 @@
               <div class="canvas-header">
                 <h3><i data-lucide="image"></i> Canvas</h3>
                 <div class="canvas-controls">
-                  <button id="switch-template-btn" class="tool-button" title="Switch Template">
+                  <button
+                    id="switch-template-btn"
+                    class="tool-button"
+                    title="Switch Template"
+                  >
                     <i data-lucide="file-pen"></i>
                   </button>
                   <button id="undo-btn" class="tool-button" title="Undo">
