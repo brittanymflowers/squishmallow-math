@@ -3362,6 +3362,24 @@ body {
     min-height: 100dvh !important;
   }
   
+  /* Adjust layout when keyboard is open (smaller viewport) */
+  @media (max-height: 500px) {
+    .mobile-answer-input {
+      margin-bottom: 5px !important;
+      padding: 10px !important;
+    }
+    
+    .mobile-submit-button {
+      padding: 12px 15px !important;
+      font-size: 16px !important;
+      margin-top: 5px !important;
+    }
+    
+    .game-content {
+      padding: 60px 15px 5px 15px !important;
+    }
+  }
+  
   #game-screen {
     display: flex !important;
     flex-direction: column !important;
@@ -3479,6 +3497,12 @@ body {
     border-radius: 15px;
     margin-bottom: 15px;
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* When input is focused (keyboard open), reduce spacing */
+  .mobile-answer-input:focus-within {
+    margin-bottom: 5px;
+    padding-bottom: 10px;
   }
   
   .mobile-answer-field {
