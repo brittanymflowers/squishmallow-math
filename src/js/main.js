@@ -619,6 +619,9 @@ class SquishCollectorApp {
 
     // Initialize cursor with default color
     this.updateCursorColor(this.selectedColor);
+    
+    // Initialize mobile color indicator
+    this.updateCurrentColorIndicator(this.selectedColor);
 
     // Initialize undo/redo system
     this.canvasHistory = [];
@@ -909,6 +912,9 @@ class SquishCollectorApp {
 
     // Create recent colors section
     this.createRecentColorsSection();
+    
+    // Setup mobile color picker after desktop is ready
+    setTimeout(() => this.setupMobileColorPicker(), 100);
 
     console.log("🎨 Color palette created");
   }
@@ -999,6 +1005,9 @@ class SquishCollectorApp {
 
     // Add selected class to clicked color
     colorElement.classList.add("selected");
+    
+    // Update mobile color indicator
+    this.updateCurrentColorIndicator(color);
 
     // Add to recent colors history
     this.addToRecentColors(color);
@@ -1057,6 +1066,9 @@ class SquishCollectorApp {
   }
 
   setupCreatorTools() {
+    // Setup mobile toolbar functionality
+    this.setupMobileCreatorToolbar();
+    
     // Back button
     const backBtn = document.getElementById("creator-back-btn");
     if (backBtn) {
@@ -1171,6 +1183,142 @@ class SquishCollectorApp {
     }
 
     console.log("🔧 Creator tools setup complete");
+  }
+
+  setupMobileCreatorToolbar() {
+    // Mobile floating color palette button
+    const colorPaletteBtn = document.getElementById("mobile-color-palette-btn");
+    const toolbarPanel = document.getElementById("mobile-toolbar-panel");
+    const toolbarClose = document.getElementById("mobile-toolbar-close");
+    
+    if (colorPaletteBtn && toolbarPanel) {
+      colorPaletteBtn.addEventListener("click", () => {
+        toolbarPanel.classList.add("active");
+      });
+    }
+    
+    if (toolbarClose && toolbarPanel) {
+      toolbarClose.addEventListener("click", () => {
+        toolbarPanel.classList.remove("active");
+      });
+    }
+    
+    // Mobile tab switching
+    const mobileTabs = document.querySelectorAll(".mobile-tab");
+    const mobileTabPanels = document.querySelectorAll(".mobile-tab-panel");
+    
+    mobileTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const targetTab = tab.getAttribute("data-tab");
+        
+        // Update tab states
+        mobileTabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        
+        // Update panel states
+        mobileTabPanels.forEach(panel => {
+          panel.classList.remove("active");
+          if (panel.id === `mobile-${targetTab}-panel`) {
+            panel.classList.add("active");
+          }
+        });
+      });
+    });
+    
+    // Mobile floating action buttons
+    const mobileUndoBtn = document.getElementById("mobile-undo-btn");
+    const mobileRedoBtn = document.getElementById("mobile-redo-btn");
+    const mobileEraserBtn = document.getElementById("mobile-eraser-btn");
+    const mobileTemplateBtn = document.getElementById("mobile-template-btn");
+    
+    if (mobileUndoBtn) {
+      mobileUndoBtn.addEventListener("click", () => this.undo());
+    }
+    if (mobileRedoBtn) {
+      mobileRedoBtn.addEventListener("click", () => this.redo());
+    }
+    if (mobileEraserBtn) {
+      mobileEraserBtn.addEventListener("click", () => this.clearCanvas());
+    }
+    if (mobileTemplateBtn) {
+      mobileTemplateBtn.addEventListener("click", () => this.switchTemplate());
+    }
+    
+    // Mobile save/finish buttons
+    const mobileSaveBtn = document.getElementById("mobile-save-draft-btn");
+    const mobileFinishBtn = document.getElementById("mobile-finish-creation-btn");
+    const mobileNameInput = document.getElementById("mobile-creation-name");
+    
+    if (mobileSaveBtn) {
+      mobileSaveBtn.addEventListener("click", () => {
+        // Sync mobile name to desktop input
+        const desktopNameInput = document.getElementById("creation-name");
+        if (mobileNameInput && desktopNameInput) {
+          desktopNameInput.value = mobileNameInput.value;
+        }
+        this.saveDraft();
+      });
+    }
+    
+    if (mobileFinishBtn) {
+      mobileFinishBtn.addEventListener("click", () => {
+        // Sync mobile name to desktop input
+        const desktopNameInput = document.getElementById("creation-name");
+        if (mobileNameInput && desktopNameInput) {
+          desktopNameInput.value = mobileNameInput.value;
+        }
+        this.finishCreation();
+      });
+    }
+    
+    // Sync mobile name input with desktop
+    if (mobileNameInput) {
+      mobileNameInput.addEventListener("input", () => {
+        const desktopNameInput = document.getElementById("creation-name");
+        if (desktopNameInput) {
+          desktopNameInput.value = mobileNameInput.value;
+        }
+      });
+    }
+    
+    // Setup mobile color picker (copy colors from desktop version)
+    this.setupMobileColorPicker();
+    
+    console.log("📱 Mobile creator toolbar setup complete");
+  }
+  
+  updateCurrentColorIndicator(color) {
+    const paletteBtn = document.getElementById("mobile-color-palette-btn");
+    if (paletteBtn) {
+      paletteBtn.style.backgroundColor = color;
+      console.log(`📱 Updated floating color button to: ${color}`);
+    }
+  }
+  
+  setupMobileColorPicker() {
+    // This will be called to sync colors with the mobile picker
+    // We'll populate this after the desktop color picker is set up
+    const mobileColorPicker = document.getElementById("mobile-color-picker");
+    if (!mobileColorPicker) return;
+    
+    // Copy colors from desktop picker to mobile
+    const desktopColorPicker = document.getElementById("color-picker");
+    if (desktopColorPicker) {
+      mobileColorPicker.innerHTML = desktopColorPicker.innerHTML;
+      
+      // Add mobile-specific event handlers
+      const mobileColorOptions = mobileColorPicker.querySelectorAll(".color-option");
+      mobileColorOptions.forEach(option => {
+        option.addEventListener("click", () => {
+          this.selectColor(option.dataset.color, option);
+          // Close mobile toolbar after color selection
+          const toolbarPanel = document.getElementById("mobile-toolbar-panel");
+          if (toolbarPanel) {
+            toolbarPanel.classList.remove("active");
+          }
+        });
+      });
+    }
   }
 
   // Name validation for creations
@@ -1558,12 +1706,15 @@ class SquishCollectorApp {
   }
 
   undo() {
-    if (this.historyStep > 0) {
+    // Don't allow undoing past the template base (step 1, since 0 is blank canvas)
+    if (this.historyStep > 1) {
       this.historyStep--;
       const imageData = this.canvasHistory[this.historyStep];
       this.ctx.putImageData(imageData, 0, 0);
       this.updateUndoRedoButtons();
       console.log("⏪ Undo action performed");
+    } else {
+      console.log("⏪ Cannot undo past template base");
     }
   }
 

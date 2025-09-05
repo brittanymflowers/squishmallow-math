@@ -64,7 +64,7 @@
             data-screen="template-selection-screen"
           >
             <i data-lucide="palette"></i>
-            <span>Create Art</span>
+            <span>Create Studio</span>
           </button>
           <button class="mobile-menu-item" data-screen="my-creations-screen">
             <i data-lucide="image"></i>
@@ -753,6 +753,56 @@
             </p>
           </div>
 
+          
+          <!-- Mobile toolbar panel (slide up from bottom) -->
+          <div class="mobile-toolbar-panel" id="mobile-toolbar-panel">
+              <div class="mobile-toolbar-header">
+                <h3>Colors & Tools</h3>
+                <button class="mobile-toolbar-close" id="mobile-toolbar-close">
+                  <i data-lucide="x"></i>
+                </button>
+              </div>
+              
+              <div class="mobile-tool-tabs">
+                <button class="mobile-tab active" data-tab="colors">
+                  <i data-lucide="palette"></i> Colors
+                </button>
+                <button class="mobile-tab" data-tab="patterns">
+                  <i data-lucide="sparkles"></i> Patterns
+                </button>
+                <button class="mobile-tab" data-tab="effects">
+                  <i data-lucide="wand-2"></i> Effects
+                </button>
+              </div>
+              
+              <div class="mobile-tab-content">
+                <div class="mobile-tab-panel active" id="mobile-colors-panel">
+                  <div class="mobile-color-picker" id="mobile-color-picker">
+                    <!-- Colors will be populated by JavaScript -->
+                  </div>
+                  <div class="mobile-recent-colors">
+                    <h4>Recent</h4>
+                    <div class="mobile-recent-colors-list" id="mobile-recent-colors">
+                      <!-- Recent colors -->
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mobile-tab-panel" id="mobile-patterns-panel">
+                  <div class="mobile-pattern-selector" id="mobile-pattern-selector">
+                    <!-- Patterns -->
+                  </div>
+                </div>
+                
+                <div class="mobile-tab-panel" id="mobile-effects-panel">
+                  <div class="mobile-effects-selector" id="mobile-effects-selector">
+                    <!-- Effects -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="creator-workspace">
             <!-- Canvas Area -->
             <div class="canvas-section">
@@ -815,6 +865,45 @@
                 <div class="effects-selector" id="effects-selector">
                   <!-- Effects will be populated by JavaScript -->
                 </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Mobile floating action buttons -->
+          <div class="mobile-floating-tools">
+            <div class="mobile-quick-tools">
+              <button class="mobile-fab mobile-color-palette-btn" id="mobile-color-palette-btn" title="Colors">
+                <i data-lucide="palette"></i>
+              </button>
+              <button class="mobile-fab" id="mobile-undo-btn" title="Undo">
+                <i data-lucide="undo-2"></i>
+              </button>
+              <button class="mobile-fab" id="mobile-redo-btn" title="Redo">
+                <i data-lucide="redo-2"></i>
+              </button>
+              <button class="mobile-fab" id="mobile-eraser-btn" title="Clear">
+                <i data-lucide="eraser"></i>
+              </button>
+              <button class="mobile-fab" id="mobile-template-btn" title="Template">
+                <i data-lucide="file-pen"></i>
+              </button>
+            </div>
+            
+            <div class="mobile-name-section">
+              <input
+                type="text"
+                id="mobile-creation-name"
+                placeholder="Name your creation..."
+                maxlength="15"
+                class="mobile-creation-name-input"
+              />
+              <div class="mobile-action-buttons">
+                <button class="mobile-save-btn" id="mobile-save-draft-btn">
+                  <i data-lucide="save"></i>
+                </button>
+                <button class="mobile-finish-btn" id="mobile-finish-creation-btn">
+                  <i data-lucide="check"></i>
+                </button>
               </div>
             </div>
           </div>
