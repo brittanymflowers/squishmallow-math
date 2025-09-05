@@ -1319,11 +1319,16 @@ class SquishCollectorApp {
       const mobileColorOptions = mobileColorPicker.querySelectorAll(".color-option");
       mobileColorOptions.forEach(option => {
         option.addEventListener("click", () => {
-          this.selectColor(option.dataset.color, option);
-          // Close mobile toolbar after color selection
-          const toolbarPanel = document.getElementById("mobile-toolbar-panel");
-          if (toolbarPanel) {
-            toolbarPanel.classList.remove("active");
+          // Handle custom color picker differently
+          if (option.classList.contains("custom-color-picker")) {
+            this.openCustomColorPicker(option);
+          } else if (option.dataset.color) {
+            this.selectColor(option.dataset.color, option);
+            // Close mobile toolbar after color selection
+            const toolbarPanel = document.getElementById("mobile-toolbar-panel");
+            if (toolbarPanel) {
+              toolbarPanel.classList.remove("active");
+            }
           }
         });
       });
@@ -1528,6 +1533,23 @@ class SquishCollectorApp {
       
       // Proper flood fill with selected color
       this.floodFill(x, y, this.selectedColor);
+    }
+  }
+
+  clearCanvas() {
+    // Clear canvas completely and redraw template
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Redraw template if one is loaded
+    if (this.templateImage && this.templateDrawBounds) {
+      this.ctx.drawImage(
+        this.templateImage,
+        this.templateDrawBounds.x,
+        this.templateDrawBounds.y,
+        this.templateDrawBounds.width,
+        this.templateDrawBounds.height
+      );
+      console.log("🗑️ Canvas cleared and template restored");
     }
   }
 
