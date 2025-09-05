@@ -30,6 +30,45 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   </head>
   <body>
+    <!-- Mobile Navigation Menu -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay">
+      <div class="mobile-menu-content">
+        <div class="mobile-menu-header">
+          <h3>Navigation</h3>
+          <button id="mobile-menu-close" class="mobile-menu-close" aria-label="Close menu">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <nav class="mobile-menu-nav">
+          <button class="mobile-menu-item" data-screen="dashboard-screen">
+            <i data-lucide="home"></i>
+            <span>Dashboard</span>
+          </button>
+          <button class="mobile-menu-item" data-screen="collection-screen">
+            <i data-lucide="heart"></i>
+            <span>My Collection</span>
+          </button>
+          <button class="mobile-menu-item" data-screen="template-selection-screen">
+            <i data-lucide="palette"></i>
+            <span>Create Art</span>
+          </button>
+          <button class="mobile-menu-item" data-screen="my-creations-screen">
+            <i data-lucide="gallery-horizontal"></i>
+            <span>My Creations</span>
+          </button>
+          <button class="mobile-menu-item" data-screen="settings-screen">
+            <i data-lucide="settings"></i>
+            <span>Settings</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Toggle Button -->
+    <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Open menu">
+      <i data-lucide="menu"></i>
+    </button>
+
     <!-- Main application container -->
     <div id="app">
       <!-- Loading screen (shown first) -->

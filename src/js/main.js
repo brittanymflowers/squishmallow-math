@@ -94,6 +94,9 @@ class SquishCollectorApp {
     // Add keyboard navigation support
     this.setupKeyboardNavigation();
 
+    // Setup mobile navigation menu
+    this.setupMobileMenu();
+
     console.log("✅ App initialization complete!");
   }
 
@@ -119,10 +122,26 @@ class SquishCollectorApp {
         console.log("📜 Dashboard scroll attempted");
       }
 
+      // Show/hide mobile menu button based on current screen
+      this.updateMobileMenuVisibility(screenId);
+
       // Reinitialize icons after screen change
       setTimeout(() => this.updateIcons(), 50);
     } else {
       console.error(`❌ Screen not found: ${screenId}`);
+    }
+  }
+
+  updateMobileMenuVisibility(screenId) {
+    const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+    if (mobileMenuToggle) {
+      // Hide mobile menu on dashboard, show on all other screens
+      if (screenId === "dashboard-screen") {
+        mobileMenuToggle.style.display = "none";
+      } else {
+        // Only show if we're on mobile (let CSS media query handle the rest)
+        mobileMenuToggle.style.display = "";
+      }
     }
   }
 
@@ -148,6 +167,95 @@ class SquishCollectorApp {
           break;
       }
     });
+  }
+
+  // Mobile Menu Setup
+  setupMobileMenu() {
+    const menuToggle = document.getElementById("mobile-menu-toggle");
+    const menuOverlay = document.getElementById("mobile-menu-overlay");
+    const menuClose = document.getElementById("mobile-menu-close");
+    const menuItems = document.querySelectorAll(".mobile-menu-item");
+
+    if (!menuToggle || !menuOverlay || !menuClose) {
+      console.warn("🔍 Mobile menu elements not found");
+      return;
+    }
+
+    // Toggle menu open
+    menuToggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.openMobileMenu();
+      e.target.blur();
+    });
+
+    // Close menu when clicking close button
+    menuClose.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.closeMobileMenu();
+      e.target.blur();
+    });
+
+    // Close menu when clicking overlay background
+    menuOverlay.addEventListener("click", (e) => {
+      if (e.target === menuOverlay) {
+        this.closeMobileMenu();
+      }
+    });
+
+    // Handle navigation menu items
+    menuItems.forEach(item => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const targetScreen = item.getAttribute("data-screen");
+        if (targetScreen) {
+          this.closeMobileMenu();
+          
+          // Navigate to the selected screen
+          if (targetScreen === "dashboard-screen") {
+            this.showDashboard();
+          } else if (targetScreen === "template-selection-screen") {
+            this.showScreen("template-selection-screen");
+            this.initializeTemplateSelection();
+          } else {
+            this.showScreen(targetScreen);
+          }
+        }
+        
+        e.target.blur();
+      });
+    });
+
+    // Close menu on escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menuOverlay.classList.contains("active")) {
+        this.closeMobileMenu();
+      }
+    });
+
+    // Initialize icons for mobile menu
+    setTimeout(() => this.updateIcons(), 50);
+    
+    console.log("📱 Mobile menu setup complete!");
+  }
+
+  openMobileMenu() {
+    const menuOverlay = document.getElementById("mobile-menu-overlay");
+    if (menuOverlay) {
+      menuOverlay.classList.add("active");
+      document.body.style.overflow = "hidden"; // Prevent scrolling when menu is open
+    }
+  }
+
+  closeMobileMenu() {
+    const menuOverlay = document.getElementById("mobile-menu-overlay");
+    if (menuOverlay) {
+      menuOverlay.classList.remove("active");
+      document.body.style.overflow = ""; // Restore scrolling
+    }
   }
 
   // Utility method for future screen transitions
