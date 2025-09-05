@@ -1180,6 +1180,15 @@ class SquishCollectorApp {
       this.canvas.addEventListener("mouseleave", () => {
         this.canvas.classList.remove("paintbrush-cursor");
       });
+
+      // Mobile touch events
+      this.canvas.addEventListener("touchstart", (e) => {
+        e.preventDefault(); // Prevent scrolling
+        this.handleCanvasTouch(e);
+      });
+      this.canvas.addEventListener("touchmove", (e) => {
+        e.preventDefault(); // Prevent scrolling
+      });
     }
 
     console.log("🔧 Creator tools setup complete");
@@ -1501,6 +1510,25 @@ class SquishCollectorApp {
 
     // Proper flood fill with selected color
     this.floodFill(x, y, this.selectedColor);
+  }
+
+  handleCanvasTouch(e) {
+    if (e.touches && e.touches.length > 0) {
+      const touch = e.touches[0];
+      const rect = this.canvas.getBoundingClientRect();
+      
+      // Get canvas actual size vs display size for proper scaling
+      const scaleX = this.canvas.width / rect.width;
+      const scaleY = this.canvas.height / rect.height;
+      
+      const x = Math.floor((touch.clientX - rect.left) * scaleX);
+      const y = Math.floor((touch.clientY - rect.top) * scaleY);
+
+      console.log(`🎨 Touch at: ${touch.clientX - rect.left}, ${touch.clientY - rect.top} -> Canvas: ${x}, ${y}`);
+      
+      // Proper flood fill with selected color
+      this.floodFill(x, y, this.selectedColor);
+    }
   }
 
   handleCanvasMouseMove(e) {
