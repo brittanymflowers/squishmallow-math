@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
     <title>Squishmallow Collector - Math Adventure</title>
 
     <!-- Favicon - will be updated dynamically -->
@@ -213,13 +216,14 @@
 
           <div class="mobile-answer-input">
             <input
-              type="number"
+              type="tel"
               inputmode="numeric"
               pattern="[0-9]*"
               id="mobile-answer-field"
               class="mobile-answer-field"
               placeholder="Your answer"
               autocomplete="off"
+              enterkeyhint="done"
             />
             <button id="mobile-submit-btn" class="mobile-submit-button">
               <i data-lucide="check"></i> Submit Answer

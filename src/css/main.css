@@ -3351,6 +3351,15 @@ body {
   .screen {
     overflow: hidden !important;
     height: 100vh !important;
+    height: 100dvh !important; /* Dynamic viewport height for mobile keyboards */
+  }
+  
+  /* Prevent layout shift when keyboard appears */
+  .game-screen {
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
   }
   
   #game-screen {
@@ -3481,15 +3490,31 @@ body {
     font-weight: 700;
     text-align: center;
     color: var(--primary-purple);
-    background: rgba(255, 255, 255, 0.9);
+    background: white;
     outline: none;
     transition: all 0.2s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    user-select: text;
+    -webkit-user-select: text;
+    -webkit-touch-callout: default;
+    touch-action: manipulation;
+    pointer-events: auto;
+    z-index: 10;
+    position: relative;
   }
   
   .mobile-answer-field:focus {
     border-color: var(--primary-purple);
     box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.2);
     background: white;
+  }
+  
+  /* Ensure input value is always visible */
+  .mobile-answer-field:not(:placeholder-shown) {
+    color: var(--primary-purple) !important;
+    font-weight: 900 !important;
   }
   
   .mobile-answer-field::placeholder {

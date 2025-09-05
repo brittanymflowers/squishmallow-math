@@ -289,8 +289,45 @@ class SquishCollectorApp {
       });
       
       // Update submit button state as user types
-      mobileAnswerField.addEventListener("input", () => {
+      mobileAnswerField.addEventListener("input", (e) => {
+        console.log("📱 Mobile input changed:", e.target.value);
+        
+        // Sync with desktop input field
+        const desktopAnswerInput = document.getElementById("answer-input");
+        if (desktopAnswerInput) {
+          desktopAnswerInput.value = e.target.value;
+          this.updateSubmitButton();
+          console.log("📱 Synced to desktop field:", e.target.value);
+        }
+        
         this.updateMobileSubmitButton();
+        // Force re-render of the input value
+        e.target.setAttribute('value', e.target.value);
+      });
+      
+      // Ensure numeric keyboard on mobile - try multiple approaches
+      const focusInput = () => {
+        console.log("📱 Attempting to focus mobile input");
+        mobileAnswerField.focus();
+        mobileAnswerField.click();
+      };
+      
+      mobileAnswerField.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        focusInput();
+      });
+      
+      mobileAnswerField.addEventListener("click", (e) => {
+        console.log("📱 Mobile input clicked");
+        focusInput();
+      });
+      
+      mobileAnswerField.addEventListener("focus", () => {
+        console.log("📱 Mobile input focused - numeric keyboard should appear");
+      });
+      
+      mobileAnswerField.addEventListener("blur", () => {
+        console.log("📱 Mobile input lost focus");
       });
     }
     
@@ -322,6 +359,16 @@ class SquishCollectorApp {
     if (mobileSubmitBtn && mobileAnswerField) {
       const hasAnswer = mobileAnswerField.value.trim().length > 0;
       mobileSubmitBtn.disabled = !hasAnswer;
+      console.log(`📱 Submit button update - hasAnswer: ${hasAnswer}, value: "${mobileAnswerField.value}"`);
+      
+      // Update button visual state
+      if (hasAnswer) {
+        mobileSubmitBtn.classList.add('enabled');
+        mobileSubmitBtn.classList.remove('disabled');
+      } else {
+        mobileSubmitBtn.classList.add('disabled');
+        mobileSubmitBtn.classList.remove('enabled');
+      }
     }
   }
   
@@ -2325,6 +2372,14 @@ class SquishCollectorApp {
         const mobileAnswerText = document.getElementById("mobile-answer-text");
         if (mobileAnswerText) {
           mobileAnswerText.textContent = answerInput.value;
+        }
+        
+        // Sync with mobile input field
+        const mobileAnswerField = document.getElementById("mobile-answer-field");
+        if (mobileAnswerField) {
+          mobileAnswerField.value = answerInput.value;
+          this.updateMobileSubmitButton();
+          console.log(`📱 Synced mobile input field: ${answerInput.value}`);
         }
 
         // Enable submit button if there's an answer
