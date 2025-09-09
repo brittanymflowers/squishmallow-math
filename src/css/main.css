@@ -4236,7 +4236,7 @@ body {
     flex-direction: column !important;
     height: 100vh;
     height: 100svh; /* Use small viewport height to ignore keyboard */
-    padding: calc(70px + env(safe-area-inset-top)) 15px 15px 15px; /* Top padding for menu/mute buttons + safe area */
+    padding: calc(120px + env(safe-area-inset-top)) 15px 15px 15px; /* Increased top padding to avoid volume button overlap */
     gap: 0;
     overflow: hidden;
     position: fixed; /* Fix position to prevent keyboard shift */
