@@ -1,0 +1,86 @@
+[
+  {
+    "id": "fox",
+    "name": "Fox",
+    "file": "fox-template.png",
+    "description": "This clever fox loves to explore the forest and make new friends!"
+  },
+  {
+    "id": "alien",
+    "name": "Alien",
+    "file": "alien-template.png",
+    "description": "Meet Zorp! They've traveled from distant galaxies to learn about Earth colors."
+  },
+  {
+    "id": "cat",
+    "name": "Cat",
+    "file": "cat-template.png",
+    "description": "This curious kitty spends sunny days napping and chasing butterflies."
+  },
+  {
+    "id": "caticorn",
+    "name": "Caticorn",
+    "file": "caticorn-template.png",
+    "description": "Half cat, half unicorn, all magical! Can you help them sparkle and shine?"
+  },
+  {
+    "id": "mushroom",
+    "name": "Mushroom",
+    "file": "mushroom-template.png",
+    "description": "This tiny house belongs to the woodland fairies - what colors live inside?"
+  },
+  {
+    "id": "avocado",
+    "name": "Avocado",
+    "file": "avocado-template.png",
+    "description": "The happiest fruit in the kitchen! Always smiling and ready for toast."
+  },
+  {
+    "id": "butterfly",
+    "name": "Butterfly",
+    "file": "butterfly-template.png",
+    "description": "Dancing through flower gardens, this butterfly spreads joy with every flutter."
+  },
+  {
+    "id": "cow",
+    "name": "Cow",
+    "file": "cow-template.png",
+    "description": "Moo-nificent! This gentle giant loves rolling in meadows under blue skies."
+  },
+  {
+    "id": "crab",
+    "name": "Crab",
+    "file": "crab-template.png",
+    "description": "Sideways scuttling champion of the beach! Collector of pretty seashells."
+  },
+  {
+    "id": "dragon",
+    "name": "Dragon",
+    "file": "dragon-template.png",
+    "description": "Don't worry - this friendly dragon breathes bubbles instead of fire!"
+  },
+  {
+    "id": "duck",
+    "name": "Duck",
+    "file": "duck-template.png",
+    "description": "Quack! This little swimmer loves splashing in puddles after rainstorms."
+  },
+  {
+    "id": "owl",
+    "name": "Owl",
+    "file": "owl-template.png",
+    "description": "The wisest bird in the tree! Stays up late reading stories under the stars."
+  },
+  {
+    "id": "raccoon",
+    "name": "Raccoon",
+    "file": "raccoon-template.png",
+    "description": "Nature's little bandit! Always washing food and getting into mischief."
+  },
+  {
+    "id": "unicorn",
+    "name": "Unicorn",
+    "file": "unicorn-template.png",
+    "description": "Prancing through enchanted forests, leaving trails of glitter and dreams!"
+  }
+]

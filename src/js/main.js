@@ -14,6 +14,9 @@ class SquishCollectorApp {
     // Initialize Sound Manager for Story 6.2
     this.soundManager = new SoundManager();
 
+    // Initialize Templates Manager
+    this.templatesManager = new TemplatesManager();
+
     // Story 2.5: Game state tracking
     this.gameState = {
       problemCount: 0,
@@ -580,11 +583,11 @@ class SquishCollectorApp {
     this.showMyCreationsScreen();
   }
 
-  initializeTemplateSelection() {
+  async initializeTemplateSelection() {
     console.log("🖼️ Initializing Template Selection...");
 
     // Load templates for selection
-    this.loadTemplateSelection();
+    await this.loadTemplateSelection();
 
     // Setup template selection handlers
     this.setupTemplateSelectionHandlers();
@@ -644,12 +647,28 @@ class SquishCollectorApp {
     );
   }
 
-  loadTemplateSelection() {
+  async loadTemplateSelection() {
     const templateGrid = document.getElementById("template-selection-grid");
     if (!templateGrid) return;
 
-    // Use templates from configuration file
-    const templates = window.TEMPLATES;
+    // Wait for templates to load if not ready
+    if (!this.templatesManager.isDataLoaded()) {
+      console.log("⏳ Waiting for templates data to load...");
+      
+      let attempts = 0;
+      while (!this.templatesManager.isDataLoaded() && attempts < 50) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        attempts++;
+      }
+      
+      if (attempts >= 50) {
+        console.error("❌ Templates data failed to load");
+        return;
+      }
+    }
+
+    // Get templates from manager
+    const templates = this.templatesManager.getAllTemplates();
 
     templateGrid.innerHTML = "";
 
@@ -690,9 +709,7 @@ class SquishCollectorApp {
         const templateOption = e.target.closest(".template-selection-option");
         if (templateOption) {
           const templateId = templateOption.dataset.templateId;
-          const templates = window.TEMPLATES;
-
-          const selectedTemplate = templates.find((t) => t.id === templateId);
+          const selectedTemplate = this.templatesManager.getTemplateById(templateId);
           if (selectedTemplate) {
             this.startCreatorStudio(selectedTemplate);
           }
@@ -3200,20 +3217,14 @@ class SquishCollectorApp {
     // Get collected Squishmallows
     const allSquishmallows = this.collectionManager.getAllSquishmallows();
     const collectedIds = Array.from(this.collectionManager.userCollection);
+    
+    // Always make Luna available as default companion (even if not earned)
+    if (!collectedIds.includes('luna_the_cat')) {
+      collectedIds.unshift('luna_the_cat'); // Add Luna to the beginning
+    }
 
     // Clear existing content
     grid.innerHTML = "";
-
-    if (collectedIds.length === 0) {
-      grid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-          <p style="color: var(--text-muted); font-style: italic;">
-            No Squishmallows collected yet! Play the math game to earn your first companion.
-          </p>
-        </div>
-      `;
-      return;
-    }
 
     // Create mascot options for collected Squishmallows
     collectedIds.forEach((squishId) => {
