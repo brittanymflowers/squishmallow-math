@@ -2162,6 +2162,84 @@ body {
 .delete-draft-btn i {
   width: 16px;
   height: 16px;
+  color: white !important;
+}
+
+/* Draft and Published Action Buttons */
+.draft-actions, .published-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.publish-creation-btn {
+  background: rgba(46, 204, 113, 0.8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.8;
+  transform: scale(0.9);
+}
+
+.creation-card:hover .publish-creation-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.publish-creation-btn:hover {
+  background: rgba(46, 204, 113, 1);
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(46, 204, 113, 0.4);
+}
+
+.publish-creation-btn i {
+  width: 14px;
+  height: 14px;
+}
+
+.unpublish-creation-btn {
+  background: rgba(52, 152, 219, 0.8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.8;
+  transform: scale(0.9);
+}
+
+.creation-card:hover .unpublish-creation-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.unpublish-creation-btn:hover {
+  background: rgba(52, 152, 219, 1);
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(52, 152, 219, 0.4);
+}
+
+.unpublish-creation-btn i {
+  width: 14px;
+  height: 14px;
 }
 
 .empty-creations {
@@ -2932,9 +3010,17 @@ body {
 @media (max-width: 768px) {
   /* Hide desktop elements on mobile */
   #create-studio-screen .creator-header,
-  #create-studio-screen .tools-section,
-  #create-studio-screen .creator-actions {
+  #create-studio-screen .tools-section {
     display: none !important;
+  }
+
+  /* Show creator actions but with mobile-friendly styling */
+  #create-studio-screen .creator-actions {
+    display: flex !important;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    margin-top: 20px;
   }
 
   /* Show mobile header only on mobile */
@@ -3266,6 +3352,40 @@ body {
     display: none !important;
   }
 
+  /* Ensure creator actions are visible on desktop with horizontal layout */
+  #create-studio-screen .creator-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  /* Desktop layout for creator action containers */
+  #create-studio-screen .creation-info {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  #create-studio-screen .action-buttons {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  #create-studio-screen .creation-name-input {
+    width: 100% !important;
+    flex: none !important;
+  }
+
+  /* Ensure save button is visible with proper colors on desktop */
+  #create-studio-screen .creator-button.primary {
+    background: linear-gradient(135deg, #2DD4BF, #8B5CF6) !important;
+    color: white !important;
+    border: 2px solid #8B5CF6 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
   .creator-title {
     font-size: 2rem;
     text-align: center;
@@ -3320,6 +3440,7 @@ body {
   .creation-name-input {
     min-width: auto;
     width: 100%;
+    flex: none;
   }
 
   .action-buttons {
@@ -3533,6 +3654,7 @@ body {
   .delete-draft-btn i {
     width: 18px;
     height: 18px;
+    color: white !important;
   }
 
   .empty-creations {
@@ -3633,6 +3755,7 @@ body {
   .delete-draft-btn i {
     width: 16px;
     height: 16px;
+    color: white !important;
   }
 
   .empty-creations {
@@ -5043,10 +5166,22 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-top: 30px;
-  padding: 20px;
+  padding: 15px 20px;
   background: white;
   border-radius: 15px;
   border: 2px solid var(--accent-blue);
+  gap: 15px;
+}
+
+.creation-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
 }
 
 .creation-name-input {
@@ -5059,7 +5194,8 @@ body {
   font-family: var(--font-primary);
   outline: none;
   transition: all 0.3s ease;
-  min-width: 250px;
+  width: 100%;
+  min-width: 200px;
 }
 
 .creation-name-input:focus {

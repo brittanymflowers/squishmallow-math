@@ -1105,21 +1105,6 @@ class SquishCollectorApp {
       });
     }
 
-    // Finish Creation button
-    const finishBtn = document.getElementById("finish-creation-btn");
-    if (finishBtn) {
-      finishBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Debounce check to prevent double-clicks
-        if (!this.isValidClick()) {
-          return;
-        }
-
-        this.finishCreation();
-      });
-    }
 
     // Canvas click for coloring
     if (this.canvas) {
@@ -1289,9 +1274,8 @@ class SquishCollectorApp {
       mobileTemplateBtn.addEventListener("click", () => this.switchTemplate());
     }
     
-    // Mobile save/finish buttons
+    // Mobile save button
     const mobileSaveBtn = document.getElementById("mobile-save-draft-btn");
-    const mobileFinishBtn = document.getElementById("mobile-finish-creation-btn");
     const mobileNameInput = document.getElementById("mobile-creation-name");
     
     if (mobileSaveBtn) {
@@ -1302,17 +1286,6 @@ class SquishCollectorApp {
           desktopNameInput.value = mobileNameInput.value;
         }
         this.saveDraft();
-      });
-    }
-    
-    if (mobileFinishBtn) {
-      mobileFinishBtn.addEventListener("click", () => {
-        // Sync mobile name to desktop input
-        const desktopNameInput = document.getElementById("creation-name");
-        if (mobileNameInput && desktopNameInput) {
-          desktopNameInput.value = mobileNameInput.value;
-        }
-        this.finishCreation();
       });
     }
     
@@ -1487,46 +1460,6 @@ class SquishCollectorApp {
     }, 1500); // Wait for feedback message to be seen
   }
 
-  finishCreation() {
-    const nameInput = document.getElementById("creation-name");
-    const creationName = nameInput ? nameInput.value.trim() : "";
-
-    // Validate the creation name
-    const validation = this.validateCreationName(
-      creationName,
-      this.selectedTemplate.name
-    );
-    if (!validation.valid) {
-      this.showFeedback(validation.message, "error");
-      if (nameInput) nameInput.focus();
-      return;
-    }
-
-    // Generate standardized filename
-    const filename = this.generateCreationFilename(
-      validation.name,
-      this.selectedTemplate.name
-    );
-
-    // Save canvas as completed creation
-    const imageData = this.canvas.toDataURL("image/png");
-    const creation = {
-      id: Date.now().toString(),
-      name: validation.name,
-      filename: filename,
-      templateName: this.selectedTemplate.name,
-      imageData: imageData,
-      timestamp: new Date().toISOString(),
-      isDraft: false,
-    };
-
-    this.saveCreationToStorage(creation);
-    this.showFeedback(`Creation "${creationName}" completed! 🎉`, "success");
-
-    // TODO: Add to collection manager as a reward option
-
-    console.log(`🎉 Creation finished: ${creationName}`);
-  }
 
   saveCreationToStorage(creation) {
     try {
@@ -3430,14 +3363,27 @@ class SquishCollectorApp {
       });
     }
 
-    // Handle delete draft button clicks
+    // Handle creation action button clicks
     document.addEventListener("click", (e) => {
       const deleteBtn = e.target.closest(".delete-draft-btn");
+      const publishBtn = e.target.closest(".publish-creation-btn");
+      const unpublishBtn = e.target.closest(".unpublish-creation-btn");
+      
       if (deleteBtn) {
         e.preventDefault();
         e.stopPropagation();
         const creationId = deleteBtn.dataset.creationId;
         this.deleteDraft(creationId);
+      } else if (publishBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const creationId = publishBtn.dataset.creationId;
+        this.publishCreation(creationId);
+      } else if (unpublishBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const creationId = unpublishBtn.dataset.creationId;
+        this.unpublishCreation(creationId);
       }
     });
 
@@ -3498,24 +3444,35 @@ class SquishCollectorApp {
       }" class="creation-preview" />
         <h4 class="creation-name">${creation.name}</h4>
         <span class="creation-status">${
-          creation.isDraft ? "Draft" : "Finished"
+          creation.isDraft ? "Draft" : "Published"
         }</span>
         <p class="creation-date">${formattedDate}</p>
         ${
           creation.isDraft
             ? `
-          <button class="delete-draft-btn" data-creation-id="${creation.id}" title="Delete Draft">
-            <i data-lucide="trash-2"></i>
-          </button>
+          <div class="draft-actions">
+            <button class="publish-creation-btn" data-creation-id="${creation.id}" title="Publish Creation">
+              <i data-lucide="upload"></i> Publish
+            </button>
+            <button class="delete-draft-btn" data-creation-id="${creation.id}" title="Delete Draft">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </div>
         `
-            : ""
+            : `
+          <div class="published-actions">
+            <button class="unpublish-creation-btn" data-creation-id="${creation.id}" title="Unpublish Creation">
+              <i data-lucide="download"></i> Unpublish
+            </button>
+          </div>
+        `
         }
       `;
 
       // Add click handler to view/edit creation
       card.addEventListener("click", (e) => {
-        // Don't trigger card click if delete button was clicked
-        if (e.target.closest(".delete-draft-btn")) {
+        // Don't trigger card click if any action button was clicked
+        if (e.target.closest(".delete-draft-btn, .publish-creation-btn, .unpublish-creation-btn")) {
           return;
         }
 
@@ -3584,6 +3541,11 @@ class SquishCollectorApp {
         (creation) => creation.id !== creationId
       );
 
+      // If this was a published creation, remove it from the game collection too
+      if (creationToDelete && !creationToDelete.isDraft) {
+        this.removeCreationFromGameCollection(creationToDelete);
+      }
+
       // Save back to localStorage
       localStorage.setItem(
         "squishmallow-creations",
@@ -3605,6 +3567,177 @@ class SquishCollectorApp {
     } catch (error) {
       console.error("❌ Error deleting draft:", error);
       this.showFeedback("Error deleting draft. Please try again.", "error");
+    }
+  }
+
+  publishCreation(creationId) {
+    try {
+      let savedCreations = this.loadSavedCreations();
+      
+      // Find the creation to publish
+      const creationToPublish = savedCreations.find((c) => c.id === creationId);
+      if (!creationToPublish) {
+        this.showFeedback("Creation not found!", "error");
+        return;
+      }
+      
+      if (!creationToPublish.isDraft) {
+        this.showFeedback("Creation is already published!", "info");
+        return;
+      }
+      
+      // Update the creation to be published
+      creationToPublish.isDraft = false;
+      creationToPublish.publishedTimestamp = new Date().toISOString();
+      
+      // Save back to localStorage
+      localStorage.setItem(
+        "squishmallow-creations",
+        JSON.stringify(savedCreations)
+      );
+      
+      // Add to the game collection system
+      this.addCreationToGameCollection(creationToPublish);
+      
+      // Update the display
+      this.populateCreationsGrid();
+      this.updateCreationsStats();
+      
+      // Show success message
+      this.showFeedback(
+        `"${creationToPublish.name}" published successfully! 🎉 It's now available in the game!`,
+        "success"
+      );
+      
+      console.log(`🎉 Published creation: ${creationToPublish.name} (ID: ${creationId})`);
+    } catch (error) {
+      console.error("❌ Error publishing creation:", error);
+      this.showFeedback("Error publishing creation. Please try again.", "error");
+    }
+  }
+
+  unpublishCreation(creationId) {
+    try {
+      let savedCreations = this.loadSavedCreations();
+      
+      // Find the creation to unpublish
+      const creationToUnpublish = savedCreations.find((c) => c.id === creationId);
+      if (!creationToUnpublish) {
+        this.showFeedback("Creation not found!", "error");
+        return;
+      }
+      
+      if (creationToUnpublish.isDraft) {
+        this.showFeedback("Creation is already a draft!", "info");
+        return;
+      }
+      
+      // Update the creation to be a draft
+      creationToUnpublish.isDraft = true;
+      delete creationToUnpublish.publishedTimestamp;
+      
+      // Save back to localStorage
+      localStorage.setItem(
+        "squishmallow-creations",
+        JSON.stringify(savedCreations)
+      );
+      
+      // Remove from the game collection system
+      this.removeCreationFromGameCollection(creationToUnpublish);
+      
+      // Update the display
+      this.populateCreationsGrid();
+      this.updateCreationsStats();
+      
+      // Show success message
+      this.showFeedback(
+        `"${creationToUnpublish.name}" unpublished and saved as draft! 📝`,
+        "success"
+      );
+      
+      console.log(`📝 Unpublished creation: ${creationToUnpublish.name} (ID: ${creationId})`);
+    } catch (error) {
+      console.error("❌ Error unpublishing creation:", error);
+      this.showFeedback("Error unpublishing creation. Please try again.", "error");
+    }
+  }
+
+  addCreationToGameCollection(creation) {
+    try {
+      // Load existing user Squishmallows collection
+      let userSquishmals = JSON.parse(
+        localStorage.getItem("my-squishmallow-creations") || "[]"
+      );
+      
+      // Create a Squishmallow-compatible object
+      const squishmallowCreation = {
+        id: `user_${creation.id}`, // Prefix with 'user_' to distinguish from built-in ones
+        name: creation.name,
+        species: creation.templateName || "Custom",
+        squad: "My Creations",
+        rarity: "Custom",
+        image_url: creation.imageData, // Use the canvas data URL as the image
+        description: `A custom ${creation.templateName || "Squishmallow"} created by you!`,
+        isUserCreation: true,
+        originalCreationId: creation.id
+      };
+      
+      // Check if already exists (prevent duplicates)
+      const existingIndex = userSquishmals.findIndex(
+        (s) => s.originalCreationId === creation.id
+      );
+      
+      if (existingIndex !== -1) {
+        // Update existing entry
+        userSquishmals[existingIndex] = squishmallowCreation;
+      } else {
+        // Add new entry
+        userSquishmals.push(squishmallowCreation);
+      }
+      
+      // Save back to localStorage
+      localStorage.setItem(
+        "my-squishmallow-creations",
+        JSON.stringify(userSquishmals)
+      );
+      
+      console.log(`🎮 Added creation to game collection: ${creation.name}`);
+      
+      // Refresh the collection manager to include the new user creation
+      if (this.collectionManager) {
+        this.collectionManager.refreshUserCreations();
+      }
+    } catch (error) {
+      console.error("❌ Error adding creation to game collection:", error);
+    }
+  }
+
+  removeCreationFromGameCollection(creation) {
+    try {
+      // Load existing user Squishmallows collection
+      let userSquishmals = JSON.parse(
+        localStorage.getItem("my-squishmallow-creations") || "[]"
+      );
+      
+      // Remove the creation from the collection
+      userSquishmals = userSquishmals.filter(
+        (s) => s.originalCreationId !== creation.id
+      );
+      
+      // Save back to localStorage
+      localStorage.setItem(
+        "my-squishmallow-creations",
+        JSON.stringify(userSquishmals)
+      );
+      
+      console.log(`🎮 Removed creation from game collection: ${creation.name}`);
+      
+      // Refresh the collection manager to remove the user creation
+      if (this.collectionManager) {
+        this.collectionManager.refreshUserCreations();
+      }
+    } catch (error) {
+      console.error("❌ Error removing creation from game collection:", error);
     }
   }
 }

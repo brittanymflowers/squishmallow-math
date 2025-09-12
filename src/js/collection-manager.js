@@ -34,7 +34,10 @@ class CollectionManager {
       this.collectionData = await response.json();
       this.squishmallows = this.collectionData.squishmallows;
 
-      console.log(`📊 Loaded ${this.squishmallows.length} Squishmallows`);
+      // Load and merge user creations
+      this.loadUserCreations();
+
+      console.log(`📊 Loaded ${this.squishmallows.length} total Squishmallows (including user creations)`);
     } catch (error) {
       console.error("❌ Error loading Squishmallow data:", error);
       throw error;
@@ -217,6 +220,34 @@ class CollectionManager {
     ];
 
     console.log("🔄 Using fallback Squishmallow data");
+    
+    // Also load user creations in fallback mode
+    this.loadUserCreations();
+  }
+
+  loadUserCreations() {
+    try {
+      // Load user creations from localStorage
+      const saved = localStorage.getItem("my-squishmallow-creations");
+      if (saved) {
+        const userCreations = JSON.parse(saved);
+        
+        // Remove any existing user creations first (to handle updates)
+        this.squishmallows = this.squishmallows.filter(sq => !sq.isUserCreation);
+        
+        // Add user creations to the main squishmallows array
+        this.squishmallows = [...this.squishmallows, ...userCreations];
+        
+        console.log(`🎨 Loaded ${userCreations.length} user creations into collection`);
+      }
+    } catch (error) {
+      console.error("❌ Error loading user creations:", error);
+    }
+  }
+
+  // Call this method when user creations are updated
+  refreshUserCreations() {
+    this.loadUserCreations();
   }
 
   loadUserCollection() {
