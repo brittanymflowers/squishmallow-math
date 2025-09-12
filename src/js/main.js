@@ -2813,6 +2813,9 @@ class SquishCollectorApp {
 
     // Story 6.2: Audio settings controls
     this.setupAudioControls();
+
+    // Setup dynamic number range controls
+    this.setupDynamicSettingsControls();
   }
 
   // Story 6.2: Setup audio controls
@@ -2903,6 +2906,63 @@ class SquishCollectorApp {
         muteBtn.title = "Turn sound off";
       }
     }
+  }
+
+  setupDynamicSettingsControls() {
+    // Get all operation checkboxes
+    const additionCheckbox = document.getElementById("operation-addition");
+    const subtractionCheckbox = document.getElementById("operation-subtraction");
+    const multiplicationCheckbox = document.getElementById("operation-multiplication");
+    const divisionCheckbox = document.getElementById("operation-division");
+
+    // Get the number range controls
+    const addSubtractRange = document.getElementById("add-range");
+    const multDivRange = document.getElementById("mult-range");
+
+    // Function to update the enabled/disabled state of range controls
+    const updateRangeControls = () => {
+      // Check if addition or subtraction is selected
+      const addSubSelected = additionCheckbox?.checked || subtractionCheckbox?.checked;
+      
+      // Check if multiplication or division is selected  
+      const multDivSelected = multiplicationCheckbox?.checked || divisionCheckbox?.checked;
+
+      // Enable/disable addition/subtraction range control
+      if (addSubtractRange) {
+        addSubtractRange.disabled = !addSubSelected;
+        addSubtractRange.style.opacity = addSubSelected ? "1" : "0.5";
+        
+        // Update the parent container styling
+        const addSubContainer = addSubtractRange.closest(".range-control");
+        if (addSubContainer) {
+          addSubContainer.style.opacity = addSubSelected ? "1" : "0.5";
+        }
+      }
+
+      // Enable/disable multiplication/division range control
+      if (multDivRange) {
+        multDivRange.disabled = !multDivSelected;
+        multDivRange.style.opacity = multDivSelected ? "1" : "0.5";
+        
+        // Update the parent container styling
+        const multDivContainer = multDivRange.closest(".range-control");
+        if (multDivContainer) {
+          multDivContainer.style.opacity = multDivSelected ? "1" : "0.5";
+        }
+      }
+    };
+
+    // Add event listeners to all operation checkboxes
+    [additionCheckbox, subtractionCheckbox, multiplicationCheckbox, divisionCheckbox].forEach(checkbox => {
+      if (checkbox) {
+        checkbox.addEventListener("change", updateRangeControls);
+      }
+    });
+
+    // Call once on setup to set initial state
+    updateRangeControls();
+
+    console.log("✅ Dynamic settings controls setup complete");
   }
 
   // Story 5.4: Timer functionality methods
@@ -3057,6 +3117,16 @@ class SquishCollectorApp {
       const timerValue = this.settings.timerSeconds || 0;
       timerSelect.value = timerValue.toString();
     }
+
+    // Update dynamic controls after settings are populated
+    setTimeout(() => {
+      // Use a small delay to ensure all checkboxes are updated first
+      const updateEvent = new Event('change');
+      const multiCheckbox = document.getElementById("operation-multiplication");
+      if (multiCheckbox) {
+        multiCheckbox.dispatchEvent(updateEvent);
+      }
+    }, 10);
   }
 
   saveSettingsAndReturn() {

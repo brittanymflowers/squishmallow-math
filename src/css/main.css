@@ -1684,6 +1684,23 @@ body {
   font-style: italic;
 }
 
+/* Disabled range controls styling */
+.range-control {
+  transition: opacity 0.3s ease;
+}
+
+.range-control input:disabled,
+.range-control select:disabled {
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+  color: #999;
+}
+
+.range-control input[disabled] + .setting-description,
+.range-control select[disabled] + .setting-description {
+  color: #ccc;
+}
+
 .restart-collection-btn {
   background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: white;
