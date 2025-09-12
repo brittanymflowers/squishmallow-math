@@ -2485,8 +2485,45 @@ class SquishCollectorApp {
 
     collectionGrid.innerHTML = "";
 
-    this.collectionManager.squishmallows.forEach((squishmallow, index) => {
+    // Sort squishmallows so collected ones appear first
+    const sortedSquishmallows = [...this.collectionManager.squishmallows].sort((a, b) => {
+      const aCollected = this.collectionManager.isCollected(a.id);
+      const bCollected = this.collectionManager.isCollected(b.id);
+      
+      // Collected items first (true sorts before false)
+      if (aCollected && !bCollected) return -1;
+      if (!aCollected && bCollected) return 1;
+      
+      // Within each group, maintain original order
+      return 0;
+    });
+
+    let hasAddedCollectedHeader = false;
+    let hasAddedLockedHeader = false;
+
+    sortedSquishmallows.forEach((squishmallow, index) => {
       const isCollected = this.collectionManager.isCollected(squishmallow.id);
+
+      // Add section headers
+      if (isCollected && !hasAddedCollectedHeader) {
+        const collectedHeader = document.createElement("div");
+        collectedHeader.className = "collection-section-header";
+        collectedHeader.innerHTML = `
+          <h3><i data-lucide="star"></i> My Squishmallows</h3>
+          <p>These are the Squishmallows you've earned!</p>
+        `;
+        collectionGrid.appendChild(collectedHeader);
+        hasAddedCollectedHeader = true;
+      } else if (!isCollected && !hasAddedLockedHeader) {
+        const lockedHeader = document.createElement("div");
+        lockedHeader.className = "collection-section-header";
+        lockedHeader.innerHTML = `
+          <h3><i data-lucide="lock"></i> Still to Collect</h3>
+          <p>Keep playing math games to unlock these!</p>
+        `;
+        collectionGrid.appendChild(lockedHeader);
+        hasAddedLockedHeader = true;
+      }
 
       const card = document.createElement("div");
       card.className = `squishmallow-card ${
@@ -3222,8 +3259,28 @@ class SquishCollectorApp {
     const collectedIds = Array.from(this.collectionManager.userCollection);
     
     // Always make Luna available as default companion (even if not earned)
-    if (!collectedIds.includes('luna_the_cat')) {
-      collectedIds.unshift('luna_the_cat'); // Add Luna to the beginning
+    // Try multiple possible Luna identifiers to be safe
+    const possibleLunaIds = ['luna_cat', 'luna_the_cat'];
+    
+    // Find Luna in the squishmallows array first
+    let lunaSquish = null;
+    for (const lunaId of possibleLunaIds) {
+      lunaSquish = allSquishmallows.find(s => s.id === lunaId);
+      if (lunaSquish) break;
+    }
+    
+    // Also try finding by name as fallback
+    if (!lunaSquish) {
+      lunaSquish = allSquishmallows.find(s => s.name === 'Luna');
+    }
+    
+    if (lunaSquish && !collectedIds.includes(lunaSquish.id)) {
+      collectedIds.unshift(lunaSquish.id); // Add Luna to the beginning
+      console.log(`🌟 Added Luna (ID: ${lunaSquish.id}) as always-available companion`);
+    } else if (lunaSquish) {
+      console.log(`🌟 Luna (ID: ${lunaSquish.id}) already in collected list`);
+    } else {
+      console.warn(`⚠️ Could not find Luna in squishmallows data`);
     }
 
     // Clear existing content
